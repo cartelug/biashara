@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<!--HEAD-->
+</head>
+<body data-page="{{page.id}}">
+<!-- @include sprite -->
+<a class="skip" href="#main">Skip to main content</a>
+<!-- @include loader -->
+<!-- @include header -->
+<aside class="rail" aria-hidden="true">
+  <span class="rail__num tnum" data-rail-num>{{page.num}}</span>
+  <span class="rail__track"><span class="rail__fill" data-rail-fill></span></span>
+  <span class="rail__part" data-rail-part>{{page.partLabel}}</span>
+  <span class="rail__mark"></span>
+</aside>
+<div class="shell" id="top">
+<main id="main" tabindex="-1" data-page="{{page.id}}" data-num="{{page.num}}" data-name="{{page.name}}" data-part="{{page.partLabel}}">
+<!--MAIN-->
+</main>
+<!-- @include footer -->
+</div>
+<div class="folio" aria-hidden="true">
+  <span class="folio__l">Turning your financial challenge to simplicity</span>
+  <span class="folio__r">Biashara Trading Company Limited <b class="tnum" data-folio-page>01</b></span>
+</div>
+<!-- @include chrome -->
+<script src="/assets/vendor/gsap.min.js" defer></script>
+<script src="/assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="/assets/vendor/lenis.min.js" defer></script>
+<script type="module" src="/assets/js/app.js?v=__BUILD__"></script>
+</body>
+</html>

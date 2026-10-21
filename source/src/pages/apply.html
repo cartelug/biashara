@@ -1,0 +1,259 @@
+<section class="section phero phero--compact grain" aria-labelledby="page-title">
+  <div class="wrap">
+    <div class="runhead"><p class="label muted">End matter · Apply</p><p class="label muted">Applying is free</p></div>
+    <div class="grid phero__grid">
+      <p class="phero__num s-1"><span class="pier-sq" aria-hidden="true"></span>11</p>
+      <div class="s-8 o-2">
+        <h1 class="h1 phero__title" id="page-title" data-lines>Assemble your loan file</h1>
+        <p class="phero__lede mt-6">Five steps. Nothing leaves this page until you choose to send it, and an application does not guarantee a facility.<x-fn note="assessed"></x-fn></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--top0 apply" aria-label="Application" data-apply>
+  <div class="wrap">
+    <div class="callout no-js-only">
+      <p class="label"><x-icon name="flag"></x-icon>This form needs JavaScript</p>
+      <p>You can begin your loan request by email at <a href="mailto:{{contact.email}}">{{contact.email}}</a>, call <a class="tnum" href="tel:{{contact.phone1}}">{{contact.phone1Text}}</a> or <a class="tnum" href="tel:{{contact.phone2}}">{{contact.phone2Text}}</a>, or message <a class="tnum" href="https://wa.me/{{contact.whatsapp}}">{{contact.whatsappText}}</a> on WhatsApp.</p>
+      <p class="mt-4"><a class="link-arrow" href="/how-we-lend/#documents">The documents usually requested<x-icon name="arrow-right"></x-icon></a></p>
+    </div>
+
+    <div class="resume needs-js" data-resume hidden role="region" aria-label="Saved file">
+      <p><b>Your file from an earlier visit is still in this browser.</b> <span class="muted" data-resume-when></span></p>
+      <div class="resume__btns"><button class="btn btn--sm" type="button" data-resume-yes>Continue it</button><button class="btn btn--ghost btn--sm" type="button" data-resume-no>Start again</button></div>
+    </div>
+
+    <div class="aspan needs-js" data-aspan>
+      <span class="aspan__line" aria-hidden="true"><span class="aspan__fill" data-aspan-fill></span></span>
+      <ol class="aspan__list" role="list" aria-label="Progress">
+      <li data-pier="1"><span class="aspan__sq" aria-hidden="true"></span><span class="aspan__n tnum">01</span><span class="aspan__t">Product</span></li>
+      <li data-pier="2"><span class="aspan__sq" aria-hidden="true"></span><span class="aspan__n tnum">02</span><span class="aspan__t">Amount &amp; term</span></li>
+      <li data-pier="3"><span class="aspan__sq" aria-hidden="true"></span><span class="aspan__n tnum">03</span><span class="aspan__t">Your details</span></li>
+      <li data-pier="4"><span class="aspan__sq" aria-hidden="true"></span><span class="aspan__n tnum">04</span><span class="aspan__t">Purpose &amp; documents</span></li>
+      <li data-pier="5"><span class="aspan__sq" aria-hidden="true"></span><span class="aspan__n tnum">05</span><span class="aspan__t">Review</span></li>
+      </ol>
+    </div>
+
+    <div class="grid apply__grid needs-js">
+      <form class="apply__form s-7 md-s-12" data-apply-form novalidate>
+        <div class="errsum" data-errsum tabindex="-1" hidden role="alert">
+          <h2>Check the highlighted answers</h2>
+          <ul data-errsum-list></ul>
+        </div>
+
+        <!-- Step 1 -->
+        <fieldset class="astep" data-step="1" aria-labelledby="st1-t">
+          <legend class="sr-only">Step 1 of 5: Product</legend>
+          <p class="astep__n label accent tnum">Step 01 of 05</p>
+          <h2 class="astep__t" id="st1-t" tabindex="-1">Which facility do you need?</h2>
+          <p class="astep__lede">All four products share the same published terms: UGX&nbsp;1M to 50M, 2.8% per month on the approved principal, up to 6 months.<x-fn note="figures"></x-fn></p>
+          <div class="pchoices" role="radiogroup" aria-labelledby="st1-t" aria-describedby="err-product" data-field="product">
+            <x-products tpl="product-choice"></x-products>
+          </div>
+          <p class="field__err" id="err-product" hidden></p>
+        </fieldset>
+
+        <!-- Step 2 -->
+        <fieldset class="astep" data-step="2" aria-labelledby="st2-t" hidden>
+          <legend class="sr-only">Step 2 of 5: Amount and term</legend>
+          <p class="astep__n label accent tnum">Step 02 of 05</p>
+          <h2 class="astep__t" id="st2-t" tabindex="-1">How much, and for how long?</h2>
+          <div class="field field--amount" data-amount-field>
+            <div class="field__top">
+              <label class="field__label" id="ap-amt-l" for="ap-amt-in">Amount requested</label>
+              <span class="field__meta label muted tnum">UGX 1,000,000 – 50,000,000</span>
+            </div>
+            <div class="money">
+              <span class="money__cur" aria-hidden="true">UGX</span>
+              <input id="ap-amt-in" class="money__in" type="text" inputmode="numeric" autocomplete="off" value="10,000,000" data-amount-input aria-describedby="ap-amt-h ap-amt-e">
+            </div>
+            <div class="slider" role="slider" tabindex="0" aria-labelledby="ap-amt-l" aria-valuemin="1000000" aria-valuemax="50000000" aria-valuenow="10000000" aria-valuetext="UGX 10,000,000" data-slider="amount" data-min="1000000" data-max="50000000" data-step="500000" data-value="10000000">
+              <span class="slider__track"><span class="slider__fill" data-slider-fill></span></span>
+              <span class="slider__thumb" data-slider-thumb></span>
+            </div>
+            <div class="chips" role="group" aria-label="Quick amounts">
+              <button type="button" class="chip tnum" data-chip="1000000">1M</button>
+              <button type="button" class="chip tnum" data-chip="5000000">5M</button>
+              <button type="button" class="chip tnum" data-chip="10000000">10M</button>
+              <button type="button" class="chip tnum" data-chip="20000000">20M</button>
+              <button type="button" class="chip tnum" data-chip="50000000">50M</button>
+            </div>
+            <p class="field__help" id="ap-amt-h">The slider moves in steps of UGX&nbsp;500,000. You can also type an amount, such as 7.5m.</p>
+            <p class="field__err" id="ap-amt-e" data-amount-error hidden></p>
+          </div>
+          <div class="field field--term" data-term-field>
+            <div class="field__top">
+              <span class="field__label" id="ap-term-l">Term</span>
+              <span class="field__meta label muted">Maximum 6 months</span>
+            </div>
+            <div class="ruler" data-ruler>
+              <div class="slider slider--ruler" role="slider" tabindex="0" aria-labelledby="ap-term-l" aria-valuemin="1" aria-valuemax="6" aria-valuenow="3" aria-valuetext="3 months" data-slider="term" data-min="1" data-max="6" data-step="1" data-value="3">
+                <span class="slider__track"><span class="slider__fill" data-slider-fill></span></span>
+                <span class="slider__thumb" data-slider-thumb></span>
+              </div>
+              <ol class="ruler__ticks" role="list" aria-hidden="true">
+                <li><span class="tnum">1</span></li><li><span class="tnum">2</span></li><li><span class="tnum">3</span></li><li><span class="tnum">4</span></li><li><span class="tnum">5</span></li><li><span class="tnum">6</span></li>
+              </ol>
+              <p class="ruler__unit label muted" aria-hidden="true">Months</p>
+            </div>
+          </div>
+          <div class="callout callout--bar mt-6">
+            <p>Indicative only. Approved amount, tenure, security and repayment arrangements depend on credit assessment. Full terms are given in writing at approval.</p>
+          </div>
+        </fieldset>
+
+        <!-- Step 3 -->
+        <fieldset class="astep" data-step="3" aria-labelledby="st3-t" hidden>
+          <legend class="sr-only">Step 3 of 5: Your details</legend>
+          <p class="astep__n label accent tnum">Step 03 of 05</p>
+          <h2 class="astep__t" id="st3-t" tabindex="-1">Who is applying?</h2>
+          <div class="form">
+            <div class="form__row">
+              <span class="form__legend" id="ap-type-l">Applying as</span>
+              <div class="seg" role="radiogroup" aria-labelledby="ap-type-l">
+                <label><input type="radio" name="applicant" value="individual" checked><span>An individual</span></label>
+                <label><input type="radio" name="applicant" value="company"><span>A company or organisation</span></label>
+              </div>
+            </div>
+            <div class="form__row" data-only="company" hidden>
+              <label for="ap-org">Company or organisation name</label>
+              <input class="input" id="ap-org" name="organisation" type="text" autocomplete="organization" aria-describedby="err-organisation">
+              <p class="field__err" id="err-organisation" hidden></p>
+            </div>
+            <div class="form__row">
+              <label for="ap-name"><span data-only="individual">Full name</span><span data-only="company" hidden>Contact person</span></label>
+              <input class="input" id="ap-name" name="name" type="text" autocomplete="name" aria-describedby="err-name">
+              <p class="field__err" id="err-name" hidden></p>
+            </div>
+            <div class="form__two">
+              <div class="form__row">
+                <label for="ap-phone">Phone</label>
+                <div class="tel"><span class="tel__cc" aria-hidden="true">+256</span><input class="input tnum" id="ap-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="7XX XXX XXX" aria-describedby="ap-phone-h err-phone"></div>
+                <p class="field__help" id="ap-phone-h">Ugandan number. The +256 code is added for you.</p>
+                <p class="field__err" id="err-phone" hidden></p>
+              </div>
+              <div class="form__row">
+                <label for="ap-email">Email</label>
+                <input class="input" id="ap-email" name="email" type="email" autocomplete="email" aria-describedby="err-email">
+                <p class="field__err" id="err-email" hidden></p>
+              </div>
+            </div>
+            <div class="form__two">
+              <div class="form__row">
+                <label for="ap-district">District</label>
+                <input class="input" id="ap-district" name="district" type="text" autocomplete="address-level2" placeholder="For example, Kampala" aria-describedby="err-district">
+                <p class="field__err" id="err-district" hidden></p>
+              </div>
+              <div class="form__row">
+                <label for="ap-employer"><span data-only="individual">Employer or business</span><span data-only="company" hidden>Line of business</span></label>
+                <input class="input" id="ap-employer" name="employer" type="text" autocomplete="off" aria-describedby="err-employer">
+                <p class="field__err" id="err-employer" hidden></p>
+              </div>
+            </div>
+            <div class="form__row form__row--narrow">
+              <label for="ap-years"><span data-only="individual">Years with employer or in business</span><span data-only="company" hidden>Years in operation</span> <span class="form__opt">Optional</span></label>
+              <input class="input tnum" id="ap-years" name="years" type="text" inputmode="numeric" maxlength="2" autocomplete="off" aria-describedby="err-years">
+              <p class="field__err" id="err-years" hidden></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Step 4 -->
+        <fieldset class="astep" data-step="4" aria-labelledby="st4-t" hidden>
+          <legend class="sr-only">Step 4 of 5: Purpose and documents</legend>
+          <p class="astep__n label accent tnum">Step 04 of 05</p>
+          <h2 class="astep__t" id="st4-t" tabindex="-1">What is the facility for?</h2>
+          <div class="form">
+            <div class="form__row">
+              <div class="field__top"><label for="ap-purpose">Purpose</label><span class="label muted tnum" data-count-for="ap-purpose">0 / 400</span></div>
+              <textarea class="textarea" id="ap-purpose" name="purpose" maxlength="400" rows="5" aria-describedby="ap-purpose-h err-purpose"></textarea>
+              <p class="field__help" id="ap-purpose-h">A sentence or two. For example, what the money pays for and when it is needed.</p>
+              <p class="field__err" id="err-purpose" hidden></p>
+            </div>
+            <div class="form__row form__row--narrow">
+              <label for="ap-target">Target date <span class="form__opt">Optional</span></label>
+              <input class="input tnum" id="ap-target" name="target" type="date" aria-describedby="ap-target-h">
+              <p class="field__help" id="ap-target-h">We work towards your target date.<x-fn note="deadline"></x-fn></p>
+            </div>
+            <div class="form__row">
+              <span class="form__legend" id="ap-docs-l">Documents you can provide</span>
+              <p class="field__help">Tick what you have. More may be requested depending on the product and amount.<x-fn note="documents"></x-fn></p>
+              <ul class="doclist__list" role="list" aria-labelledby="ap-docs-l">
+                <li><label class="check"><input type="checkbox" name="docs" value="Valid national identification"><span>Valid national identification</span></label></li>
+                <li><label class="check"><input type="checkbox" name="docs" value="Proof of income — payslips or business records"><span>Proof of income — payslips or business records</span></label></li>
+                <li><label class="check"><input type="checkbox" name="docs" value="Bank or mobile-money statements for recent months"><span>Bank or mobile&#8209;money statements for recent months</span></label></li>
+                <li><label class="check"><input type="checkbox" name="docs" value="Business registration documents, where applicable"><span>Business registration documents, where applicable</span></label></li>
+                <li><label class="check"><input type="checkbox" name="docs" value="Evidence of the purpose — invoice, fee structure or quotation"><span>Evidence of the purpose — invoice, fee structure or quotation</span></label></li>
+                <li><label class="check"><input type="checkbox" name="docs" value="Security documentation, where the facility requires it"><span>Security documentation, where the facility requires it</span></label></li>
+                <li><label class="check"><input type="checkbox" name="docs" value="Contact and referee details"><span>Contact and referee details</span></label></li>
+              </ul>
+            </div>
+            <div class="callout callout--dark">
+              <p class="label"><x-icon name="document"></x-icon>If documents are missing</p>
+              <p>Come in anyway. The team will tell you exactly what is outstanding before the file goes to assessment.</p>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Step 5 -->
+        <fieldset class="astep" data-step="5" aria-labelledby="st5-t" hidden>
+          <legend class="sr-only">Step 5 of 5: Review</legend>
+          <p class="astep__n label accent tnum">Step 05 of 05</p>
+          <h2 class="astep__t" id="st5-t" tabindex="-1">Review your file</h2>
+          <dl class="review" data-review></dl>
+          <div class="form mt-6">
+            <label class="check"><input type="checkbox" name="accurate" aria-describedby="err-accurate"><span>The information in this file is accurate.</span></label>
+            <p class="field__err" id="err-accurate" hidden></p>
+            <label class="check"><input type="checkbox" name="understand" aria-describedby="err-understand"><span>I understand that an application does not guarantee a facility, and that final terms are confirmed in writing at approval.</span></label>
+            <p class="field__err" id="err-understand" hidden></p>
+            <label class="check"><input type="checkbox" name="consent" aria-describedby="err-consent"><span>I agree that Biashara may use these details to assess and reply to my application. <a href="/privacy/">How information is handled</a></span></label>
+            <p class="field__err" id="err-consent" hidden></p>
+          </div>
+          <div class="hp" aria-hidden="true"><label for="ap-website">Website</label><input id="ap-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        </fieldset>
+
+        <div class="anav">
+          <button class="btn btn--ghost" type="button" data-prev hidden><x-icon name="arrow-left"></x-icon>Back</button>
+          <button class="btn" type="button" data-next data-cursor="apply" data-magnetic>Continue<x-icon name="arrow-right"></x-icon></button>
+          <button class="btn" type="submit" data-submit data-cursor="apply" hidden>Send my file<x-icon name="send"></x-icon></button>
+          <p class="anav__save muted" data-saved aria-live="polite"></p>
+        </div>
+      </form>
+
+      <aside class="afile s-5 o-8 md-s-12" aria-labelledby="afile-t" data-afile>
+        <button class="afile__toggle" type="button" aria-expanded="false" aria-controls="afile-body" data-afile-toggle>
+          <span class="label accent">Your file</span>
+          <span class="afile__peek tnum" data-peek>UGX 10,000,000 · 3 months</span>
+          <x-icon name="plus" class="afile__icon"></x-icon>
+        </button>
+        <div class="afile__body ledgercard" id="afile-body">
+          <span class="reg reg--tl" aria-hidden="true"></span><span class="reg reg--br" aria-hidden="true"></span>
+          <div class="ledgercard__head">
+            <h2 class="label accent" id="afile-t">Your file</h2>
+            <p class="label muted tnum" data-file-ref>BTC-········-····</p>
+          </div>
+          <dl class="ledger" data-file>
+            <div class="ledger__row"><dt>Product</dt><dd data-f="product">Not chosen</dd></div>
+            <div class="ledger__row"><dt>Amount</dt><dd><output class="odo odo--live" data-f="amount">UGX 10,000,000</output></dd></div>
+            <div class="ledger__row"><dt>Term</dt><dd data-f="term" class="tnum">3 months</dd></div>
+            <div class="ledger__row"><dt>Interest per month <span class="muted">(2.8%)</span></dt><dd><output class="odo odo--live" data-f="monthly">UGX 280,000</output></dd></div>
+            <div class="ledger__row ledger__row--key"><dt>Interest over <span data-f="months">3 months</span></dt><dd><output class="odo odo--live" data-f="total">UGX 840,000</output></dd></div>
+            <div class="ledger__row ledger__row--hatch"><dt>Processing fee</dt><dd>Disclosed at approval</dd></div>
+            <div class="ledger__row ledger__row--hatch"><dt>Other charges</dt><dd>Disclosed at approval</dd></div>
+            <div class="ledger__row"><dt>Repayment arrangement</dt><dd>Assessed</dd></div>
+            <div class="ledger__row"><dt>Applicant</dt><dd data-f="applicant">Not entered</dd></div>
+            <div class="ledger__row"><dt>Documents ticked</dt><dd data-f="docs" class="tnum">0 of 7</dd></div>
+          </dl>
+          <div class="callout callout--bar">
+            <p>Indicative only. Approved amount, tenure, security and repayment arrangements depend on credit assessment. Full terms are given in writing at approval.</p>
+          </div>
+          <p class="afile__note">Interest is 2.8% per month, calculated on the approved principal.<x-fn note="interest"></x-fn> Saved in this browser only, so you can come back to it.</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="done needs-js" data-done hidden tabindex="-1" aria-labelledby="done-t"></div>
+  </div>
+</section>
+<x-notes></x-notes>

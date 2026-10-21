@@ -1,0 +1,36 @@
+// Offline shell. Pages: network first, falling back to cache. Assets: cache first.
+// The form endpoint and any non-GET request are never cached.
+const VERSION = 'btc-3c6eFoMTlD';
+const PRECACHE = ["/","/about/","/loans/","/how-we-lend/","/terms/","/who-we-serve/","/team/","/licence/","/faq/","/contact/","/apply/","/profile/","/privacy/","/404.html","/assets/css/main.css?v=pu0Up7zpqs","/assets/js/app.js?v=3c6eFoMTlD","/assets/js/config.js?v=3c6eFoMTlD","/assets/vendor/gsap.min.js","/assets/vendor/ScrollTrigger.min.js","/assets/vendor/lenis.min.js","/assets/fonts/archivo-wght.woff2","/assets/fonts/sourceserif4-opsz.woff2","/assets/fonts/sourceserif4-italic-opsz.woff2","/assets/img/logo/biashara-logo-320.png","/assets/img/logo/mark-160.png"];
+const ENDPOINT = "";
+
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', (e) => {
+  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== VERSION).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
+});
+self.addEventListener('fetch', (e) => {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  if (url.origin !== location.origin) return;
+  if (ENDPOINT && req.url.startsWith(ENDPOINT)) return;
+  if (url.pathname.startsWith('/apply/submit')) return;
+  const isPage = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html') || req.headers.get('X-Requested-With') === 'router';
+  if (isPage) {
+    e.respondWith(
+      fetch(req).then((res) => {
+        if (res.ok) { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(url.pathname, copy)); }
+        return res;
+      }).catch(() => caches.match(url.pathname).then((r) => r || caches.match('/404.html')))
+    );
+    return;
+  }
+  e.respondWith(
+    caches.match(req).then((hit) => hit || fetch(req).then((res) => {
+      if (res.ok && /\/assets\//.test(url.pathname)) { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); }
+      return res;
+    }))
+  );
+});

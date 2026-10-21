@@ -1,0 +1,4 @@
+# Netlify: the site is the repository root (index.html at the top), so no build step is needed.
+[build]
+  publish = "."
+  command = ""

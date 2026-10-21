@@ -1,0 +1,22 @@
+@layer motion {
+  /* Rest states only apply when motion is going to run. Everything else is visible by default. */
+  html.js:not(.rm) [data-lines] .line-inner { transform: translateY(105%); }
+  html.js:not(.rm) [data-lines].is-in .line-inner { transform: none; }
+  html.js:not(.rm) [data-reveal] { opacity: 0; transform: translateY(var(--travel)); }
+  html.js:not(.rm) [data-reveal].is-in { opacity: 1; transform: none; }
+  html.js:not(.rm) .fig__media .ph, html.js:not(.rm) .portrait .ph, html.js:not(.rm) [data-img-reveal] .ph { clip-path: inset(0 0 100% 0); }
+  html.js:not(.rm) .is-revealed .ph, html.js:not(.rm) .fig__media.is-revealed .ph, html.js:not(.rm) [data-img-reveal].is-revealed .ph { clip-path: inset(0 0 0 0); }
+  html.js:not(.rm) .hero__span { transform: scaleX(0); }
+  /* The red square that wipes across an image before it settles */
+  .wipe { position: absolute; inset: 0; z-index: 4; background: var(--red); transform: scaleY(0); pointer-events: none; }
+  /* Failsafe: if the motion script never starts, show everything after 3s */
+  html.js:not(.motion-ready) [data-lines] .line-inner,
+  html.js:not(.motion-ready) [data-reveal] { animation: reveal-failsafe 0s linear 3s forwards; }
+  html.js:not(.motion-ready) .ph { animation: clip-failsafe 0s linear 3s forwards; }
+  @keyframes reveal-failsafe { to { opacity: 1; transform: none; } }
+  @keyframes clip-failsafe { to { clip-path: inset(0 0 0 0); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  }
+}

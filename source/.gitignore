@@ -1,0 +1,7 @@
+node_modules/
+.cache/
+# the built site is copied to the repository root by `npm run release`
+dist/
+qa/report/shots/
+# generated QA output (Lighthouse, axe, screenshots); rerun with `npm run qa`
+qa/report/

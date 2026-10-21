@@ -1,0 +1,50 @@
+<dialog class="index" id="index" aria-labelledby="index-title" data-index>
+  <div class="index__in wrap">
+    <div class="index__head">
+      <p class="label">Front matter</p>
+      <button class="index__close" type="button" data-index-close aria-label="Close the index"><x-icon name="close"></x-icon></button>
+    </div>
+    <h2 class="index__title" id="index-title">Contents</h2>
+    <nav class="index__nav" aria-label="All pages"><!--INDEX--></nav>
+    <div class="index__foot">
+      <a class="btn" href="/apply/" data-cursor="apply">Apply now<x-icon name="arrow-right"></x-icon></a>
+      <a class="btn btn--ghost" href="tel:{{contact.phone1}}"><x-icon name="phone"></x-icon>Call {{contact.phone1Text}}</a>
+      <p class="label index__hint needs-js">Press <kbd>K</kbd> for the command palette</p>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="palette" id="palette" aria-label="Command palette" data-palette>
+  <div class="palette__in">
+    <div class="palette__bar">
+      <x-icon name="search"></x-icon>
+      <label class="sr-only" for="palette-q">Jump to a page, section or action</label>
+      <input id="palette-q" class="palette__q" type="text" autocomplete="off" spellcheck="false" placeholder="Jump to a page, section or action" role="combobox" aria-expanded="true" aria-controls="palette-list" aria-autocomplete="list" data-palette-q>
+      <kbd class="palette__esc">Esc</kbd>
+    </div>
+    <ul class="palette__list" id="palette-list" role="listbox" aria-label="Results" data-palette-list></ul>
+    <p class="palette__foot label"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span></p>
+  </div>
+</dialog>
+
+<div class="curtain" aria-hidden="true" data-curtain>
+  <div class="curtain__ink"></div>
+  <div class="curtain__red">
+    <div class="curtain__in">
+      <img class="curtain__mark" src="/assets/img/logo/mark-160.png" width="160" height="176" alt="">
+      <p class="curtain__name"><span class="curtain__num tnum" data-curtain-num>03</span><span data-curtain-name>Loan Solutions</span></p>
+      <p class="curtain__count tnum label" data-curtain-count>000</p>
+    </div>
+  </div>
+</div>
+
+<div class="cursor" aria-hidden="true" data-cursor-el><span class="cursor__sq"></span><span class="cursor__label" data-cursor-label></span></div>
+
+<div class="gridov" aria-hidden="true" hidden data-gridov>
+  <div class="gridov__base"></div>
+  <div class="wrap grid gridov__cols"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <p class="gridov__label label">12 columns · 8px rhythm · press G to hide</p>
+</div>
+
+<nav class="totop-nav" aria-label="Back to top"><a class="totop" href="#top" data-totop aria-label="Back to top"><x-icon name="arrow-up"></x-icon></a></nav>
+<div class="sr-only" aria-live="polite" aria-atomic="true" data-announcer></div>

@@ -1,0 +1,77 @@
+@layer layout {
+  /* ---------- The page frame: header, chapter rail, running foot ---------- */
+  .shell {
+    padding-left: var(--rail);
+    padding-bottom: var(--foot);
+    padding-top: var(--header);
+  }
+  main { display: block; position: relative; isolation: isolate; }
+  main:focus { outline: none; }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--max);
+    margin-inline: auto;
+    padding-inline: var(--margin);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    column-gap: var(--gutter);
+    align-items: start;
+  }
+  .grid > * { grid-column: 1 / -1; min-width: 0; }
+
+  .section {
+    position: relative;
+    padding-block: var(--section);
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .section--tight { padding-block: var(--s-8); }
+  .section--flush { padding-block: 0; }
+  .section--top0 { padding-top: 0; }
+  /* below a page header band the next section still needs air */
+  .phero + .section--top0 { padding-top: var(--s-7); }
+  .section.is-dark { background: var(--ink); color: var(--paper); }
+  .section.is-paper-2 { --bg: var(--paper-2); --fg-muted: var(--grey-strong); background: var(--paper-2); }
+  .is-dark .muted, .muted { color: var(--fg-muted); }
+
+  /* Dark sections carry the faint radial vignette from the profile cover */
+  .vignette::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, .45) 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .vignette > * { position: relative; z-index: 1; }
+
+  /* Paper grain: 2–3% opacity, paper sections only */
+  .grain { position: relative; }
+  .grain::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: url("/assets/img/texture/grain.svg"), url("/assets/img/texture/fibre.svg");
+    background-size: 240px 240px, 900px 900px;
+    opacity: .028;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .grain > * { position: relative; z-index: 1; }
+  html[data-contrast="high"] .grain::before { display: none; }
+
+  .below-fold { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+
+  /* Running head (top of every page body, as on the profile) */
+  .runhead {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
+    padding-block: var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (max-width: 759px) {
+    :root { --section: var(--s-8); }
+  }
+}

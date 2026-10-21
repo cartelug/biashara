@@ -1,0 +1,65 @@
+<div class="calc calc--__VARIANT__ grid" data-calculator id="__ID__">
+  <div class="calc__inputs s-6 md-s-12">
+    <div class="field field--amount">
+      <div class="field__top">
+        <label class="field__label" id="__ID__-amt-l" for="__ID__-amt-in">Amount</label>
+        <span class="field__meta label muted tnum">UGX 1,000,000 – 50,000,000</span>
+      </div>
+      <div class="money">
+        <span class="money__cur" aria-hidden="true">UGX</span>
+        <input id="__ID__-amt-in" class="money__in" type="text" inputmode="numeric" autocomplete="off" value="10,000,000" data-amount-input aria-describedby="__ID__-amt-h __ID__-amt-e">
+      </div>
+      <div class="slider" role="slider" tabindex="0" aria-labelledby="__ID__-amt-l" aria-valuemin="1000000" aria-valuemax="50000000" aria-valuenow="10000000" aria-valuetext="UGX 10,000,000" data-slider="amount" data-min="1000000" data-max="50000000" data-step="500000" data-value="10000000">
+        <span class="slider__track"><span class="slider__fill" data-slider-fill></span></span>
+        <span class="slider__thumb" data-slider-thumb></span>
+      </div>
+      <div class="chips" role="group" aria-label="Quick amounts">
+        <button type="button" class="chip tnum" data-chip="1000000">1M</button>
+        <button type="button" class="chip tnum" data-chip="5000000">5M</button>
+        <button type="button" class="chip tnum" data-chip="10000000">10M</button>
+        <button type="button" class="chip tnum" data-chip="20000000">20M</button>
+        <button type="button" class="chip tnum" data-chip="50000000">50M</button>
+      </div>
+      <p class="field__help" id="__ID__-amt-h">The slider moves in steps of UGX&nbsp;500,000. You can also type an amount.</p>
+      <p class="field__err" id="__ID__-amt-e" data-amount-error hidden></p>
+    </div>
+
+    <div class="field field--term">
+      <div class="field__top">
+        <span class="field__label" id="__ID__-term-l">Term</span>
+        <span class="field__meta label muted">Maximum 6 months</span>
+      </div>
+      <div class="ruler" data-ruler>
+        <div class="slider slider--ruler" role="slider" tabindex="0" aria-labelledby="__ID__-term-l" aria-valuemin="1" aria-valuemax="6" aria-valuenow="3" aria-valuetext="3 months" data-slider="term" data-min="1" data-max="6" data-step="1" data-value="3">
+          <span class="slider__track"><span class="slider__fill" data-slider-fill></span></span>
+          <span class="slider__thumb" data-slider-thumb></span>
+        </div>
+        <ol class="ruler__ticks" role="list" aria-hidden="true">
+          <li><span class="tnum">1</span></li><li><span class="tnum">2</span></li><li><span class="tnum">3</span></li><li><span class="tnum">4</span></li><li><span class="tnum">5</span></li><li><span class="tnum">6</span></li>
+        </ol>
+        <p class="ruler__unit label muted" aria-hidden="true">Months</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="calc__out s-5 o-8 md-s-12">
+    <div class="ledgercard">
+      <div class="ledgercard__head">
+        <p class="label accent">Indicative ledger</p>
+        <p class="label muted tnum" data-calc-term-label>3 months</p>
+      </div>
+      <dl class="ledger" data-calc-ledger>
+        <div class="ledger__row"><dt>Principal</dt><dd><output class="odo odo--live" data-calc="principal">UGX 10,000,000</output></dd></div>
+        <div class="ledger__row"><dt>Interest per month <span class="muted">(2.8%)</span></dt><dd><output class="odo odo--live" data-calc="monthly">UGX 280,000</output></dd></div>
+        <div class="ledger__row ledger__row--key"><dt>Interest over <span data-calc-months>3 months</span></dt><dd><output class="odo odo--live" data-calc="total" aria-live="polite">UGX 840,000</output></dd></div>
+        <div class="ledger__row ledger__row--hatch"><dt>Processing fee</dt><dd>Disclosed at approval</dd></div>
+        <div class="ledger__row ledger__row--hatch"><dt>Other charges</dt><dd>Disclosed at approval</dd></div>
+        <div class="ledger__row"><dt>Cost of applying</dt><dd>None</dd></div>
+      </dl>
+      <div class="callout callout--bar">
+        <p>Indicative only. Approved amount, tenure, security and repayment arrangements depend on credit assessment. Full terms are given in writing at approval.</p>
+      </div>
+      __CTA__
+    </div>
+  </div>
+</div>

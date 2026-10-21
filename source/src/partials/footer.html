@@ -1,0 +1,69 @@
+<footer class="ftr is-dark vignette" data-footer>
+  <div class="micro-strip micro-strip--paper" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="grid ftr__top">
+      <div class="ftr__brand s-4 md-s-6">
+        <a class="ftr__logo" href="/" aria-label="Biashara Trading Company Limited, home">
+          <img src="/assets/img/logo/biashara-logo-96.png" srcset="/assets/img/logo/biashara-logo-96.png 96w, /assets/img/logo/biashara-logo-192.png 192w" sizes="64px" width="96" height="125" alt="" loading="lazy">
+        </a>
+        <p class="ftr__quote">“Turning your financial challenge to simplicity.”</p>
+      </div>
+      <div class="ftr__col s-3 o-6 md-s-6">
+        <h2 class="label ftr__h"><x-icon name="pin"></x-icon>Office</h2>
+        <address class="ftr__addr">Conrad Plaza, Plot&nbsp;24/25 Entebbe Road<br>Second Floor, Suite&nbsp;2 · Kampala, Uganda</address>
+        <p class="ftr__actions">
+          <a class="link-arrow" href="{{contact.maps}}" rel="noopener" target="_blank">Open in Maps<x-icon name="arrow-ne"></x-icon><span class="sr-only"> (opens in a new tab)</span></a>
+          <button class="copy" type="button" data-copy="{{contact.address}}" aria-label="Copy the office address"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button>
+        </p>
+      </div>
+      <div class="ftr__col s-3 o-10 md-s-6">
+        <h2 class="label ftr__h"><x-icon name="clock"></x-icon>Working hours</h2>
+        <p class="ftr__hours">Monday&nbsp;–&nbsp;Friday<br><span class="tnum">8:00&nbsp;AM&nbsp;–&nbsp;4:00&nbsp;PM</span></p>
+        <p class="open-now needs-js" data-open-now data-compact><span class="open-now__sq" aria-hidden="true"></span><span data-open-now-text>Checking office hours</span></p>
+      </div>
+    </div>
+
+    <div class="grid ftr__mid">
+      <div class="ftr__col s-4 md-s-6">
+        <h2 class="label ftr__h"><x-icon name="landline"></x-icon>Telephone</h2>
+        <ul class="ftr__list" role="list">
+          <li><a class="tnum" href="tel:{{contact.phone1}}">{{contact.phone1Text}}</a><button class="copy" type="button" data-copy="{{contact.phone1Text}}" aria-label="Copy {{contact.phone1Text}}"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></li>
+          <li><a class="tnum" href="tel:{{contact.phone2}}">{{contact.phone2Text}}</a><button class="copy" type="button" data-copy="{{contact.phone2Text}}" aria-label="Copy {{contact.phone2Text}}"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></li>
+        </ul>
+      </div>
+      <div class="ftr__col s-3 o-6 md-s-6">
+        <h2 class="label ftr__h"><x-icon name="chat"></x-icon>WhatsApp</h2>
+        <p><a class="tnum" href="https://wa.me/{{contact.whatsapp}}" rel="noopener" target="_blank">{{contact.whatsappText}}<span class="sr-only"> on WhatsApp (opens in a new tab)</span></a></p>
+      </div>
+      <div class="ftr__col s-3 o-10 md-s-6">
+        <h2 class="label ftr__h"><x-icon name="mail"></x-icon>Email</h2>
+        <p class="ftr__mail"><a href="mailto:{{contact.email}}">{{contact.email}}</a><button class="copy" type="button" data-copy="{{contact.email}}" aria-label="Copy the email address"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></p>
+      </div>
+    </div>
+
+    <div class="ftr__licence">
+      <p><span class="label">Money Lending Licence</span> <a class="tnum" href="/licence/">{{licence.number}}</a> · Ministry of Finance, Planning and Economic Development · {{licence.referenceYear}} reference copy, issued <span class="tnum">{{licence.issuedText}}</span>, expires <span class="tnum">{{licence.expiresText}}</span></p>
+      <p class="licence-guard" data-licence-guard hidden>The reference copy shown is the 2026 certificate. To verify the current licence, contact the Board of Directors.</p>
+    </div>
+
+    <nav class="ftr__nav" aria-label="All pages">
+      <ul role="list"><!--FOOTLINKS--></ul>
+    </nav>
+
+    <div class="ftr__tools">
+      <p class="ftr__hint needs-js"><kbd>K</kbd> or <kbd>/</kbd> opens the command palette · <kbd>G</kbd> shows the grid</p>
+      <div class="ftr__btns">
+        <a class="tool" href="https://wa.me/?text=Biashara%20Trading%20Company%20Limited%20%E2%80%94%20short-term%20bridge%20financing%20in%20Kampala%3A%20{{site.url}}" rel="noopener" target="_blank"><x-icon name="share"></x-icon>Share on WhatsApp<span class="sr-only"> (opens in a new tab)</span></a>
+        <button class="tool needs-js" type="button" data-contrast-toggle aria-pressed="false"><x-icon name="contrast"></x-icon>High contrast</button>
+        <a class="tool tool--sq" href="#top" data-totop aria-label="Back to top"><x-icon name="arrow-up"></x-icon></a>
+      </div>
+    </div>
+
+    <div class="ftr__base">
+      <p class="label">Edition 2026 · Version 5</p>
+      <p class="label ftr__runfoot">Turning your financial challenge to simplicity</p>
+      <p class="label">Biashara Trading Company Limited · Kampala</p>
+    </div>
+  </div>
+  <div class="ftr__wordmark" aria-hidden="true"><span>BIASHARA</span></div>
+</footer>

@@ -1,0 +1,96 @@
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-synthesis: none;
+    font-kerning: normal;
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    hanging-punctuation: first allow-end last;
+    background: var(--paper);
+    color-scheme: light;
+    scroll-padding-top: calc(var(--header) + var(--s-5));
+  }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-stopped { overflow: clip; }
+
+  body {
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: var(--fs-body);
+    font-weight: 400;
+    font-stretch: 100%;
+    line-height: 1.6;
+    line-height: round(nearest, 1.6em, 4px);
+    font-variant-numeric: oldstyle-nums proportional-nums;
+    overflow-x: clip;
+  }
+
+  /* Everything type-related: only real weights, normal width, no synthesis */
+  :where(h1, h2, h3, h4, h5, h6, button, input, select, textarea, label, legend, th, td, strong, b) {
+    font-synthesis: none;
+    font-stretch: 100%;
+  }
+  b, strong { font-weight: 500; }
+  em, i, cite { font-style: italic; }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -.01em;
+    line-height: .94;
+    text-wrap: balance;
+    font-variant-numeric: lining-nums tabular-nums;
+    font-feature-settings: "case" 1;
+  }
+  h3, h4 { line-height: 1.04; }
+  p, li, dd, figcaption, blockquote { text-wrap: pretty; hyphens: manual; }
+  p { max-width: 62ch; }
+
+  img, svg, video, canvas, picture { display: block; max-width: 100%; }
+  img { height: auto; }
+  svg { fill: currentColor; }
+  :where(svg[aria-hidden="true"]) { pointer-events: none; }
+
+  a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .2em; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); }
+  a:hover { text-decoration-color: var(--red); }
+
+  button, input, select, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+  button { cursor: pointer; background: none; border: 0; padding: 0; }
+  table { border-collapse: collapse; }
+  ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+  [hidden] { display: none !important; }
+  address { font-style: normal; }
+  abbr[title] { text-decoration: none; }
+
+  ::selection { background: var(--red); color: var(--white); }
+  .is-dark ::selection { background: var(--white); color: var(--red-deep); }
+
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
+    border-radius: 0;
+  }
+  .is-dark :focus-visible { outline-color: var(--red-on-dark); }
+
+  /* Body copy figures stay oldstyle; data figures switch to tabular lining */
+  .tnum, table, .figure, .ledger, data, output, time {
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  /* No JavaScript: never block content */
+  html.no-js .loader, html.no-js .curtain, html.no-js .cursor { display: none !important; }
+  html.no-js [data-reveal], html.no-js [data-lines] .line-inner { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+  html.no-js .needs-js { display: none !important; }
+  html:not(.no-js) .no-js-only { display: none !important; }
+}
