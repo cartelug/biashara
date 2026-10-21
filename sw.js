@@ -1,7 +1,7 @@
 // Offline shell. Pages: network first, falling back to cache. Assets: cache first.
 // The form endpoint and any non-GET request are never cached.
-const VERSION = 'btc-2FLeHGFIrd';
-const PRECACHE = ["/biashara/","/biashara/about/","/biashara/loans/","/biashara/how-we-lend/","/biashara/terms/","/biashara/who-we-serve/","/biashara/team/","/biashara/licence/","/biashara/faq/","/biashara/contact/","/biashara/apply/","/biashara/profile/","/biashara/privacy/","/biashara/404.html","/biashara/assets/css/main.css?v=X8L0oefVR5","/biashara/assets/js/app.js?v=2FLeHGFIrd","/biashara/assets/js/config.js?v=2FLeHGFIrd","/biashara/assets/vendor/gsap.min.js","/biashara/assets/vendor/ScrollTrigger.min.js","/biashara/assets/vendor/lenis.min.js","/biashara/assets/fonts/archivo-wght.woff2","/biashara/assets/fonts/sourceserif4-opsz.woff2","/biashara/assets/fonts/sourceserif4-italic-opsz.woff2","/biashara/assets/img/logo/biashara-logo-320.png","/biashara/assets/img/logo/mark-160.png"];
+const VERSION = 'btc-PcGH73fmou';
+const PRECACHE = ["/biashara/","/biashara/about/","/biashara/loans/","/biashara/how-we-lend/","/biashara/terms/","/biashara/who-we-serve/","/biashara/team/","/biashara/licence/","/biashara/faq/","/biashara/contact/","/biashara/apply/","/biashara/profile/","/biashara/privacy/","/biashara/404.html","/biashara/assets/css/main.css?v=0QvfQ8aBiJ","/biashara/assets/js/app.js?v=PcGH73fmou","/biashara/assets/js/config.js?v=PcGH73fmou","/biashara/assets/fonts/archivo-wght.woff2","/biashara/assets/fonts/sourceserif4-opsz.woff2","/biashara/assets/fonts/sourceserif4-italic-opsz.woff2","/biashara/assets/img/logo/biashara-logo-320.png","/biashara/assets/img/logo/mark-160.png"];
 const ENDPOINT = "";
 const BASE = "/biashara";
 

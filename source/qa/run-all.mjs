@@ -36,7 +36,7 @@ results.push(run('Build (configured BASE_PATH)', 'node', ['build/build.mjs', '--
 const baseServer = spawn('node', ['build/serve.mjs', String(PORT)], { cwd: ROOT, stdio: 'ignore' });
 await new Promise((r) => setTimeout(r, 800));
 try {
-  results.push(run('Base path (files, images, links and the router all work from the configured folder)', 'node', ['qa/base-path.mjs', BASE]));
+  results.push(run('Base path (files, images, links, the phone menu and the calculator link work from the configured folder)', 'node', ['qa/base-path.mjs', BASE]));
 } finally {
   baseServer.kill();
 }

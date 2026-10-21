@@ -11,7 +11,6 @@ import { CONFIG } from '../src/js/config.js';
 import { pages, parts, products, notes } from '../src/data/site.mjs';
 import { images } from '../src/data/images.mjs';
 import { buildImages } from './images.mjs';
-import { buildTextures } from './textures.mjs';
 import { buildIcons, buildOgImages } from './brand.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -25,6 +24,7 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 
 const t0 = Date.now();
 const FAST = process.argv.includes('--fast'); // reuse cached images and social cards
+const ONLY = (process.argv.find((a) => a.startsWith('--only=')) || '').slice(7).split(',').filter(Boolean); // build just these pages while designing
 
 // ---------------------------------------------------------------- base path
 // The folder the site is served from ('' at a domain root, '/biashara' on a GitHub Pages project site).
@@ -73,26 +73,17 @@ const getVar = (key, extra) => key.split('.').reduce((o, k) => (o == null ? o : 
 await fs.rm(DIST, { recursive: true, force: true });
 await fs.mkdir(DIST, { recursive: true });
 
-// Images, textures, icons
+// Images and icons
 const imgManifest = await buildImages({ images, srcDir: rel(SRC, 'img-source'), outDir: rel(DIST, 'assets/img/photo'), cacheDir: rel(ROOT, '.cache/img'), fast: FAST });
-await buildTextures({ outDir: rel(DIST, 'assets/img/texture'), fontDir: rel(ROOT, 'build/assets-src'), licenceNo: CONFIG.LICENCE.number });
 const brand = await buildIcons({ logo: rel(SRC, 'img-source/logo.png'), outDir: DIST, cacheDir: rel(ROOT, '.cache/brand') });
 
 // Fonts and static files
 for (const f of await fs.readdir(rel(SRC, 'fonts'))) await fs.cp(rel(SRC, 'fonts', f), rel(DIST, 'assets/fonts', f));
 if (fss.existsSync(rel(SRC, 'static'))) await fs.cp(rel(SRC, 'static'), DIST, { recursive: true });
 
-// Vendor scripts (no runtime CDN)
-const vendor = [
-  ['node_modules/gsap/dist/gsap.min.js', 'gsap.min.js'],
-  ['node_modules/gsap/dist/ScrollTrigger.min.js', 'ScrollTrigger.min.js'],
-  ['node_modules/lenis/dist/lenis.min.js', 'lenis.min.js'],
-];
-for (const [from, to] of vendor) await fs.cp(rel(ROOT, from), rel(DIST, 'assets/vendor', to));
-
 // ---------------------------------------------------------------- CSS
 const cssFiles = (await fs.readdir(rel(SRC, 'css'))).filter((f) => f.endsWith('.css') && !/^(00|10)-/.test(f)).sort();
-let css = '@layer tokens, base, layout, components, pages, motion, print, utilities;\n';
+let css = '';
 for (const f of cssFiles) css += `/* ${f} */\n` + (await read(rel(SRC, 'css', f))) + '\n';
 css += generatedCss();
 const minCss = rebaseCss(minifyCss(css));
@@ -100,8 +91,7 @@ const cssHash = sha256(minCss).replace(/[^a-z0-9]/gi, '').slice(0, 10);
 await write(rel(DIST, 'assets/css/main.css'), minCss);
 
 // Critical CSS: tokens + base + the frame. Inlined in every page head.
-const critical = rebaseCss(minifyCss('@layer tokens, base, layout, components, pages, motion, print, utilities;\n' +
-  (await read(rel(SRC, 'css/00-tokens.css'))) + (await read(rel(SRC, 'css/10-base.css'))) + (await read(rel(SRC, 'critical/critical.css')))));
+const critical = rebaseCss(minifyCss((await read(rel(SRC, 'css/00-tokens.css'))) + (await read(rel(SRC, 'css/10-base.css'))) + (await read(rel(SRC, 'critical/critical.css')))));
 
 // ---------------------------------------------------------------- JS
 const jsOut = await esbuild.build({
@@ -115,7 +105,7 @@ const jsHash = sha256(appJs + (await read(rel(SRC, 'js/config.js')))).replace(/[
 await write(rel(DIST, 'assets/js/app.js'), appJs.replace(/["']\.\/config\.js["']/g, `"./config.js?v=${jsHash}"`));
 await fs.cp(rel(SRC, 'js/config.js'), rel(DIST, 'assets/js/config.js'));
 
-// Inline head script: flags JS on, picks the preloader version, high contrast.
+// Inline head script: flags JS on and restores the high-contrast setting.
 const headScript = (await read(rel(SRC, 'critical/head.js'))).trim();
 const headScriptHash = sha256(headScript);
 
@@ -144,15 +134,13 @@ async function expand(html, ctx) {
   html = await replaceAsync(html, /<x-calc([^>]*)><\/x-calc>/g, async (_, a) => {
     const at = attrs(a); const id = 'calc' + (++calcCounter);
     return (await partial('calculator')).replaceAll('__ID__', id).replaceAll('__VARIANT__', at.variant || 'full')
-      .replace('__CTA__', at.cta === 'none' ? '' : `<a class="btn" href="/apply/" data-calc-apply data-cursor="apply">Continue to the full application<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a>`);
+      .replace('__CTA__', at.cta === 'none' ? '' : `<a class="btn" href="/apply/" data-calc-apply>Continue to the full application<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a>`);
   });
   // variables
   html = html.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (m, k) => { const v = getVar(k, ctx); if (v == null) throw new Error(`Unknown variable ${k} in ${ctx.page?.id}`); return v; });
   // icons and tiles
   html = html.replace(/<x-icon([^>]*)><\/x-icon>/g, (_, a) => { const at = attrs(a); return `<svg class="icon${at.class ? ' ' + at.class : ''}" aria-hidden="true" focusable="false"><use href="#i-${at.name}"/></svg>`; });
   html = html.replace(/<x-tile([^>]*)><\/x-tile>/g, (_, a) => { const at = attrs(a); return `<span class="tile${at.class ? ' ' + at.class : ''}" aria-hidden="true"><svg class="icon" focusable="false"><use href="#i-${at.name}"/></svg></span>`; });
-  // odometers
-  html = html.replace(/<x-odo([^>]*)><\/x-odo>/g, (_, a) => odometer(attrs(a)));
   // images
   html = html.replace(/<x-img([^>]*)><\/x-img>/g, (_, a) => picture(attrs(a), ctx));
   // footnotes
@@ -161,12 +149,9 @@ async function expand(html, ctx) {
     if (!notes[key]) throw new Error('Unknown note ' + key);
     let n = fnOrder.indexOf(key) + 1;
     if (!n) { fnOrder.push(key); n = fnOrder.length; }
-    return `<sup class="fn"><a href="#note-${n}" aria-label="Note ${n}" data-fn="${n}">${n}</a></sup>`;
+    return `<sup class="fn"><a href="#note-${n}" aria-label="Note ${n}">${n}</a></sup>`;
   });
   html = html.replace(/<x-notes><\/x-notes>/g, () => fnOrder.length ? notesBlock(fnOrder) : '');
-  // FIG numbers run in document order on each page
-  let fig = 0;
-  html = html.replace(/data-fig="\d+">Fig\. \d+</g, () => { fig++; return `data-fig="${fig}">Fig. ${String(fig).padStart(2, '0')}<`; });
   return html;
 }
 
@@ -179,13 +164,6 @@ async function replaceAsync(str, re, fn) {
   const parts = []; let last = 0;
   for (const m of str.matchAll(re)) { parts.push(str.slice(last, m.index), await fn(...m)); last = m.index + m[0].length; }
   parts.push(str.slice(last)); return parts.join('');
-}
-
-function odometer({ value, class: cls = '', label }) {
-  const reels = [...value].map((ch) => /\d/.test(ch)
-    ? `<span class="reel d-${ch}" data-d="${ch}"><span class="reel__strip">${'0123456789'.split('').map((d) => `<span>${d}</span>`).join('')}</span></span>`
-    : `<span class="reel-static">${ch === ' ' ? '&nbsp;' : esc(ch)}</span>`).join('');
-  return `<span class="odo ${cls}" data-odo="${esc(value)}"><span class="sr-only">${esc(label || value)}</span><span class="odo__reels" aria-hidden="true">${reels}</span></span>`;
 }
 
 function picture(at, ctx) {
@@ -207,26 +185,18 @@ function picture(at, ctx) {
 }
 
 function notesBlock(order) {
-  const items = order.map((k, i) => `<li id="note-${i + 1}"><p>${esc(notes[k].text)}</p><p class="notes__src label">Company Profile 2026 · page&nbsp;${notes[k].src}</p></li>`).join('');
-  return `<section class="notes wrap grid" aria-labelledby="notes-h"><div class="notes__head"><h2 class="label" id="notes-h">Notes</h2></div><ol class="notes__list" role="list">${items}</ol></section>`;
+  const items = order.map((k, i) => `<li id="note-${i + 1}"><p>${esc(notes[k].text)}</p><p class="notes__src">Company Profile 2026 · page&nbsp;${notes[k].src}</p></li>`).join('');
+  return `<section class="notes" aria-labelledby="notes-h"><div class="container"><h2 class="notes__h" id="notes-h">Notes</h2><ol class="notes__list">${items}</ol></div></section>`;
 }
 
 function generatedCss() {
-  let s = '@layer utilities {\n';
+  let s = '';
   for (const [k, m] of Object.entries(images)) s += `.fp-${k} img{object-position:${m.focus}}\n`;
-  for (let d = 0; d <= 9; d++) s += `.reel.d-${d} .reel__strip{transform:translateY(-${d * 10}%)}\n`;
-  // 12-column placement helpers: o-N = start column, s-N = span (md ≥ 760px, lg ≥ 1100px)
-  s += '@media (min-width:760px){';
-  for (let i = 1; i <= 12; i++) s += `.grid>.md-o-${i}{grid-column-start:${i}}.grid>.md-s-${i}{grid-column-end:span ${i}}`;
-  s += '}@media (min-width:1100px){';
-  for (let i = 1; i <= 12; i++) s += `.grid>.o-${i}{grid-column-start:${i}}.grid>.s-${i}{grid-column-end:span ${i}}`;
-  s += '}\n}\n';
   return s;
 }
 
 function minifyCss(s) {
-  return s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(/\s*([{};:,>])\s*/g, '$1').replace(/;}/g, '}')
-    .replace(/(\d)\s*!important/g, '$1!important').replace(/ and\(/g, ' and (').trim();
+  return esbuild.transformSync(s, { loader: 'css', minify: true, target: ['chrome100', 'safari15', 'firefox100'], legalComments: 'none' }).code.trim();
 }
 
 // ---------------------------------------------------------------- head
@@ -308,30 +278,22 @@ const layout = await read(rel(SRC, 'partials', 'layout.html'));
 const allPages = [...pages, { id: '404', path: '/404.html', num: '00', name: 'Page not found', nav: '', part: 'end', noindex: true,
   title: 'Page not found · Biashara Trading Company Limited', description: 'The page you asked for is not here. Links to the main pages of Biashara Trading Company Limited.' }];
 
-const navLinks = (current) => pages.filter((p) => ['loans', 'how-we-lend', 'terms', 'about', 'contact'].includes(p.id))
-  .sort((a, b) => ['loans', 'how-we-lend', 'terms', 'about', 'contact'].indexOf(a.id) - ['loans', 'how-we-lend', 'terms', 'about', 'contact'].indexOf(b.id))
+// The five pages in the main navigation; every other page is listed in the menu under "More".
+const MAIN_NAV = ['loans', 'how-we-lend', 'terms', 'about', 'contact'];
+const navLinks = (current) => pages.filter((p) => MAIN_NAV.includes(p.id))
+  .sort((a, b) => MAIN_NAV.indexOf(a.id) - MAIN_NAV.indexOf(b.id))
   .map((p) => `<li><a href="${p.path}" data-nav="${p.id}"${p.id === current ? ' aria-current="page"' : ''}>${esc(p.nav)}</a></li>`).join('');
-
-const indexList = () => {
-  const order = ['front', 'one', 'two', 'three', 'end'];
-  return order.map((pt) => {
-    const list = pages.filter((p) => p.part === pt);
-    if (!list.length) return '';
-    return `<div class="index__part"><p class="label">${esc(parts[pt])}</p><ol role="list">` + list.map((p) =>
-      `<li><a href="${p.path}" data-nav="${p.id}"><span class="index__n tnum">${p.num}</span><span class="index__t">${esc(p.name)}</span><span class="index__lead" aria-hidden="true"></span><span class="index__p tnum">${p.num}</span></a></li>`).join('') + '</ol></div>';
-  }).join('');
-};
-
-const footerLinks = () => pages.map((p) => `<li><a href="${p.path}">${esc(p.nav)}</a></li>`).join('');
+const menuLinks = (current) => pages.filter((p) => !MAIN_NAV.includes(p.id) && p.id !== 'apply')
+  .map((p) => `<li><a href="${p.path}"${p.id === current ? ' aria-current="page"' : ''}>${esc(p.nav === 'Home' ? 'Home' : p.name === 'Questions' ? 'FAQ' : p.nav)}</a></li>`).join('');
 
 const sitemap = [];
 for (const page of allPages) {
+  if (ONLY.length && !ONLY.includes(page.id)) continue;
   const file = rel(SRC, 'pages', page.id + '.html');
   if (!fss.existsSync(file)) { console.warn('  missing page', page.id); continue; }
   let body = await read(file);
   calcCounter = 0;
-  const partLabel = parts[page.part];
-  const ctx = { page: { ...page, partLabel } };
+  const ctx = { page };
   // Preload the hero image (LCP) when a page marks one as priority.
   const pri = body.match(/<x-img([^>]*\bpriority\b[^>]*)><\/x-img>/);
   if (pri) {
@@ -341,13 +303,11 @@ for (const page of allPages) {
   let html = layout
     .replace('<!--HEAD-->', head(page))
     .replace('<!--MAIN-->', body)
-    .replace('<!--NAV-->', navLinks(page.id))
-    .replace('<!--INDEX-->', indexList())
-    .replace('<!--FOOTLINKS-->', footerLinks());
+    .replace('<!--NAV-->', navLinks(page.id));
   html = html.replace(/\{\{page\.(\w+)\}\}/g, (_, k) => esc(ctx.page[k] ?? ''));
   html = await expand(html, ctx);
-  // the header, footer and chrome partials arrive during expand, so fill their slots afterwards
-  html = html.replace('<!--NAV-->', navLinks(page.id)).replace('<!--INDEX-->', indexList()).replace('<!--FOOTLINKS-->', footerLinks());
+  // the header and footer partials arrive during expand, so fill their slots afterwards (the nav appears twice)
+  html = html.replaceAll('<!--NAV-->', navLinks(page.id)).replaceAll('<!--MENU-->', menuLinks(page.id));
   html = rebaseHtml(html.replace(/__BUILD__/g, BUILD.js));
   if (/\{\{|<x-/.test(html)) throw new Error('Unexpanded template token in ' + page.id + ': ' + html.match(/.{40}(\{\{|<x-).{40}/)?.[0]);
   const out = page.id === 'home' ? rel(DIST, 'index.html') : page.id === '404' ? rel(DIST, '404.html') : rel(DIST, page.id, 'index.html');
@@ -411,9 +371,6 @@ await write(rel(DIST, '_headers'), `/*
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
-/assets/vendor/*
-  Cache-Control: public, max-age=2592000
-
 /assets/img/*
   Cache-Control: public, max-age=2592000
 
@@ -458,7 +415,6 @@ ErrorDocument 404 ${BASE}/404.html
 
 // Service worker with a precache list of every page, font and the core assets.
 const precache = [...sitemap, '/404.html', `/assets/css/main.css?v=${BUILD.css}`, `/assets/js/app.js?v=${BUILD.js}`, `/assets/js/config.js?v=${BUILD.js}`,
-  '/assets/vendor/gsap.min.js', '/assets/vendor/ScrollTrigger.min.js', '/assets/vendor/lenis.min.js',
   '/assets/fonts/archivo-wght.woff2', '/assets/fonts/sourceserif4-opsz.woff2', '/assets/fonts/sourceserif4-italic-opsz.woff2',
   '/assets/img/logo/biashara-logo-320.png', '/assets/img/logo/mark-160.png'].map(atBase);
 const sw = (await read(rel(SRC, 'js/sw.js'))).replace('__VERSION__', BUILD.js).replace('__BASE__', JSON.stringify(BASE)).replace('__PRECACHE__', JSON.stringify(precache))
@@ -469,7 +425,7 @@ await write(rel(DIST, 'build.json'), JSON.stringify(BUILD, null, 2));
 // ---------------------------------------------------------------- report sizes
 const gz = (buf) => zlib.gzipSync(buf, { level: 9 }).length;
 const sizeOf = async (p) => gz(await fs.readFile(rel(DIST, p)));
-const jsTotal = (await sizeOf('assets/js/app.js')) + (await sizeOf('assets/js/config.js')) + (await sizeOf('assets/vendor/gsap.min.js')) + (await sizeOf('assets/vendor/ScrollTrigger.min.js')) + (await sizeOf('assets/vendor/lenis.min.js'));
+const jsTotal = (await sizeOf('assets/js/app.js')) + (await sizeOf('assets/js/config.js'));
 const cssTotal = (await sizeOf('assets/css/main.css')) + gz(Buffer.from(critical));
 console.log(`Built ${allPages.length} pages for ${BASE || '/'} in ${((Date.now() - t0) / 1000).toFixed(1)}s · JS ${(jsTotal / 1024).toFixed(1)}KB gz · CSS ${(cssTotal / 1024).toFixed(1)}KB gz`);
 await write(rel(DIST, '..', '.cache', 'budget.json'), JSON.stringify({ jsGzip: jsTotal, cssGzip: cssTotal }, null, 2));

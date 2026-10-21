@@ -108,10 +108,10 @@ src/js/config.js    settings (dates, form address, contacts, hours, domain)
 src/pages/          page content
 src/partials/       header, footer and shared pieces
 src/css/            styles (design tokens are in 00-tokens.css)
-src/js/             behaviour (calculator, Apply, router, motion)
+src/js/             behaviour (menu, calculator, Apply form, enquiry form, licence viewer)
 src/data/           pages, products, footnotes and image list
 build/              the build and the local preview server
 qa/                 checks and their reports
 ```
 
-Keyboard shortcuts on the site: **K** or **/** opens the command palette, **G** shows the layout grid, **Esc** closes.
+Keyboard: **Esc** closes the menu, the licence viewer and the Apply summary. The design is described in `../DESIGN-PROTOTYPE.md`.

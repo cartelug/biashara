@@ -40,22 +40,12 @@ const dropHidden = (h) => {
 const textOf = (h) => dropHidden(h).replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<svg[\s\S]*?<\/svg>/g, ' ')
   .replace(/<[^>]+>/g, ' ').replace(/&nbsp;|&#160;/g, ' ').replace(/&amp;/g, '&').replace(/&#8209;|‑/g, '-').replace(/\s+/g, ' ');
 
-// ------------------------------------------------------------------ anti-AI
+// ------------------------------------------------------------------ anti-AI (no glass blur, no gradient text, no stock phrases, no emoji)
 const cssAll = (await Promise.all(css.map(read))).join('\n');
 const headStyles = (await Promise.all(html.map(read))).map((h) => (h.match(/<style>([\s\S]*?)<\/style>/) || [])[1] || '').join('\n');
 const allCss = cssAll + headStyles;
 if (/backdrop-filter/.test(allCss)) fail('antiAI', 'backdrop-filter used');
 if (/background-clip:\s*text|-webkit-background-clip:\s*text/.test(allCss)) fail('antiAI', 'gradient text (background-clip:text)');
-for (const m of allCss.matchAll(/border-radius:\s*([^;}]+)/g)) {
-  const vals = m[1].match(/[\d.]+(px|rem|em|%)/g) || [];
-  for (const v of vals) { const n = parseFloat(v); const px = v.endsWith('rem') || v.endsWith('em') ? n * 16 : v.endsWith('%') ? 999 : n; if (px > 4) fail('antiAI', `border-radius ${m[1]}`); }
-}
-for (const m of allCss.matchAll(/box-shadow:\s*([^;}]+)/g)) {
-  for (const layer of m[1].split(/,(?![^(]*\))/)) {
-    const nums = layer.replace(/rgba?\([^)]*\)|var\([^)]*\)/g, '').match(/-?[\d.]+px|\b0\b/g) || [];
-    if (nums.length >= 3 && parseFloat(nums[2]) > 0) fail('antiAI', `blurred box-shadow: ${layer.trim()}`);
-  }
-}
 const BANNED = [/welcome to/i, /empowering your financial journey/i, /\bunlock/i, /seamless/i, /cutting[- ]edge/i];
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F000}-\u{1F2FF}]/u;
 for (const f of html) {
@@ -67,7 +57,7 @@ for (const f of html) {
 // ------------------------------------------------------------------ typography
 if (!/font-synthesis:\s*none/.test(allCss)) fail('typography', 'font-synthesis: none missing');
 for (const m of allCss.matchAll(/font-stretch:\s*([^;}]+)/g)) if (m[1].trim() !== '100%') fail('typography', `font-stretch ${m[1]}`);
-const weights = new Set([...allCss.matchAll(/font-weight:\s*(\d{3})/g)].map((m) => m[1]));
+const weights = new Set([...allCss.matchAll(/font-weight:\s*(\d{3})(?!\s*\d)/g)].map((m) => m[1]));
 for (const w of weights) if (!['400', '500', '600', '700', '800', '900'].includes(w)) fail('typography', `font-weight ${w}`);
 // Serif ships 400–500 only: flag rules that set the serif family with a heavier weight in the same block
 for (const m of allCss.matchAll(/\{([^{}]*font-family:\s*var\(--font-serif\)[^{}]*)\}/g)) {
@@ -157,14 +147,14 @@ const heroCandidates = files.filter((f) => /banknote-hands-\d+\.avif$/.test(f));
 const heroSizes = await Promise.all(heroCandidates.map(async (f) => [path.basename(f), (await fs.stat(f)).size]));
 const heroMax = Math.max(...heroSizes.map(([, s]) => s));
 out.budgets = {
-  jsGzipKB: +(jsTotal / 1024).toFixed(1), jsBudgetKB: 180,
-  cssGzipKB: +(cssTotal / 1024).toFixed(1), cssBudgetKB: 60,
+  jsGzipKB: +(jsTotal / 1024).toFixed(1), jsBudgetKB: 40,
+  cssGzipKB: +(cssTotal / 1024).toFixed(1), cssBudgetKB: 28,
   fontFiles: fonts.length, fontBudget: 4,
   heroLargestAvifKB: +(heroMax / 1024).toFixed(1), heroBudgetKB: 180,
   heroFiles: Object.fromEntries(heroSizes.map(([n, s]) => [n, +(s / 1024).toFixed(1)])),
 };
-if (jsTotal / 1024 > 180) fail('links', 'JS budget exceeded');
-if (cssTotal / 1024 > 60) fail('links', 'CSS budget exceeded');
+if (jsTotal / 1024 > 40) fail('links', 'JS budget exceeded');
+if (cssTotal / 1024 > 28) fail('links', 'CSS budget exceeded');
 if (fonts.length > 4) fail('links', 'font budget exceeded');
 if (heroMax / 1024 > 180) fail('links', 'hero image budget exceeded');
 

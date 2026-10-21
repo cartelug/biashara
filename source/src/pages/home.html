@@ -1,241 +1,166 @@
-<div class="span-layer" aria-hidden="true" data-span-layer><svg class="span-svg" data-span-svg focusable="false"><path class="span-path" data-span-path d="M0 0"/></svg></div>
-
-<section class="hero grain" data-hero aria-labelledby="hero-title">
-  <div class="hero__rosette" aria-hidden="true">
-    <canvas class="hero__canvas" data-guilloche></canvas>
-    <img class="hero__rosette-static" src="/assets/img/texture/rosette-ink.svg" width="600" height="600" alt="" loading="eager">
-  </div>
-  <div class="wrap">
-    <div class="runhead hero__runhead">
-      <p class="label muted">Front matter · Company Profile 2026</p>
-      <p class="label muted">Kampala, Uganda</p>
-    </div>
-    <div class="grid hero__grid">
-      <h1 class="hero__title h-display" id="hero-title" data-lines>
-        <span class="line"><span class="line-inner">Short&#8209;term bridge</span></span>
-        <span class="line"><span class="line-inner">financing<span class="hero__stop">.</span></span></span>
-      </h1>
-      <div class="hero__side s-3">
-        <p class="hero__ledger ledgerline"><span class="sq" aria-hidden="true"></span><span>Up to 6 months</span><span class="hero__ledger-2">Incorporated 2014</span></p>
-        <p class="hero__lede">Biashara Trading Company Limited is a Kampala&#8209;based lender providing short&#8209;term bridge financing to eligible individuals and enterprises across Uganda.</p>
-        <div class="hero__cta">
-          <a class="btn" href="/apply/" data-cursor="apply" data-magnetic>Apply now<x-icon name="arrow-right"></x-icon></a>
-          <a class="btn btn--ghost" href="#products" data-magnetic>See the loan products</a>
-        </div>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__text">
+      <p class="chip hero__eyebrow"><x-icon name="badge"></x-icon>Licensed money lender · Kampala · Since 2014</p>
+      <h1 id="hero-title">Short&#8209;term bridge financing<span class="hero__stop">.</span></h1>
+      <p class="lede">Biashara Trading Company Limited is a Kampala&#8209;based lender providing short&#8209;term bridge financing to eligible individuals and enterprises across Uganda.</p>
+      <div class="btn-row">
+        <a class="btn btn--lg" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a>
+        <a class="btn btn--secondary btn--lg" href="#products">See the loan products</a>
       </div>
-      <figure class="hero__media s-9 o-4" data-cursor="view">
-        <div class="cropframe">
-          <span class="crop crop--tl" aria-hidden="true"></span><span class="crop crop--tr" aria-hidden="true"></span>
-          <span class="crop crop--bl" aria-hidden="true"></span><span class="crop crop--br" aria-hidden="true"></span>
-          <span class="colorbar" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <div class="hero__img" data-hero-img>
-            <x-img key="banknote-hands" priority sizes="(min-width: 1100px) 68vw, 100vw"></x-img>
-          </div>
-          <span class="hero__span" aria-hidden="true" data-hero-span><i class="pier pier--l"></i><i class="pier pier--r"></i></span>
-        </div>
-        <figcaption class="figcap figcap--plain"><span class="figcap__n tnum" data-fig="1">Fig. 01</span><span class="figcap__t">Short-term bridge financing · Up to 6 months</span></figcaption>
-      </figure>
-    </div>
-  </div>
-  <div class="ticker" data-ticker aria-label="Five facts">
-    <div class="ticker__track" data-ticker-track>
-      <ul class="ticker__set" role="list">
-        <li>Since 2014</li><li>4 products</li><li>UGX&nbsp;1M–50M</li><li>2.8% per month</li><li>6 months maximum</li>
-      </ul>
-      <ul class="ticker__set" role="list" aria-hidden="true">
-        <li>Since 2014</li><li>4 products</li><li>UGX&nbsp;1M–50M</li><li>2.8% per month</li><li>6 months maximum</li>
+      <ul class="chips hero__facts" role="list" aria-label="Key facts">
+        <li class="chip">UGX&nbsp;1M&nbsp;–&nbsp;50M</li>
+        <li class="chip">2.8% per month</li>
+        <li class="chip">Up to 6 months</li>
+        <li class="chip">Applying is free</li>
       </ul>
     </div>
+    <figure class="hero__media">
+      <x-img key="banknote-hands" priority sizes="(min-width: 900px) 46vw, 100vw"></x-img>
+      <div class="hero__licence">
+        <x-tile name="badge"></x-tile>
+        <p class="mb-0"><span>Money Lending Licence</span><b>{{licence.number}}</b></p>
+      </div>
+    </figure>
   </div>
 </section>
 
-<!-- 01 · At a glance -->
-<section class="section is-dark vignette statband" id="at-a-glance" aria-labelledby="glance-title" data-chapter="01">
-  <div class="statband__band" aria-hidden="true"></div>
-  <div class="wrap">
-    <header class="secthead grid" data-pier>
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>01</p>
-      <div class="secthead__body s-8 o-2">
-        <h2 class="h2" id="glance-title" data-lines>At a glance</h2>
-        <p class="secthead__lede">A single page of facts. Everything else in this profile explains one of these numbers.</p>
-      </div>
-    </header>
-    <div class="statband__poster regmarks">
-      <span class="reg reg--tl" aria-hidden="true"></span><span class="reg reg--tr" aria-hidden="true"></span><span class="reg reg--bl" aria-hidden="true"></span><span class="reg reg--br" aria-hidden="true"></span>
-      <dl class="stats">
-        <div class="stat stat--solid">
-          <dt class="stat__label label"><x-icon name="calendar"></x-icon>Incorporated</dt>
-          <dd class="stat__fig figure"><x-odo value="2014"></x-odo></dd>
-          <dd class="stat__cap">Ugandan&#8209;owned, Kampala&#8209;based</dd>
-        </div>
-        <div class="stat stat--outline">
-          <dt class="stat__label label"><x-icon name="briefcase"></x-icon>Products</dt>
-          <dd class="stat__fig figure"><x-odo value="04"></x-odo></dd>
-          <dd class="stat__cap">School Fees · Salary · Asset · Business</dd>
-        </div>
-        <div class="stat stat--solid">
-          <dt class="stat__label label"><x-icon name="coins"></x-icon>Facility range</dt>
-          <dd class="stat__fig figure"><x-odo value="1–50M" label="1 million to 50 million"></x-odo></dd>
-          <dd class="stat__cap">Uganda shillings</dd>
-        </div>
-        <div class="stat stat--outline stat--red">
-          <dt class="stat__label label"><x-icon name="percent"></x-icon>Interest</dt>
-          <dd class="stat__fig figure"><x-odo value="2.8%"></x-odo><x-fn note="interest"></x-fn></dd>
-          <dd class="stat__cap">Per month, all products</dd>
-          <dd class="margin-note">Per month, not per year.</dd>
-        </div>
-        <div class="stat stat--solid">
-          <dt class="stat__label label"><x-icon name="hourglass"></x-icon>Maximum term</dt>
-          <dd class="stat__fig figure"><x-odo value="6" label="6 months"></x-odo><span class="stat__unit">months</span></dd>
-          <dd class="stat__cap">Short-term by design</dd>
-        </div>
-      </dl>
+<section class="section section--night" id="at-a-glance" aria-labelledby="glance-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Key facts</p>
+      <h2 id="glance-title">At a glance</h2>
+      <p class="lede">A single page of facts. Everything else in this profile explains one of these numbers.</p>
     </div>
-    <p class="statband__note">Every figure is the standard published term in force at the edition date.<x-fn note="figures"></x-fn></p>
+    <dl class="stats stats--5">
+      <div class="stat"><dt><x-icon name="calendar"></x-icon>Incorporated</dt><dd class="stat__fig">2014</dd><dd class="stat__cap">Ugandan&#8209;owned, Kampala&#8209;based</dd></div>
+      <div class="stat"><dt><x-icon name="briefcase"></x-icon>Products</dt><dd class="stat__fig">04</dd><dd class="stat__cap">School Fees · Salary · Asset · Business</dd></div>
+      <div class="stat"><dt><x-icon name="coins"></x-icon>Facility range</dt><dd class="stat__fig">1–50M</dd><dd class="stat__cap">Uganda shillings</dd></div>
+      <div class="stat stat--accent"><dt><x-icon name="percent"></x-icon>Interest</dt><dd class="stat__fig">2.8%<x-fn note="interest"></x-fn></dd><dd class="stat__cap">Per month, all products</dd><dd class="stat__note">Per month, not per year.</dd></div>
+      <div class="stat"><dt><x-icon name="hourglass"></x-icon>Maximum term</dt><dd class="stat__fig">6<span class="stat__unit">months</span></dd><dd class="stat__cap">Short-term by design</dd></div>
+    </dl>
+    <p class="stats-note">Every figure is the standard published term in force at the edition date.<x-fn note="figures"></x-fn></p>
   </div>
 </section>
 
-<!-- 02 · Products (pinned horizontal) -->
-<section class="section products" id="products" aria-labelledby="products-title" data-chapter="02">
-  <div class="wrap">
-    <header class="secthead grid" data-pier>
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>02</p>
-      <div class="secthead__body s-7 o-2">
-        <h2 class="h2" id="products-title" data-lines>Four products</h2>
-        <p class="secthead__lede">Our main purpose is short&#8209;term bridge financing for temporary cash&#8209;flow gaps. Four products support education, salary, asset and business needs, with a maximum term of six months.</p>
-      </div>
-      <p class="secthead__aside s-3 o-10 label muted needs-js products__hint">Scroll or drag to move through the four</p>
-    </header>
-  </div>
-  <div class="hscroll" data-hscroll data-cursor="drag">
-    <div class="hscroll__track" data-hscroll-track>
-      <x-products tpl="product-panel"></x-products>
+<section class="section" id="products" aria-labelledby="products-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Our products</p>
+      <h2 id="products-title">Four products</h2>
+      <p class="lede">Our main purpose is short&#8209;term bridge financing for temporary cash&#8209;flow gaps. Four products support education, salary, asset and business needs, with a maximum term of six months.</p>
     </div>
-    <div class="hscroll__progress" aria-hidden="true"><span data-hscroll-bar></span></div>
+    <div class="cards cards--2">
+      <x-products tpl="product-card"></x-products>
+    </div>
   </div>
 </section>
 
-<!-- 03 · Calculator -->
-<section class="section is-paper-2 grain calcsec" id="cost" aria-labelledby="cost-title" data-chapter="03">
-  <div class="wrap">
-    <header class="secthead grid" data-pier>
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>03</p>
-      <div class="secthead__body s-6 o-2">
-        <h2 class="h2" id="cost-title" data-lines>What a facility costs</h2>
-        <p class="secthead__lede">Interest is 2.8% per month, calculated on the approved principal. Move the two sliders to see the interest on an indicative amount and term.</p>
-      </div>
-    </header>
+<section class="section section--surface" id="cost" aria-labelledby="cost-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Cost</p>
+      <h2 id="cost-title">What a facility costs</h2>
+      <p class="lede">Interest is 2.8% per month, calculated on the approved principal. Move the two sliders to see the interest on an indicative amount and term.</p>
+    </div>
     <x-calc variant="home"></x-calc>
   </div>
 </section>
 
-<!-- 04 · How we lend (pinned four steps) -->
-<section class="section is-dark vignette steps" id="how-we-lend" aria-labelledby="steps-title" data-chapter="04" data-steps>
-  <div class="wrap">
-    <header class="secthead grid" data-pier>
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>04</p>
-      <div class="secthead__body s-7 o-2">
-        <h2 class="h2" id="steps-title" data-lines>How we lend</h2>
-        <p class="secthead__lede">A four&#8209;step path. Every application follows the same sequence, whoever the applicant is.</p>
-      </div>
-    </header>
+<section class="section" id="how-we-lend" aria-labelledby="steps-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Process</p>
+      <h2 id="steps-title">How we lend</h2>
+      <p class="lede">A four&#8209;step path. Every application follows the same sequence, whoever the applicant is.</p>
+    </div>
+    <!-- @include steps -->
+    <p class="steps__more"><a class="link-arrow" href="/how-we-lend/">Eligibility, documents and the full path<x-icon name="arrow-right"></x-icon></a></p>
   </div>
-  <!-- @include steps -->
 </section>
 
-<!-- 05 · Five Cs -->
-<section class="section grain fivecs" id="credit-assessment" aria-labelledby="cs-title" data-chapter="05">
-  <div class="wrap">
-    <header class="secthead grid" data-pier>
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>05</p>
-      <div class="secthead__body s-7 o-2">
-        <h2 class="h2" id="cs-title" data-lines>Credit assessment</h2>
-        <p class="secthead__lede">Every file is measured against the same five standards, in the same order, whoever the applicant is.</p>
-      </div>
-    </header>
+<section class="section section--surface" id="credit-assessment" aria-labelledby="cs-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Standards</p>
+      <h2 id="cs-title">Credit assessment</h2>
+      <p class="lede">Every file is measured against the same five standards, in the same order, whoever the applicant is.</p>
+    </div>
     <!-- @include five-cs -->
   </div>
 </section>
 
-<!-- 06 · Why Biashara -->
-<section class="section is-paper-2 why" id="why-biashara" aria-labelledby="why-title" data-chapter="06">
-  <div class="wrap">
-    <header class="secthead grid" data-pier>
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>06</p>
-      <div class="secthead__body s-7 o-2">
-        <h2 class="h2" id="why-title" data-lines>Why choose Biashara</h2>
-        <p class="secthead__lede">Fast service that respects your time, backed by transparent terms, sustainable cash flows and responsible lending.</p>
+<section class="section" id="why-biashara" aria-labelledby="why-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Why Biashara</p>
+      <h2 id="why-title">Why choose Biashara</h2>
+      <p class="lede">Fast service that respects your time, backed by transparent terms, sustainable cash flows and responsible lending.</p>
+    </div>
+    <div class="cards cards--3">
+      <article class="card"><x-tile name="clock"></x-tile><h3>Fast service</h3><p>We aim to review complete files within 4&nbsp;working hours, with prompt communication around your target deadline.<x-fn note="review"></x-fn></p></article>
+      <article class="card"><x-tile name="receipt"></x-tile><h3>Transparent charges</h3><p>No hidden charges. Every applicable loan fee is scheduled in writing and applies only after your acceptance.</p></article>
+      <article class="card"><x-tile name="chart"></x-tile><h3>Sustainable cash flows</h3><p>Biashara maintains sustainable cash flows to support reliable funding of approved facilities, subject to conditions.</p></article>
+      <article class="card"><x-tile name="scale"></x-tile><h3>Responsible decisions</h3><p>Affordability, purpose and security are checked carefully. Fast service is paired with disciplined lending.</p></article>
+      <article class="card"><x-tile name="flag"></x-tile><h3>Serving Uganda since 2014</h3><p>Incorporated in 2014, Biashara serves Kampala and clients across Uganda with practical bridge financing.</p></article>
+      <article class="card card--flat"><h3>Ready to apply?</h3><p>Assemble your loan file in five steps. Applying is free.</p><a class="btn btn--ink" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--surface" id="who-we-serve" aria-labelledby="serve-title">
+  <div class="container split split--6-5 split--top">
+    <div>
+      <div class="section-head">
+        <p class="eyebrow">Who we serve</p>
+        <h2 id="serve-title">Eligible clients across Uganda</h2>
+        <p class="lede">Eligible clients across urban, semi&#8209;urban and rural Uganda. All facilities remain subject to assessment and approval.</p>
       </div>
-    </header>
-    <ol class="rows rows--slide grid" role="list">
-      <li class="row s-10 o-2" data-row><span class="row__n tnum">01</span><x-tile name="clock"></x-tile><h3 class="row__t">Fast service</h3><p class="row__d">We aim to review complete files within 4&nbsp;working hours, with prompt communication around your target deadline.<x-fn note="review"></x-fn></p></li>
-      <li class="row s-10 o-2" data-row><span class="row__n tnum">02</span><x-tile name="receipt"></x-tile><h3 class="row__t">Transparent charges</h3><p class="row__d">No hidden charges. Every applicable loan fee is scheduled in writing and applies only after your acceptance.</p></li>
-      <li class="row s-10 o-2" data-row><span class="row__n tnum">03</span><x-tile name="chart"></x-tile><h3 class="row__t">Sustainable cash flows</h3><p class="row__d">Biashara maintains sustainable cash flows to support reliable funding of approved facilities, subject to conditions.</p></li>
-      <li class="row s-10 o-2" data-row><span class="row__n tnum">04</span><x-tile name="scale"></x-tile><h3 class="row__t">Responsible decisions</h3><p class="row__d">Affordability, purpose and security are checked carefully. Fast service is paired with disciplined lending.</p></li>
-      <li class="row s-10 o-2" data-row><span class="row__n tnum">05</span><x-tile name="flag"></x-tile><h3 class="row__t">Serving Uganda since 2014</h3><p class="row__d">Incorporated in 2014, Biashara serves Kampala and clients across Uganda with practical bridge financing.</p></li>
-    </ol>
+      <ul class="group-list" role="list">
+        <li class="group"><x-tile name="store"></x-tile><div><h3>Entrepreneurs</h3><p>Micro and small business owners with viable productive needs.</p><a class="link-arrow" href="/loans/#business">Business Loans<x-icon name="arrow-right"></x-icon></a></div></li>
+        <li class="group"><x-tile name="wallet"></x-tile><div><h3>Salaried clients</h3><p>Eligible employees with a sound ability to meet approved repayment requirements.</p><a class="link-arrow" href="/loans/#salary">Salary Loans<x-icon name="arrow-right"></x-icon></a></div></li>
+        <li class="group"><x-tile name="building"></x-tile><div><h3>Companies &amp; NGOs</h3><p>Organisations seeking approved short&#8209;term financial solutions.</p><a class="link-arrow" href="/loans/#business">Business Loans<x-icon name="arrow-right"></x-icon></a></div></li>
+        <li class="group"><x-tile name="chart"></x-tile><div><h3>Growing businesses</h3><p>Sole proprietors and companies financing stock, cash flow or productive assets.</p><a class="link-arrow" href="/loans/#asset">Asset Financing<x-icon name="arrow-right"></x-icon></a></div></li>
+      </ul>
+    </div>
+    <div class="photo-pair">
+      <figure><x-img key="salaried-clients" sizes="(min-width: 900px) 22vw, 46vw"></x-img><figcaption>Salaried clients</figcaption></figure>
+      <figure><x-img key="emerging-entrepreneurs" sizes="(min-width: 900px) 22vw, 46vw"></x-img><figcaption>Emerging entrepreneurs</figcaption></figure>
+    </div>
   </div>
 </section>
 
-<!-- Who we serve -->
-<section class="section serve" id="who-we-serve" aria-labelledby="serve-title">
-  <div class="wrap grid">
-    <div class="serve__head s-5">
-      <p class="label accent">Who we serve</p>
-      <h2 class="h2" id="serve-title" data-lines>Eligible clients across Uganda</h2>
-      <p class="secthead__lede">Eligible clients across urban, semi&#8209;urban and rural Uganda. All facilities remain subject to assessment and approval.</p>
-    </div>
-    <div class="serve__photos s-6 o-7">
-      <figure class="fig fig--a" data-parallax="-6" data-cursor="view">
-        <div class="fig__media"><x-img key="salaried-clients" sizes="(min-width: 1100px) 22vw, 50vw"></x-img></div>
-        <figcaption class="figcap"><span class="figcap__n tnum" data-fig="2">Fig. 02</span><span class="figcap__t">Salaried clients</span></figcaption>
-      </figure>
-      <figure class="fig fig--b" data-parallax="8" data-cursor="view">
-        <div class="fig__media"><x-img key="emerging-entrepreneurs" sizes="(min-width: 1100px) 22vw, 50vw"></x-img></div>
-        <figcaption class="figcap"><span class="figcap__n tnum" data-fig="3">Fig. 03</span><span class="figcap__t">Emerging entrepreneurs</span></figcaption>
-      </figure>
-    </div>
-    <ol class="rows rows--plain s-12" role="list">
-      <li class="row" data-row><span class="row__n tnum">01</span><h3 class="row__t">Entrepreneurs</h3><p class="row__d">Micro and small business owners with viable productive needs.</p><a class="row__go" href="/loans/#business">Business Loans<x-icon name="arrow-right"></x-icon></a></li>
-      <li class="row" data-row><span class="row__n tnum">02</span><h3 class="row__t">Salaried clients</h3><p class="row__d">Eligible employees with a sound ability to meet approved repayment requirements.</p><a class="row__go" href="/loans/#salary">Salary Loans<x-icon name="arrow-right"></x-icon></a></li>
-      <li class="row" data-row><span class="row__n tnum">03</span><h3 class="row__t">Companies &amp; NGOs</h3><p class="row__d">Organisations seeking approved short&#8209;term financial solutions.</p><a class="row__go" href="/loans/#business">Business Loans<x-icon name="arrow-right"></x-icon></a></li>
-      <li class="row" data-row><span class="row__n tnum">04</span><h3 class="row__t">Growing businesses</h3><p class="row__d">Sole proprietors and companies financing stock, cash flow or productive assets.</p><a class="row__go" href="/loans/#asset">Asset Financing<x-icon name="arrow-right"></x-icon></a></li>
-    </ol>
-  </div>
-</section>
-
-<!-- Licence strip -->
-<section class="section section--tight is-dark licstrip" aria-labelledby="lic-title">
-  <div class="licstrip__bg" aria-hidden="true"></div>
-  <div class="wrap">
-    <div class="microframe microframe--paper licstrip__frame">
-      <div class="grid licstrip__grid">
-        <div class="s-4">
-          <p class="label accent" id="lic-title">Money Lending Licence</p>
-          <p class="licstrip__no figure tnum">{{licence.number}}</p>
-        </div>
-        <dl class="licstrip__dl s-6 o-6">
-          <div><dt class="label muted">Issuing authority</dt><dd>Ministry of Finance, Planning and Economic Development, Republic of Uganda</dd></div>
-          <div><dt class="label muted">{{licence.referenceYear}} reference copy</dt><dd class="tnum">Issued {{licence.issuedText}} · Expires {{licence.expiresText}}</dd></div>
+<section class="section section--night" aria-labelledby="lic-title">
+  <div class="container">
+    <div class="licence-strip">
+      <div>
+        <p class="eyebrow" id="lic-title">Money Lending Licence</p>
+        <p class="licence-strip__no">{{licence.number}}</p>
+      </div>
+      <div>
+        <dl>
+          <div><dt>Issuing authority</dt><dd>Ministry of Finance, Planning and Economic Development, Republic of Uganda</dd></div>
+          <div><dt>{{licence.referenceYear}} reference copy</dt><dd class="tnum">Issued {{licence.issuedText}} · Expires {{licence.expiresText}}</dd></div>
         </dl>
-        <p class="s-12 licstrip__go"><a class="link-arrow" href="/licence/">See the licence and how to verify it<x-icon name="arrow-right"></x-icon></a><span class="licence-guard" data-licence-guard hidden>The reference copy shown is the 2026 certificate. To verify the current licence, contact the Board of Directors.</span></p>
+        <p class="mt-5 mb-0"><a class="link-arrow" href="/licence/">See the licence and how to verify it<x-icon name="arrow-right"></x-icon></a></p>
+        <p class="licence-guard" data-licence-guard hidden>The reference copy shown is the 2026 certificate. To verify the current licence, contact the Board of Directors.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Closing -->
-<section class="section grain closing" aria-labelledby="close-title">
-  <div class="wrap grid">
-    <p class="label accent s-12">In one line</p>
-    <h2 class="closing__title h1 s-10" id="close-title" data-lines>
-      <span class="line"><span class="line-inner">Your time matters.</span></span>
-      <span class="line"><span class="line-inner">Your goals matter.</span></span>
-    </h2>
-    <p class="closing__text s-5 o-2">A four&#8209;working&#8209;hour review is our service target for complete files during office hours. Final approval and release of funds depend on verification and fulfilment of all conditions.</p>
-    <div class="closing__cta s-5 o-8">
-      <a class="btn btn--lg" href="/apply/" data-cursor="apply" data-magnetic>Apply now<x-icon name="arrow-right"></x-icon></a>
-      <a class="btn btn--ghost btn--lg" href="https://wa.me/{{contact.whatsapp}}?text=Hello%20Biashara%2C%20I%20would%20like%20to%20ask%20about%20a%20loan." rel="noopener" target="_blank" data-magnetic><x-icon name="chat"></x-icon>WhatsApp us<span class="sr-only"> (opens in a new tab)</span></a>
+<section class="section cta-band" aria-labelledby="close-title">
+  <div class="container cta-band__grid">
+    <div>
+      <p class="eyebrow">In one line</p>
+      <h2 id="close-title">Your time matters. Your goals matter.</h2>
+    </div>
+    <div>
+      <p>A four&#8209;working&#8209;hour review is our service target for complete files during office hours. Final approval and release of funds depend on verification and fulfilment of all conditions.</p>
+      <div class="btn-row">
+        <a class="btn btn--light btn--lg" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a>
+        <a class="btn btn--outline-light btn--lg" href="https://wa.me/{{contact.whatsapp}}?text=Hello%20Biashara%2C%20I%20would%20like%20to%20ask%20about%20a%20loan." rel="noopener" target="_blank"><x-icon name="chat"></x-icon>WhatsApp us<span class="sr-only"> (opens in a new tab)</span></a>
+      </div>
     </div>
   </div>
 </section>

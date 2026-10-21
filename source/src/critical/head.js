@@ -1,1 +1,1 @@
-(function(d,h){h.classList.remove('no-js');h.classList.add('js');try{if(sessionStorage.getItem('btc-seen'))h.classList.add('seen');if(localStorage.getItem('btc-contrast')==='high')h.setAttribute('data-contrast','high')}catch(e){}if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)h.classList.add('rm')})(document,document.documentElement);
+(function(h){h.classList.remove('no-js');h.classList.add('js');try{if(localStorage.getItem('btc-contrast')==='high')h.setAttribute('data-contrast','high')}catch(e){}})(document.documentElement);

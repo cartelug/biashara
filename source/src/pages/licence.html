@@ -1,30 +1,23 @@
-<section class="section phero is-paper-2 grain" aria-labelledby="page-title">
-  <img class="phero__bg" src="/assets/img/texture/rosette-red.svg" width="600" height="600" alt="" aria-hidden="true">
-  <div class="wrap">
-    <div class="runhead"><p class="label muted">End matter · Appendix A</p><p class="label muted">Annual renewal &amp; verification</p></div>
-    <div class="grid phero__grid">
-      <p class="phero__num s-1"><span class="pier-sq" aria-hidden="true"></span>08</p>
-      <div class="s-9 o-2">
-        <h1 class="h1 phero__title" id="page-title" data-lines>Money lending licence</h1>
-        <p class="phero__lede mt-6">Documentary evidence of licensing, with annual renewal and direct verification of the current licence.</p>
-      </div>
-    </div>
+<section class="page-head" aria-labelledby="page-title">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Licence</li></ol></nav>
+    <h1 id="page-title">Money lending licence</h1>
+    <p class="lede">Documentary evidence of licensing, with annual renewal and direct verification of the current licence.</p>
   </div>
 </section>
 
-<section class="section is-paper-2 section--top0" aria-labelledby="cert-title">
-  <div class="wrap">
-    <div class="callout callout--dark licence-guard-callout mb-6" data-licence-guard hidden role="status">
-      <p class="label"><x-icon name="flag"></x-icon>About this reference copy</p>
+<section class="section" aria-labelledby="cert-title">
+  <div class="container">
+    <div class="callout licence-guard-callout mb-6" data-licence-guard hidden role="status">
+      <p class="callout__title"><x-icon name="flag"></x-icon>About this reference copy</p>
       <p>The reference copy shown is the 2026 certificate. To verify the current licence, contact the Board of Directors.</p>
     </div>
     <div class="licence">
       <div class="licdoc">
-        <div class="licdoc__frame microframe">
-          <span class="reg reg--tl" aria-hidden="true"></span><span class="reg reg--tr" aria-hidden="true"></span><span class="reg reg--bl" aria-hidden="true"></span><span class="reg reg--br" aria-hidden="true"></span>
+        <div class="licdoc__frame">
           <div class="licdoc__img" data-licence-doc>
-            <button class="licdoc__open" type="button" data-lightbox-open aria-label="Open the licence at full size with zoom" data-cursor="view">
-              <x-img key="licence-2026" sizes="(min-width: 1100px) 46vw, 100vw"></x-img>
+            <button class="licdoc__open" type="button" data-lightbox-open aria-label="Open the licence at full size with zoom">
+              <x-img key="licence-2026" sizes="(min-width: 900px) 50vw, 100vw"></x-img>
             </button>
             <button class="hotspot needs-js" type="button" data-hotspot="1" data-x="8" data-y="32" aria-expanded="false" aria-controls="lr-1"><span class="sr-only">Licence number, </span>1</button>
             <button class="hotspot needs-js" type="button" data-hotspot="2" data-x="93" data-y="39.4" aria-expanded="false" aria-controls="lr-2"><span class="sr-only">Licence holder, </span>2</button>
@@ -34,23 +27,23 @@
             <button class="hotspot needs-js" type="button" data-hotspot="6" data-x="80" data-y="52.6" aria-expanded="false" aria-controls="lr-6"><span class="sr-only">Expiry date, </span>6</button>
           </div>
         </div>
-        <p class="figcap figcap--plain licdoc__cap"><span class="figcap__n tnum">Fig. 01</span><span class="figcap__t">{{licence.referenceYear}} licence copy · select a number for its detail, or the image to zoom</span></p>
+        <p class="licdoc__cap">{{licence.referenceYear}} licence copy · select a number for its detail, or the image to zoom</p>
       </div>
       <div class="licdetails">
-        <h2 class="label accent" id="cert-title">Certificate details</h2>
-        <dl class="certledger mt-4" data-certledger>
-          <div id="lr-1"><span class="k" aria-hidden="true">1</span><dt class="label">Licence number</dt><dd class="big tnum">{{licence.number}}<span class="span-under" aria-hidden="true" data-licence-span></span></dd></div>
-          <div id="lr-2"><span class="k" aria-hidden="true">2</span><dt class="label">Licence holder</dt><dd>Biashara Trading Company Limited</dd></div>
-          <div id="lr-3"><span class="k" aria-hidden="true">3</span><dt class="label">Issuing authority</dt><dd>Ministry of Finance, Planning and Economic Development<br><span class="muted">Republic of Uganda</span></dd></div>
-          <div id="lr-4"><span class="k" aria-hidden="true">4</span><dt class="label">Certificate address</dt><dd>Plot 24/25, 2nd Floor<br>Conrad Plaza</dd></div>
-          <div id="lr-5"><span class="k" aria-hidden="true">5</span><dt class="label">Issued</dt><dd class="tnum">{{licence.issuedText}}</dd></div>
-          <div id="lr-6"><span class="k" aria-hidden="true">6</span><dt class="label">Expires</dt><dd class="tnum">{{licence.expiresText}}</dd></div>
+        <h2 class="eyebrow" id="cert-title">Certificate details</h2>
+        <dl class="certledger" data-certledger>
+          <div id="lr-1"><span class="k" aria-hidden="true">1</span><dt>Licence number</dt><dd class="big tnum">{{licence.number}}</dd></div>
+          <div id="lr-2"><span class="k" aria-hidden="true">2</span><dt>Licence holder</dt><dd>Biashara Trading Company Limited</dd></div>
+          <div id="lr-3"><span class="k" aria-hidden="true">3</span><dt>Issuing authority</dt><dd>Ministry of Finance, Planning and Economic Development<br><span class="muted">Republic of Uganda</span></dd></div>
+          <div id="lr-4"><span class="k" aria-hidden="true">4</span><dt>Certificate address</dt><dd>Plot 24/25, 2nd Floor<br>Conrad Plaza</dd></div>
+          <div id="lr-5"><span class="k" aria-hidden="true">5</span><dt>Issued</dt><dd class="tnum">{{licence.issuedText}}</dd></div>
+          <div id="lr-6"><span class="k" aria-hidden="true">6</span><dt>Expires</dt><dd class="tnum">{{licence.expiresText}}</dd></div>
         </dl>
         <p class="recon-cap mt-4">These dates relate to the certificate reproduced here.</p>
-        <div class="callout callout--dark mt-6">
-          <p class="label"><x-icon name="badge"></x-icon>Annual renewal &amp; verification</p>
+        <div class="callout mt-6">
+          <p class="callout__title"><x-icon name="badge"></x-icon>Annual renewal &amp; verification</p>
           <p>Biashara renews its money lending licence every year. To verify the current licence, kindly contact the Board of Directors.<x-fn note="licence"></x-fn></p>
-          <p class="mt-4"><a class="link-arrow" href="/contact/">Contact Biashara<x-icon name="arrow-right"></x-icon></a></p>
+          <p class="mb-0"><a class="link-arrow" href="/contact/">Contact Biashara<x-icon name="arrow-right"></x-icon></a></p>
         </div>
       </div>
     </div>
@@ -59,7 +52,7 @@
 
 <dialog class="lightbox" aria-label="Licence at full size" data-lightbox>
   <div class="lightbox__bar">
-    <p class="label">{{licence.referenceYear}} licence copy · {{licence.number}}</p>
+    <p>{{licence.referenceYear}} licence copy · {{licence.number}}</p>
     <div class="lightbox__btns">
       <button type="button" data-zoom="out" aria-label="Zoom out"><x-icon name="minus"></x-icon></button>
       <button type="button" data-zoom="in" aria-label="Zoom in"><x-icon name="plus"></x-icon></button>

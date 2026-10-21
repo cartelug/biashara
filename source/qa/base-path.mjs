@@ -1,7 +1,7 @@
 // The site must work from wherever it is served: a domain root ('') or a folder such as a GitHub Pages
 // project site ('/biashara'). Run against a build made with that BASE_PATH (build.json records it).
-// Loads four pages in a real browser and fails on any 404, failed request, console error, unloaded image,
-// link that leaves the folder, or page change that is not handled by the client-side router.
+// Loads four pages in a real browser and fails on any 404, failed request, console error, image that does not
+// decode, link that leaves the folder, or a header link or menu link that does not reach its page.
 // Usage: node qa/base-path.mjs [origin]   (default http://localhost:4173)
 import { chromium } from 'playwright';
 import { readFile } from 'node:fs/promises';
@@ -23,48 +23,52 @@ for (const p of PAGES) {
   page.on('pageerror', (e) => fail(where, `script error: ${e.message}`));
   page.on('console', (m) => { if (m.type() === 'error' && !/status of 4\d\d/.test(m.text())) fail(where, `console: ${m.text()}`); });
   await page.goto(ORIGIN + BASE + p, { waitUntil: 'networkidle' });
-  await page.waitForSelector('[data-loader]', { state: 'detached', timeout: 6000 }).catch(() => fail(where, 'loader never left'));
 
-  // scroll through so lazy images load, then every image must have decoded
+  // scroll through so lazy images load, then every visible image must have decoded
   const h = await page.evaluate(() => document.documentElement.scrollHeight);
-  for (let y = 0; y < h; y += 600) { await page.evaluate((v) => window.scrollTo(0, v), y); await page.waitForTimeout(80); }
-  await page.waitForTimeout(600);
-  const broken = await page.evaluate(() => [...document.images].filter((i) => !(i.complete && i.naturalWidth > 0)).map((i) => i.currentSrc || i.src));
+  for (let y = 0; y < h; y += 400) { await page.evaluate((v) => window.scrollTo(0, v), y); await page.waitForTimeout(60); }
+  await page.waitForFunction(() => [...document.images].filter((i) => i.getBoundingClientRect().width > 0).every((i) => i.complete && i.naturalWidth > 0), null, { timeout: 8000 }).catch(() => {});
+  const broken = await page.evaluate(async () => {
+    const bad = [];
+    for (const i of [...document.images].filter((x) => x.getBoundingClientRect().width > 0)) {
+      try { await i.decode(); } catch { bad.push(i.currentSrc || i.src); continue; }
+      if (!i.naturalWidth) bad.push(i.currentSrc || i.src);
+    }
+    return bad;
+  });
   broken.forEach((s) => fail(where, `image did not load ${s}`));
 
-  // the site must have booted (scripts and styles loaded) and every internal link must stay inside the folder
-  const state = await page.evaluate(() => ({ booted: document.documentElement.classList.contains('motion-ready') || typeof window.gsap === 'object', hrefs: [...document.querySelectorAll('a[href^="/"]')].map((a) => a.getAttribute('href')) }));
-  if (!state.booted) fail(where, 'scripts did not start (no GSAP)');
+  // the stylesheet and scripts must have applied, and every internal link must stay inside the folder
+  const state = await page.evaluate(() => ({
+    styled: getComputedStyle(document.querySelector('.site-header')).position === 'sticky',
+    booted: !!document.querySelector('[data-menu-toggle]') && getComputedStyle(document.querySelector('[data-menu-toggle]')).display !== 'none',
+    hrefs: [...document.querySelectorAll('a[href^="/"]')].map((a) => a.getAttribute('href')),
+  }));
+  if (!state.styled) fail(where, 'stylesheet did not apply (header is not sticky)');
+  if (!state.booted) fail(where, 'scripts did not start (menu button missing)');
   for (const href of state.hrefs) if (BASE && !(href === BASE || href.startsWith(BASE + '/'))) fail(where, `link leaves ${BASE}: ${href}`);
   await page.close();
 }
 
-// client-side navigation: the router must swap the page without a reload and stay inside the folder
+// the menu on a phone: open it, follow a link, and land on the right page inside the folder
 {
   const page = await ctx.newPage();
-  const where = `${BASE}/ (router)`;
+  const where = `${BASE}/ (menu)`;
   await page.goto(ORIGIN + BASE + '/', { waitUntil: 'networkidle' });
-  await page.waitForSelector('[data-loader]', { state: 'detached', timeout: 6000 }).catch(() => {});
-  await page.evaluate(() => { window.__noReload = true; });
-  await page.evaluate(() => document.querySelector('a[data-nav="about"]')?.click());
-  await page.waitForFunction((want) => location.pathname === want, BASE + '/about/', { timeout: 8000 }).catch(() => fail(where, 'URL did not change to the About page'));
-  await page.waitForSelector('main#main[data-page="about"]', { timeout: 8000 }).catch(() => fail(where, 'About page content did not appear'));
-  if (!(await page.evaluate(() => window.__noReload === true))) fail(where, 'page fully reloaded instead of using the router');
+  await page.click('[data-menu-toggle]');
+  await page.click('[data-menu] a[href$="/about/"]');
+  await page.waitForURL('**' + BASE + '/about/', { timeout: 8000 }).catch(() => fail(where, `menu link did not reach ${BASE}/about/ (now ${new URL(page.url()).pathname})`));
+  if (!(await page.locator('main#main[data-page="about"]').count())) fail(where, 'About page content did not appear');
   await page.close();
 }
 
-// the command palette builds its destinations in script, so it needs the prefix too
+// calculator link and the home link carry the folder too
 {
   const page = await ctx.newPage();
-  const where = `${BASE}/ (palette)`;
-  await page.goto(ORIGIN + BASE + '/', { waitUntil: 'networkidle' });
-  await page.waitForSelector('[data-loader]', { state: 'detached', timeout: 6000 }).catch(() => {});
-  await page.evaluate(() => { window.__noReload = true; });
-  await page.keyboard.press('/');
-  await page.keyboard.type('licence');
-  await page.keyboard.press('Enter');
-  await page.waitForFunction((want) => location.pathname === want, BASE + '/licence/', { timeout: 8000 }).catch(() => fail(where, `Enter on "licence" did not open ${BASE}/licence/ (now ${new URL(page.url()).pathname})`));
-  if (!(await page.evaluate(() => window.__noReload === true))) fail(where, 'palette caused a full reload');
+  const where = `${BASE}/loans/ (calculator)`;
+  await page.goto(ORIGIN + BASE + '/loans/', { waitUntil: 'networkidle' });
+  const href = await page.locator('[data-calc-apply]').first().getAttribute('href');
+  if (href !== `${BASE}/apply/?amount=10000000&term=3`) fail(where, `calculator apply link is ${href}`);
   await page.close();
 }
 
@@ -74,4 +78,4 @@ if (problems.length) {
   [...new Set(problems)].slice(0, 30).forEach((p) => console.error('  ' + p));
   process.exit(1);
 }
-console.log(`Base path "${BASE || '/'}": ${PAGES.length} pages load with every file, image and link in place; router and palette navigation work.`);
+console.log(`Base path "${BASE || '/'}": ${PAGES.length} pages load with every file, image and link in place; the phone menu and calculator link reach the right pages.`);

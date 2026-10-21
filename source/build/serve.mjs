@@ -53,7 +53,8 @@ http.createServer(async (req, res) => {
   const r = inBase ? await resolve(sitePath) : null;
   if (r?.redirect) { res.writeHead(301, { Location: BASE + r.redirect + (query ? '?' + query : '') }); return res.end(); }
   const file = r?.file || path.join(ROOT, '404.html');
-  let body = await fs.readFile(file);
+  let body;
+  try { body = await fs.readFile(file); } catch { res.writeHead(404, { 'Content-Type': 'text/plain' }); return res.end('Not found'); }
   const type = TYPES[path.extname(file)] || 'application/octet-stream';
   const headers = { ...(await hostHeaders(sitePath)), 'Content-Type': type, 'Cache-Control': 'no-cache', Vary: 'Accept-Encoding' };
   // the preview runs on plain http, so drop the https upgrade from the policy

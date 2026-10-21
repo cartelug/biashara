@@ -1,20 +1,16 @@
-<section class="section phero phero--compact grain" aria-labelledby="page-title">
-  <div class="wrap">
-    <div class="runhead"><p class="label muted">End matter · Apply</p><p class="label muted">Applying is free</p></div>
-    <div class="grid phero__grid">
-      <p class="phero__num s-1"><span class="pier-sq" aria-hidden="true"></span>11</p>
-      <div class="s-8 o-2">
-        <h1 class="h1 phero__title" id="page-title" data-lines>Assemble your loan file</h1>
-        <p class="phero__lede mt-6">Five steps. Nothing leaves this page until you choose to send it, and an application does not guarantee a facility.<x-fn note="assessed"></x-fn></p>
-      </div>
-    </div>
+<section class="page-head" aria-labelledby="page-title">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Apply</li></ol></nav>
+    <h1 id="page-title">Assemble your loan file</h1>
+    <p class="lede">Five steps. Nothing leaves this page until you choose to send it, and an application does not guarantee a facility.<x-fn note="assessed"></x-fn></p>
+    <ul class="chips" role="list"><li class="chip chip--red">Applying is free</li><li class="chip">Five steps</li></ul>
   </div>
 </section>
 
-<section class="section section--top0 apply" aria-label="Application" data-apply>
-  <div class="wrap">
+<section class="section apply" aria-label="Application" data-apply>
+  <div class="container">
     <div class="callout no-js-only">
-      <p class="label"><x-icon name="flag"></x-icon>This form needs JavaScript</p>
+      <p class="callout__title"><x-icon name="flag"></x-icon>This form needs JavaScript</p>
       <p>You can begin your loan request by email at <a href="mailto:{{contact.email}}">{{contact.email}}</a>, call <a class="tnum" href="tel:{{contact.phone1}}">{{contact.phone1Text}}</a> or <a class="tnum" href="tel:{{contact.phone2}}">{{contact.phone2Text}}</a>, or message <a class="tnum" href="https://wa.me/{{contact.whatsapp}}">{{contact.whatsappText}}</a> on WhatsApp.</p>
       <p class="mt-4"><a class="link-arrow" href="/how-we-lend/#documents">The documents usually requested<x-icon name="arrow-right"></x-icon></a></p>
     </div>
@@ -35,8 +31,8 @@
       </ol>
     </div>
 
-    <div class="grid apply__grid needs-js">
-      <form class="apply__form s-7 md-s-12" data-apply-form novalidate>
+    <div class="apply__grid needs-js">
+      <form class="apply__form" data-apply-form novalidate>
         <div class="errsum" data-errsum tabindex="-1" hidden role="alert">
           <h2>Check the highlighted answers</h2>
           <ul data-errsum-list></ul>
@@ -98,7 +94,7 @@
               <p class="ruler__unit label muted" aria-hidden="true">Months</p>
             </div>
           </div>
-          <div class="callout callout--bar mt-6">
+          <div class="callout mt-6">
             <p>Indicative only. Approved amount, tenure, security and repayment arrangements depend on credit assessment. Full terms are given in writing at approval.</p>
           </div>
         </fieldset>
@@ -189,8 +185,8 @@
                 <li><label class="check"><input type="checkbox" name="docs" value="Contact and referee details"><span>Contact and referee details</span></label></li>
               </ul>
             </div>
-            <div class="callout callout--dark">
-              <p class="label"><x-icon name="document"></x-icon>If documents are missing</p>
+            <div class="callout">
+              <p class="callout__title"><x-icon name="document"></x-icon>If documents are missing</p>
               <p>Come in anyway. The team will tell you exactly what is outstanding before the file goes to assessment.</p>
             </div>
           </div>
@@ -215,21 +211,20 @@
 
         <div class="anav">
           <button class="btn btn--ghost" type="button" data-prev hidden><x-icon name="arrow-left"></x-icon>Back</button>
-          <button class="btn" type="button" data-next data-cursor="apply" data-magnetic>Continue<x-icon name="arrow-right"></x-icon></button>
-          <button class="btn" type="submit" data-submit data-cursor="apply" hidden>Send my file<x-icon name="send"></x-icon></button>
+          <button class="btn" type="button" data-next>Continue<x-icon name="arrow-right"></x-icon></button>
+          <button class="btn" type="submit" data-submit hidden>Send my file<x-icon name="send"></x-icon></button>
           <p class="anav__save muted" data-saved aria-live="polite"></p>
         </div>
       </form>
 
-      <aside class="afile s-5 o-8 md-s-12" aria-labelledby="afile-t" data-afile>
+      <aside class="afile" aria-labelledby="afile-t" data-afile>
         <button class="afile__toggle" type="button" aria-expanded="false" aria-controls="afile-body" data-afile-toggle>
           <span class="label accent">Your file</span>
           <span class="afile__peek tnum" data-peek>UGX 10,000,000 · 3 months</span>
           <x-icon name="plus" class="afile__icon"></x-icon>
         </button>
         <div class="afile__body ledgercard" id="afile-body">
-          <span class="reg reg--tl" aria-hidden="true"></span><span class="reg reg--br" aria-hidden="true"></span>
-          <div class="ledgercard__head">
+                    <div class="ledgercard__head">
             <h2 class="label accent" id="afile-t">Your file</h2>
             <p class="label muted tnum" data-file-ref>BTC-········-····</p>
           </div>
@@ -245,7 +240,7 @@
             <div class="ledger__row"><dt>Applicant</dt><dd data-f="applicant">Not entered</dd></div>
             <div class="ledger__row"><dt>Documents ticked</dt><dd data-f="docs" class="tnum">0 of 7</dd></div>
           </dl>
-          <div class="callout callout--bar">
+          <div class="callout">
             <p>Indicative only. Approved amount, tenure, security and repayment arrangements depend on credit assessment. Full terms are given in writing at approval.</p>
           </div>
           <p class="afile__note">Interest is 2.8% per month, calculated on the approved principal.<x-fn note="interest"></x-fn> Saved in this browser only, so you can come back to it.</p>

@@ -1,77 +1,83 @@
-@layer layout {
-  /* ---------- The page frame: header, chapter rail, running foot ---------- */
-  .shell {
-    padding-left: var(--rail);
-    padding-bottom: var(--foot);
-    padding-top: var(--header);
-  }
-  main { display: block; position: relative; isolation: isolate; }
-  main:focus { outline: none; }
+/* Layout: sections, grids, page header, text helpers */
+main { display: block; }
+main:focus { outline: none; }
 
-  .wrap {
-    width: 100%;
-    max-width: var(--max);
-    margin-inline: auto;
-    padding-inline: var(--margin);
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-    column-gap: var(--gutter);
-    align-items: start;
-  }
-  .grid > * { grid-column: 1 / -1; min-width: 0; }
+.section { padding-block: var(--section-y); }
+.section--tight { padding-block: calc(var(--section-y) * .55); }
+.section--top0 { padding-top: 0; }
+.section--surface { background: var(--surface); }
+.section--night { background: var(--night); color: var(--on-dark); }
+.section--night h1, .section--night h2, .section--night h3, .section--night h4 { color: var(--on-dark); }
+.section--night .lede, .section--night .muted { color: var(--on-dark-mute); }
+.section--night a:not(.btn) { color: var(--red-on-dark); }
+.section--night a:not(.btn):hover { color: #fff; }
 
-  .section {
-    position: relative;
-    padding-block: var(--section);
-    background: var(--bg);
-    color: var(--fg);
-  }
-  .section--tight { padding-block: var(--s-8); }
-  .section--flush { padding-block: 0; }
-  .section--top0 { padding-top: 0; }
-  /* below a page header band the next section still needs air */
-  .phero + .section--top0 { padding-top: var(--s-7); }
-  .section.is-dark { background: var(--ink); color: var(--paper); }
-  .section.is-paper-2 { --bg: var(--paper-2); --fg-muted: var(--grey-strong); background: var(--paper-2); }
-  .is-dark .muted, .muted { color: var(--fg-muted); }
+.section-head { max-width: 760px; margin-bottom: clamp(28px, 4vw, 48px); }
+.section-head > :last-child { margin-bottom: 0; }
+.section-head--row { max-width: none; display: grid; gap: 16px; }
+@media (min-width: 900px) { .section-head--row { grid-template-columns: 1fr auto; align-items: end; } }
 
-  /* Dark sections carry the faint radial vignette from the profile cover */
-  .vignette::after {
-    content: "";
-    position: absolute; inset: 0;
-    background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, .45) 100%);
-    pointer-events: none;
-    z-index: 0;
-  }
-  .vignette > * { position: relative; z-index: 1; }
+.eyebrow { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--red-text); }
+.section--night .eyebrow { color: var(--red-on-dark); }
+.eyebrow .icon { width: 16px; height: 16px; }
+.lede { margin: 0 0 1em; font: 400 var(--fs-lede)/1.5 var(--font-serif); color: var(--slate); max-width: 62ch; }
+.lead { font-size: 1.1875rem; line-height: 1.55; color: var(--ink); }
+.muted { color: var(--slate); }
+.small { font-size: .875rem; }
+.prose { max-width: 720px; }
+.prose > * + * { margin-top: 1em; }
+.prose h2, .prose h3 { margin-top: 1.6em; }
+.prose ul { padding-left: 1.25em; }
+.prose li + li { margin-top: .5em; }
 
-  /* Paper grain: 2–3% opacity, paper sections only */
-  .grain { position: relative; }
-  .grain::before {
-    content: "";
-    position: absolute; inset: 0;
-    background-image: url("/assets/img/texture/grain.svg"), url("/assets/img/texture/fibre.svg");
-    background-size: 240px 240px, 900px 900px;
-    opacity: .028;
-    mix-blend-mode: multiply;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .grain > * { position: relative; z-index: 1; }
-  html[data-contrast="high"] .grain::before { display: none; }
+/* Every one-column grid uses minmax(0, 1fr): without it a grid column grows to its widest unbreakable content
+   (a long label, a nowrap chip) and the whole page becomes wider than the phone. Wider layouts override this below. */
+.calc, .form, .form__two, .apply__grid, .done__grid, .licence, .hero__grid, .page-head__grid, .two-up, .contact-list, .group-list,
+.stair, .timeline, .steps, .product-row, .cta-band__grid, .licence-strip, .certledger, .pchoices, .selfcheck, .anatomy__bar,
+.next-links, .nf__links, .gallery, .termbar__products, .specs, .section-head--row, .site-footer__grid { grid-template-columns: minmax(0, 1fr); }
+.calc > *, .apply__grid > *, .licence > *, .hero__grid > *, .page-head__grid > *, .two-up > *, .split > *, .cards > *, .product-row > *, .done__grid > * { min-width: 0; }
 
-  .below-fold { content-visibility: auto; contain-intrinsic-size: auto 900px; }
-
-  /* Running head (top of every page body, as on the profile) */
-  .runhead {
-    display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
-    padding-block: var(--s-4);
-    border-bottom: 1px solid var(--line);
-  }
-
-  @media (max-width: 759px) {
-    :root { --section: var(--s-8); }
-  }
+/* Grids (mobile first) */
+.cards { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 600px) {
+  .cards--2, .cards--3, .cards--4, .cards--5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+@media (min-width: 1024px) {
+  .cards { gap: 24px; }
+  .cards--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cards--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cards--5 { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+}
+.split { display: grid; gap: clamp(28px, 4vw, 64px); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 768px) {
+  .split { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; }
+  .split--top { align-items: start; }
+  .split--7-5 { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .split--5-7 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .split--6-5 { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+}
+.sticky-col { align-self: start; }
+@media (min-width: 1024px) { .sticky-col { position: sticky; top: calc(var(--header-h) + 24px); } }
+
+/* ---------- Page header (inner pages) ---------- */
+.page-head { background: var(--surface); padding-block: clamp(28px, 4vw, 56px) clamp(32px, 5vw, 64px); }
+.page-head__grid { display: grid; gap: 28px; }
+@media (min-width: 900px) { .page-head__grid--aside { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; gap: 48px; } }
+.page-head h1 { margin-bottom: .35em; }
+.page-head .lede { margin-bottom: 0; }
+.page-head .chips { margin-top: 24px; }
+.page-head__aside .ph { max-width: 300px; }
+@media (min-width: 900px) { .page-head__aside .ph { max-width: 360px; margin-left: auto; } }
+.crumbs { margin: 0 0 20px; font-size: .875rem; }
+.crumbs ol { display: flex; flex-wrap: wrap; gap: 4px 8px; margin: 0; padding: 0; list-style: none; color: var(--slate); }
+.crumbs li + li::before { content: "/"; margin-right: 8px; color: var(--line-strong); }
+.crumbs a { color: var(--slate); }
+.crumbs a:hover { color: var(--red-text); }
+.crumbs [aria-current] { color: var(--ink); font-weight: 600; }
+
+/* Next-page links at the foot of a page */
+.next-links { display: grid; gap: 12px; }
+@media (min-width: 600px) { .next-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.next-link { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 16px 20px; border: 1px solid var(--line); border-radius: var(--radius-m); background: #fff; color: var(--ink); font-weight: 600; text-decoration: none; transition: border-color .15s var(--ease), box-shadow .15s var(--ease); }
+.next-link:hover { border-color: var(--ink); box-shadow: var(--shadow-1); color: var(--ink); }
+.next-link .icon { color: var(--red-text); }

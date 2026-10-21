@@ -1,12 +1,8 @@
-@layer utilities {
-  .mt-0 { margin-top: 0 !important; }
-  .mt-4 { margin-top: var(--s-4); } .mt-5 { margin-top: var(--s-5); } .mt-6 { margin-top: var(--s-6); } .mt-7 { margin-top: var(--s-7); } .mt-8 { margin-top: var(--s-8); }
-  .mb-6 { margin-bottom: var(--s-6); }
-  .nowrap { white-space: nowrap; }
-  .measure { max-width: 62ch; }
-  .self-end { align-self: end; }
-  .full-bleed { margin-inline: calc(var(--margin) * -1); }
-  .stack > * + * { margin-top: var(--s-4); }
-  .stack-lg > * + * { margin-top: var(--s-6); }
-  .center-y { align-items: center; }
-}
+/* Spacing utilities (last, so they win over component margins) */
+.mt-2 { margin-top: var(--s-2); }
+.mt-3 { margin-top: var(--s-3); } .mt-4 { margin-top: var(--s-4); }
+.mt-5 { margin-top: var(--s-5); }
+.mt-6 { margin-top: var(--s-6); }
+.mt-7 { margin-top: var(--s-7); } .mt-8 { margin-top: var(--s-8); }
+.mb-0 { margin-bottom: 0; }
+.mb-5 { margin-bottom: var(--s-5); } .mb-6 { margin-bottom: var(--s-6); }

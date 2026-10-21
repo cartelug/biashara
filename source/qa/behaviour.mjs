@@ -28,67 +28,14 @@ async function test(name, fn, { motion = false, now, seen = true, width = 1280, 
   await ctx.close();
 }
 const assert = (c, msg) => { if (!c) throw new Error(msg); };
-const go = async (page, path) => { await page.goto(BASE + path, { waitUntil: 'networkidle' }); await page.waitForSelector('[data-loader]', { state: 'detached', timeout: 5000 }).catch(() => {}); };
+const go = async (page, path) => { await page.goto(BASE + path, { waitUntil: 'networkidle' }); };
 const gone = (page, sel, ms = 5000) => page.waitForSelector(sel, { state: 'detached', timeout: ms });
-
-// ------------------------------------------------------------------ preloader
-await test('Preloader runs on first visit and removes itself within the 3.5s cap', async (page) => {
-  const t = Date.now();
-  await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
-  assert(await page.$('[data-loader]'), 'loader not present at start');
-  await gone(page, '[data-loader]', 4500);
-  return `removed after ${Date.now() - t} ms`;
-}, { motion: true, seen: false });
-
-await test('Preloader is shorter on a repeat visit in the same session', async (page) => {
-  const t = Date.now();
-  await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
-  await gone(page, '[data-loader]', 3000);
-  const ms = Date.now() - t;
-  assert(ms < 2600, `took ${ms} ms`);
-  return `removed after ${ms} ms`;
-}, { motion: true, seen: true });
-
-await test('Preloader can be skipped after 1s', async (page) => {
-  await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
-  await page.waitForTimeout(1150);
-  const t = Date.now();
-  if (await page.$('[data-loader]')) await page.keyboard.press('Escape');
-  if (await page.$('[data-loader]')) await page.mouse.click(640, 450);
-  await gone(page, '[data-loader]', 1500);
-  return `gone ${Date.now() - t} ms after skip`;
-}, { motion: true, seen: false });
-
-await test('Reduced motion: preloader is a plain fade', async (page) => {
-  const t = Date.now();
-  await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
-  await gone(page, '[data-loader]', 2500);
-  return `removed after ${Date.now() - t} ms`;
-}, { seen: false });
-
-// ------------------------------------------------------------------ router
-await test('Page transition: URL, title, H1 focus and announcement update', async (page) => {
-  await go(page, '/');
-  await page.evaluate(() => { window.__marker = 1; });
-  await page.click('.hdr__nav a[href="/loans/"]');
-  await page.waitForURL('**/loans/');
-  await page.waitForFunction(() => document.activeElement?.matches('h1, h1 *, main h1') || document.activeElement?.closest?.('h1'), null, { timeout: 4000 });
-  const s = await page.evaluate(() => ({ marker: window.__marker, title: document.title, page: document.body.dataset.page, cur: document.querySelector('.hdr__nav a[aria-current="page"]')?.getAttribute('href') }));
-  assert(s.marker === 1, 'full reload happened instead of a swap');
-  assert(/Loan/i.test(s.title), 'title not updated: ' + s.title);
-  assert(s.page === 'loans', 'body page not updated');
-  assert(s.cur === '/loans/', 'nav aria-current not updated');
-  await page.goBack();
-  await page.waitForURL(BASE + '/');
-  await page.waitForFunction(() => document.body.dataset.page === 'home');
-  return s.title;
-}, { motion: true });
 
 // ------------------------------------------------------------------ calculator
 await test('Calculator: interest is 2.8% of principal per month, edges are refused', async (page) => {
   await go(page, '/loans/');
   const inp = page.locator('[data-calculator] [data-amount-input]').first();
-  const read = () => page.evaluate(() => Object.fromEntries([...document.querySelectorAll('[data-calculator] [data-calc]')].map((o) => [o.dataset.calc, o.querySelector('.sr-only')?.textContent.replace(/\s+/g, ' ').trim()])));
+  const read = () => page.evaluate(() => Object.fromEntries([...document.querySelectorAll('[data-calculator] [data-calc]')].map((o) => [o.dataset.calc, o.textContent.replace(/\s+/g, ' ').trim()])));
   const err = () => page.locator('[data-calculator] [data-amount-error]').first();
   const out = [];
   // default 10M × 3
@@ -276,7 +223,7 @@ await test('Apply: progress is saved and offered back on return', async (page) =
   assert(await page.locator('input[name="product"][value="asset"]').isChecked(), 'product not restored');
 });
 
-await test('Apply on mobile: the file ledger opens as a bottom sheet and Esc closes it', async (page) => {
+await test('Apply on mobile: the file summary opens in place and Esc closes it', async (page) => {
   await go(page, '/apply/?product=salary');
   const peek = page.locator('[data-afile-toggle]');
   assert(await peek.isVisible(), 'no sheet toggle on mobile');
@@ -317,42 +264,20 @@ await test('Keyboard: skip link is first and moves focus to main', async (page) 
   assert(id === 'main', 'focus after skip: ' + id);
 });
 
-await test('Keyboard: K and / open the palette, typing filters, Enter navigates, Esc closes', async (page) => {
-  await go(page, '/');
-  await page.keyboard.press('k');
-  assert(await page.locator('[data-palette]').evaluate((d) => d.open), 'K did not open');
-  await page.keyboard.press('Escape');
-  assert(!(await page.locator('[data-palette]').evaluate((d) => d.open)), 'Esc did not close');
-  await page.keyboard.press('/');
-  assert(await page.locator('[data-palette]').evaluate((d) => d.open), '/ did not open');
-  await page.keyboard.type('licence');
-  const opts = await page.locator('[data-palette-list] .palette__opt').allInnerTexts();
-  assert(opts.length && /licen/i.test(opts[0]), 'filter: ' + opts.join(','));
-  await page.keyboard.press('Enter');
-  await page.waitForURL('**/licence/**');
-  return `${opts.length} results for "licence"`;
-});
-
-await test('Keyboard: G toggles the grid overlay (not while typing)', async (page) => {
-  await go(page, '/');
-  await page.keyboard.press('g');
-  assert(await page.locator('[data-gridov]').isVisible(), 'G did not show grid');
-  await page.keyboard.press('g');
-  assert(await page.locator('[data-gridov]').isHidden(), 'G did not hide grid');
-  await go(page, '/contact/');
-  await page.locator('[name="name"]').focus();
-  await page.keyboard.press('g');
-  assert(await page.locator('[data-gridov]').isHidden(), 'G fired while typing');
-});
-
-await test('Keyboard: Index dialog opens, traps focus and returns it', async (page) => {
-  await go(page, '/');
-  const btn = page.locator('[data-index-open]').first();
-  await btn.focus(); await page.keyboard.press('Enter');
-  assert(await page.locator('[data-index]').evaluate((d) => d.open), 'index not open');
-  await page.keyboard.press('Escape');
-  const back = await page.evaluate(() => document.activeElement?.hasAttribute('data-index-open'));
-  assert(back, 'focus not returned');
+await test('Apply: the amount and term sliders are visible on step 2 and answer the keyboard', async (page) => {
+  await go(page, '/apply/?product=salary');
+  await page.click('[data-next]');
+  const amt = page.locator('[data-step="2"] [data-slider="amount"]');
+  const term = page.locator('[data-step="2"] [data-slider="term"]');
+  assert(await amt.isVisible() && await term.isVisible(), 'a slider is hidden on step 2');
+  const box = await amt.boundingBox();
+  assert(box && box.width > 100 && box.height >= 40, 'amount slider has no size: ' + JSON.stringify(box));
+  await amt.focus(); await page.keyboard.press('End');
+  assert((await amt.getAttribute('aria-valuenow')) === '50000000', 'End did not set 50M');
+  await term.focus(); await page.keyboard.press('End');
+  assert((await term.getAttribute('aria-valuenow')) === '6', 'End did not set 6 months');
+  const file = (await page.locator('[data-afile]').innerText()).replace(/\s+/g, ' ');
+  assert(/50,000,000/.test(file) && /6 months/.test(file), 'file summary did not follow: ' + file.slice(0, 200));
 });
 
 await test('Licence lightbox: opens, zooms with + and closes with Esc', async (page) => {
@@ -365,20 +290,121 @@ await test('Licence lightbox: opens, zooms with + and closes with Esc', async (p
   assert(!(await page.locator('dialog[open]').count()), 'lightbox did not close');
 });
 
-await test('No-JS: every page still shows content and the preloader never blocks', async (page) => {
+await test('No-JS: every page shows its content and the navigation links', async (page) => {
   const bad = [];
-  for (const p of ['/', '/loans/', '/apply/', '/contact/', '/licence/']) {
+  for (const p of ['/', '/loans/', '/apply/', '/contact/', '/licence/', '/faq/']) {
     await go(page, p);
     const vis = await page.evaluate(() => {
-      const l = document.querySelector('[data-loader]');
       const h1 = document.querySelector('h1');
+      const nav = document.querySelector('.primary-nav');
+      const menuBtn = document.querySelector('[data-menu-toggle]');
       const r = h1?.getBoundingClientRect();
-      return { loader: l ? getComputedStyle(l).display !== 'none' && getComputedStyle(l).visibility !== 'hidden' && Number(getComputedStyle(l).opacity) > 0 : false, h1: !!r && r.height > 0 };
+      const links = nav ? [...nav.querySelectorAll('a')].filter((a) => a.getBoundingClientRect().height > 0).length : 0;
+      return { h1: !!r && r.height > 0, links, menuBtn: !!menuBtn && getComputedStyle(menuBtn).display !== 'none' };
     });
-    if (vis.loader || !vis.h1) bad.push(p + JSON.stringify(vis));
+    if (!vis.h1 || vis.links < 5 || vis.menuBtn) bad.push(p + JSON.stringify(vis));
   }
   assert(!bad.length, bad.join(' '));
-}, { js: false });
+}, { js: false, width: 390 });
+
+// ------------------------------------------------------------------ navigation (new design)
+await test('Desktop: five nav links and the phone number show; no menu button', async (page) => {
+  await go(page, '/');
+  const s = await page.evaluate(() => ({
+    links: [...document.querySelectorAll('.primary-nav a')].filter((a) => a.getBoundingClientRect().height > 0).length,
+    menu: getComputedStyle(document.querySelector('[data-menu-toggle]')).display,
+    phone: document.querySelector('.header-phone') ? getComputedStyle(document.querySelector('.header-phone')).display : 'none',
+  }));
+  assert(s.links === 5, 'nav links: ' + s.links);
+  assert(s.menu === 'none', 'menu button visible on desktop');
+  assert(s.phone !== 'none', 'phone hidden at 1280');
+}, { width: 1280 });
+
+await test('Mobile menu: opens, lists every page, locks scroll, Esc closes and returns focus', async (page) => {
+  await go(page, '/');
+  const btn = page.locator('[data-menu-toggle]');
+  assert(await btn.isVisible(), 'no menu button at 390');
+  assert(await page.locator('.primary-nav').isHidden(), 'desktop nav still showing at 390');
+  assert(await page.locator('[data-menu]').isHidden(), 'menu open at start');
+  await btn.click();
+  assert(await page.locator('[data-menu]').isVisible(), 'menu did not open');
+  assert((await btn.getAttribute('aria-expanded')) === 'true', 'aria-expanded not true');
+  const n = await page.locator('[data-menu] a[href]').count();
+  assert(n >= 12, 'menu lists only ' + n + ' links');
+  assert(await page.evaluate(() => document.body.classList.contains('menu-open')), 'page scroll not locked');
+  const focus = await page.evaluate(() => document.activeElement?.closest('[data-menu]') !== null);
+  assert(focus, 'focus not moved into the menu');
+  await page.keyboard.press('Escape');
+  assert(await page.locator('[data-menu]').isHidden(), 'Esc did not close');
+  assert(await page.evaluate(() => document.activeElement?.hasAttribute('data-menu-toggle')), 'focus not returned to the button');
+  await btn.click();
+  await page.locator('[data-menu] a[href$="/loans/"]').first().click();
+  await page.waitForURL('**/loans/');
+  assert(await page.locator('[data-menu]').isHidden(), 'menu still open on the next page');
+  return n + ' links in the menu';
+}, { width: 390 });
+
+await test('Layout: no sideways scrolling on any page at 320, 390 and 1024', async (page) => {
+  const pages = ['/', '/about/', '/loans/', '/how-we-lend/', '/terms/', '/who-we-serve/', '/team/', '/licence/', '/faq/', '/contact/', '/apply/', '/profile/', '/privacy/'];
+  const bad = [];
+  for (const w of [320, 390, 1024]) {
+    await page.setViewportSize({ width: w, height: 800 });
+    for (const p of pages) {
+      await page.goto(BASE + p, { waitUntil: 'load' });
+      const over = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      if (over > 0) bad.push(`${w}px ${p} +${over}px`);
+    }
+  }
+  assert(!bad.length, bad.join(' · '));
+  return `${pages.length} pages × 3 widths`;
+});
+
+await test('FAQ: native accordions open and close; all 15 answers present', async (page) => {
+  await go(page, '/faq/');
+  const n = await page.locator('details.acc__item').count();
+  assert(n === 15, 'FAQ items: ' + n);
+  const first = page.locator('details.acc__item').first();
+  assert(!(await first.evaluate((d) => d.open)), 'first item open at start');
+  await first.locator('summary').click();
+  assert(await first.evaluate((d) => d.open), 'summary click did not open');
+  assert(await first.locator('.acc__panel').isVisible(), 'answer not visible');
+  await first.locator('summary').click();
+  assert(!(await first.evaluate((d) => d.open)), 'did not close');
+});
+
+await test('About: core values accordion starts with the first value open', async (page) => {
+  await go(page, '/about/');
+  const open = await page.locator('details.acc__item[open]').count();
+  assert(open === 1, 'open items: ' + open);
+});
+
+await test('How we lend: the self-check answers appear after all six questions', async (page) => {
+  await go(page, '/how-we-lend/');
+  const out = page.locator('[data-selfcheck-out]');
+  assert(await out.isHidden(), 'answers shown before answering');
+  for (let i = 1; i <= 6; i++) await page.locator(`input[name="q${i}"][value="yes"]`).check({ force: true });
+  assert(await out.isVisible(), 'answers not shown after six');
+  assert(/guide, not a decision/.test(await out.innerText()), 'wrong answer text');
+});
+
+await test('High contrast: toggle sets the mode and it is remembered', async (page) => {
+  await go(page, '/');
+  const t = page.locator('[data-contrast-toggle]');
+  await t.click();
+  assert(await page.evaluate(() => document.documentElement.dataset.contrast === 'high'), 'contrast not set');
+  assert((await t.getAttribute('aria-pressed')) === 'true', 'aria-pressed not true');
+  await page.reload({ waitUntil: 'networkidle' });
+  assert(await page.evaluate(() => document.documentElement.dataset.contrast === 'high'), 'contrast not remembered');
+});
+
+await test('Back to top: appears after scrolling and returns to the top', async (page) => {
+  await go(page, '/loans/');
+  assert(!(await page.locator('.to-top.is-on').count()), 'shown at the top');
+  await page.evaluate(() => window.scrollTo(0, 2600));
+  await page.waitForSelector('.to-top.is-on', { timeout: 2000 });
+  await page.locator('.to-top').click();
+  await page.waitForFunction(() => window.scrollY < 5, null, { timeout: 4000 });
+});
 
 await browser.close();
 const pass = results.filter((r) => r.ok).length;

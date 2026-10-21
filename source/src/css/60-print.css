@@ -1,32 +1,29 @@
-@layer print {
-  .print-only { display: none; }
-  @media print {
-    @page { size: A4; margin: 16mm 14mm; }
-    html, body { background: #fff !important; color: #000 !important; font-size: 11pt; }
-    .hdr, .rail, .folio, .ftr, .loader, .curtain, .cursor, .gridov, .totop, .skip, .span-layer, .ticker, .no-print,
-    .hero__rosette, .grain::before, .vignette::after, dialog, .notes { display: none !important; }
-    .shell { padding: 0 !important; }
-    .section, .is-dark, .is-paper-2 { background: #fff !important; color: #000 !important; padding-block: 8mm !important; --fg: #000; --fg-muted: #333; --line: #999; }
-    .print-only { display: block !important; }
-    a { color: #000; text-decoration: none; }
-    .btn, .copy, .chips, .slider { display: none !important; }
-    [data-lines] .line-inner, [data-reveal] { transform: none !important; opacity: 1 !important; }
-    .ph { clip-path: none !important; }
-    h1, h2, h3 { break-after: avoid; color: #000 !important; -webkit-text-stroke: 0 !important; }
-    section, li, tr, .ticket { break-inside: avoid; }
-    .print-head { display: flex !important; justify-content: space-between; align-items: center; border-bottom: 1px solid #000; padding-bottom: 4mm; margin-bottom: 6mm; }
-    .print-head img { width: 18mm; }
-    /* Apply: print the ticket once the file is assembled, otherwise the review */
-    body[data-page="apply"] .phero, body[data-page="apply"] .aspan, body[data-page="apply"] .afile, body[data-page="apply"] .anav, body[data-page="apply"] .resume, body[data-page="apply"] .done__intro { display: none !important; }
-    body[data-page="apply"] .ticket { grid-column: 1 / -1 !important; border: 1px solid #000; }
-    body[data-page="apply"] .ticket__stamp { mix-blend-mode: normal; }
-    body[data-page="apply"] .ticket__perf { display: none; }
-    /* "Print this checklist" on How we lend prints the checklist alone */
-    html.print-checklist main > *:not(#eligibility), html.print-checklist #eligibility > .wrap > *:not(.twoup:first-of-type),
-    html.print-checklist #eligibility .twoup > .panel:not(#documents) { display: none !important; }
-    html.print-checklist #eligibility .twoup { display: block !important; }
-    html.print-checklist #documents { border: 0; padding: 0; }
-    /* Documents checklist */
-    .doclist .check input { border: 1px solid #000 !important; }
-  }
+/* Print: the profile, the documents checklist and the application ticket print cleanly */
+.print-only { display: none; }
+@media print {
+  @page { size: A4; margin: 16mm 14mm; }
+  html, body { background: #fff !important; color: #000 !important; font-size: 11pt; }
+  .site-header, .menu, .site-footer, .to-top, .skip, .no-print, .notes, dialog, .btn, .copy, .slider, .cta-band, .next-links, .crumbs, .tool { display: none !important; }
+  .section, .section--surface, .section--night, .page-head, .hero, .nf { background: #fff !important; color: #000 !important; padding-block: 8mm !important; }
+  .section--night *, .ledgercard * { color: #000 !important; }
+  .print-only { display: block !important; }
+  a { color: #000; text-decoration: none; }
+  h1, h2, h3 { break-after: avoid; color: #000 !important; }
+  section, li, tr, .ticket, .card, .panel { break-inside: avoid; }
+  .container { max-width: none; padding-inline: 0; }
+  .print-head { display: flex !important; justify-content: space-between; align-items: center; border-bottom: 1px solid #000; padding-bottom: 4mm; margin-bottom: 6mm; }
+  .print-head img { width: 18mm; }
+  /* Apply: print the ticket once the file is assembled */
+  body[data-page="apply"] .page-head, body[data-page="apply"] .aspan, body[data-page="apply"] .afile, body[data-page="apply"] .anav, body[data-page="apply"] .resume, body[data-page="apply"] .done__intro { display: none !important; }
+  body[data-page="apply"] .done__grid { display: block; }
+  body[data-page="apply"] .ticket { border: 1px solid #000; box-shadow: none; }
+  body[data-page="apply"] .ticket__perf { display: none; }
+  /* "Print this checklist" prints the checklist alone */
+  html.print-checklist main > *:not(#eligibility) { display: none !important; }
+  html.print-checklist #eligibility .section-head, html.print-checklist #eligibility .callout-row, html.print-checklist #eligibility .two-up > .panel:not(#documents) { display: none !important; }
+  html.print-checklist #eligibility .two-up { display: block !important; }
+  html.print-checklist #documents { border: 0; padding: 0; }
+  .doclist .check input { border: 1px solid #000 !important; background: #fff !important; }
+  .doclist .print-head { display: flex !important; }
+  .profile-doc { max-width: none; }
 }

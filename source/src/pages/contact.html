@@ -1,56 +1,49 @@
-<section class="section phero grain" aria-labelledby="page-title">
-  <img class="phero__bg" src="/assets/img/texture/rosette-ink.svg" width="600" height="600" alt="" aria-hidden="true">
-  <div class="wrap">
-    <div class="runhead"><p class="label muted">End matter · Contact</p><p class="label muted">Kampala office</p></div>
-    <div class="grid phero__grid">
-      <p class="phero__num s-1"><span class="pier-sq" aria-hidden="true"></span>10</p>
-      <div class="s-8 o-2">
-        <h1 class="h1 phero__title" id="page-title" data-lines>Contact us</h1>
-        <p class="phero__lede mt-6">Start your loan enquiry by email, or contact our Kampala team for guidance on the facility and documents required. We help you prepare a complete application.</p>
-      </div>
-    </div>
+<section class="page-head" aria-labelledby="page-title">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Contact</li></ol></nav>
+    <h1 id="page-title">Contact us</h1>
+    <p class="lede">Start your loan enquiry by email, or contact our Kampala team for guidance on the facility and documents required. We help you prepare a complete application.</p>
   </div>
 </section>
 
-<section class="section section--top0 contact" aria-labelledby="direct-title">
-  <div class="wrap grid contact__grid">
+<section class="section contact" aria-labelledby="direct-title">
+  <div class="container">
     <h2 class="sr-only" id="direct-title">Office, telephone and email</h2>
-    <dl class="contactcard s-7 md-s-12">
-      <div>
-        <x-tile name="pin"></x-tile>
-        <dt class="label">Office</dt>
-        <dd><address>Conrad Plaza, Plot&nbsp;24/25 Entebbe Road<br>Second Floor, Suite&nbsp;2 · Kampala, Uganda</address></dd>
-        <dd class="contactcard__acts"><a class="link-arrow" href="{{contact.maps}}" rel="noopener" target="_blank">Open in Maps<x-icon name="arrow-ne"></x-icon><span class="sr-only"> (opens in a new tab)</span></a><button class="copy" type="button" data-copy="{{contact.address}}" aria-label="Copy the office address"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></dd>
-      </div>
-      <div>
-        <x-tile name="landline"></x-tile>
-        <dt class="label">Telephone</dt>
-        <dd><a class="tnum" href="tel:{{contact.phone1}}">{{contact.phone1Text}}</a><button class="copy" type="button" data-copy="{{contact.phone1Text}}" aria-label="Copy {{contact.phone1Text}}"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></dd>
-        <dd><a class="tnum" href="tel:{{contact.phone2}}">{{contact.phone2Text}}</a><button class="copy" type="button" data-copy="{{contact.phone2Text}}" aria-label="Copy {{contact.phone2Text}}"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></dd>
-      </div>
-      <div>
-        <x-tile name="mail"></x-tile>
-        <dt class="label">Email</dt>
-        <dd><a href="mailto:{{contact.email}}">{{contact.email}}</a><button class="copy" type="button" data-copy="{{contact.email}}" aria-label="Copy the email address"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></dd>
-      </div>
-      <div>
-        <x-tile name="chat"></x-tile>
-        <dt class="label">WhatsApp</dt>
-        <dd><a class="tnum" href="https://wa.me/{{contact.whatsapp}}" rel="noopener" target="_blank">{{contact.whatsappText}}<span class="sr-only"> on WhatsApp (opens in a new tab)</span></a></dd>
-      </div>
-      <div>
-        <x-tile name="grid"></x-tile>
-        <dt class="label">Product range</dt>
-        <dd class="contactcard__prods"><a href="/loans/#school-fees">School Fees</a><span aria-hidden="true">·</span><a href="/loans/#salary">Salary</a><span aria-hidden="true">·</span><a href="/loans/#asset">Asset Finance</a><span aria-hidden="true">·</span><a href="/loans/#business">Business</a></dd>
-      </div>
-    </dl>
+    <div class="split split--7-5 split--top contact-grid">
+      <dl class="contact-list">
+        <div class="contact-item">
+          <x-tile name="pin"></x-tile>
+          <dt>Office</dt>
+          <dd><address>Conrad Plaza, Plot&nbsp;24/25 Entebbe Road<br>Second Floor, Suite&nbsp;2 · Kampala, Uganda</address></dd>
+          <dd class="contact-item__acts"><a class="link-arrow" href="{{contact.maps}}" rel="noopener" target="_blank">Open in Maps<x-icon name="arrow-ne"></x-icon><span class="sr-only"> (opens in a new tab)</span></a><button class="copy" type="button" data-copy="{{contact.address}}" aria-label="Copy the office address"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></dd>
+        </div>
+        <div class="contact-item">
+          <x-tile name="landline"></x-tile>
+          <dt>Telephone</dt>
+          <dd><a class="tnum" href="tel:{{contact.phone1}}">{{contact.phone1Text}}</a><button class="copy" type="button" data-copy="{{contact.phone1Text}}" aria-label="Copy {{contact.phone1Text}}"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></dd>
+          <dd><a class="tnum" href="tel:{{contact.phone2}}">{{contact.phone2Text}}</a><button class="copy" type="button" data-copy="{{contact.phone2Text}}" aria-label="Copy {{contact.phone2Text}}"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></dd>
+        </div>
+        <div class="contact-item">
+          <x-tile name="mail"></x-tile>
+          <dt>Email</dt>
+          <dd><a href="mailto:{{contact.email}}">{{contact.email}}</a><button class="copy" type="button" data-copy="{{contact.email}}" aria-label="Copy the email address"><x-icon name="copy"></x-icon><span class="copy__t">Copy</span></button></dd>
+        </div>
+        <div class="contact-item">
+          <x-tile name="chat"></x-tile>
+          <dt>WhatsApp</dt>
+          <dd><a class="tnum" href="https://wa.me/{{contact.whatsapp}}" rel="noopener" target="_blank">{{contact.whatsappText}}<span class="sr-only"> on WhatsApp (opens in a new tab)</span></a></dd>
+        </div>
+        <div class="contact-item">
+          <x-tile name="grid"></x-tile>
+          <dt>Product range</dt>
+          <dd class="contact-item__prods"><a href="/loans/#school-fees">School Fees</a><span aria-hidden="true">·</span><a href="/loans/#salary">Salary</a><span aria-hidden="true">·</span><a href="/loans/#asset">Asset Finance</a><span aria-hidden="true">·</span><a href="/loans/#business">Business</a></dd>
+        </div>
+      </dl>
 
-    <aside class="s-4 o-9 md-s-12" aria-labelledby="hours-title">
-      <div class="opennow-card is-dark">
-        <img class="opennow-card__bg" src="/assets/img/texture/rosette-paper.svg" width="600" height="600" alt="" aria-hidden="true">
-        <h2 class="label accent" id="hours-title">Working hours</h2>
-        <p class="opennow-card__hours tnum">Monday – Friday<br>8:00 AM – 4:00 PM</p>
-        <p class="open-now needs-js mt-5" data-open-now role="status"><span class="open-now__sq" aria-hidden="true"></span><span data-open-now-text>Checking office hours</span></p>
+      <aside class="hours-card" aria-labelledby="hours-title">
+        <h2 id="hours-title">Working hours</h2>
+        <p class="hours-card__hours tnum">Monday – Friday<br>8:00 AM – 4:00 PM</p>
+        <p class="open-now needs-js mb-0" data-open-now role="status"><span class="open-now__sq" aria-hidden="true"></span><span data-open-now-text>Checking office hours</span></p>
         <ol class="week" data-week role="list" aria-label="Days the office is open">
           <li class="is-open"><abbr title="Monday">Mon</abbr></li>
           <li class="is-open"><abbr title="Tuesday">Tue</abbr></li>
@@ -60,31 +53,31 @@
           <li><abbr title="Saturday, closed">Sat</abbr></li>
           <li><abbr title="Sunday, closed">Sun</abbr></li>
         </ol>
-        <p class="opennow-card__note">Kampala time. Review time runs during office hours.<x-fn note="review"></x-fn></p>
-      </div>
-    </aside>
+        <p class="hours-card__note">Kampala time. Review time runs during office hours.<x-fn note="review"></x-fn></p>
+      </aside>
+    </div>
   </div>
 </section>
 
-<section class="section section--flush" aria-label="Biashara colleagues at the Kampala office">
-  <div class="wrap">
-    <figure class="fig band band--narrow" data-cursor="view">
-      <div class="fig__media"><x-img key="colleagues-office" sizes="(min-width: 1100px) 900px, 100vw"></x-img></div>
-      <figcaption class="figcap"><span class="figcap__n tnum" data-fig="1">Fig. 01</span><span class="figcap__t">Biashara colleagues at the Kampala office</span></figcaption>
+<section class="section section--tight section--top0" aria-label="Biashara colleagues at the Kampala office">
+  <div class="container">
+    <figure>
+      <x-img key="colleagues-office" sizes="(min-width: 1240px) 1200px, 100vw"></x-img>
+      <figcaption>Biashara colleagues at the Kampala office</figcaption>
     </figure>
   </div>
 </section>
 
-<section class="section is-paper-2 grain" id="enquiry" aria-labelledby="enq-title">
-  <div class="wrap grid">
-    <header class="s-4 md-s-12">
-      <p class="label accent">Enquiry · free</p>
-      <h2 class="h2 mt-4" id="enq-title" data-lines>Send an enquiry</h2>
-      <p class="secthead__lede">Ask about a facility or the documents it needs. Enquiries, applications and credit assessment are free.<x-fn note="charges"></x-fn></p>
-      <p class="mt-5"><a class="link-arrow" href="/apply/">Ready to apply? Assemble your file<x-icon name="arrow-right"></x-icon></a></p>
+<section class="section section--surface" id="enquiry" aria-labelledby="enq-title">
+  <div class="container split split--5-7 split--top">
+    <header>
+      <p class="eyebrow">Enquiry · free</p>
+      <h2 id="enq-title">Send an enquiry</h2>
+      <p class="lede">Ask about a facility or the documents it needs. Enquiries, applications and credit assessment are free.<x-fn note="charges"></x-fn></p>
+      <p><a class="link-arrow" href="/apply/">Ready to apply? Assemble your file<x-icon name="arrow-right"></x-icon></a></p>
     </header>
 
-    <form class="form s-7 o-6 md-s-12" data-enquiry novalidate aria-describedby="enq-note">
+    <form class="form panel" data-enquiry novalidate aria-describedby="enq-note">
       <div class="errsum" data-errsum tabindex="-1" hidden>
         <h2>There is a problem</h2>
         <ul data-errsum-list></ul>
@@ -124,9 +117,9 @@
       <div class="hp" aria-hidden="true"><label for="enq-website">Website</label><input id="enq-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
       <label class="check"><input type="checkbox" name="consent" required aria-describedby="enq-consent-e"><span>I agree that Biashara may use these details to reply to my enquiry. <a href="/privacy/">How information is handled</a></span></label>
       <p class="field__err" id="enq-consent-e" hidden></p>
-      <p class="callout callout--bar" id="enq-note">An enquiry is not an application, and an application does not guarantee a facility.<x-fn note="assessed"></x-fn></p>
+      <p class="callout mb-0" id="enq-note">An enquiry is not an application, and an application does not guarantee a facility.<x-fn note="assessed"></x-fn></p>
       <div class="form__actions">
-        <button class="btn" type="submit" data-cursor="apply" data-magnetic>Send enquiry<x-icon name="arrow-right"></x-icon></button>
+        <button class="btn btn--lg" type="submit">Send enquiry<x-icon name="arrow-right"></x-icon></button>
       </div>
       <div class="sendout" data-sendout hidden tabindex="-1" aria-live="polite"></div>
     </form>

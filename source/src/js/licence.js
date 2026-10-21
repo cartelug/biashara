@@ -1,5 +1,5 @@
 // Licence page: numbered hotspots on the certificate tied to the details ledger,
-// a zoom-and-pan lightbox, and the red span drawn under the licence number.
+// and a zoom-and-pan lightbox.
 import { $, $$, clamp, reducedMotion } from './utils.js';
 
 export function mountLicence(main) {
@@ -22,7 +22,7 @@ export function mountLicence(main) {
     if (open) {
       b.setAttribute('aria-expanded', 'true'); b.classList.add('is-on');
       const row = rowOf(b); row?.classList.add('is-on');
-      if (row && !window.matchMedia('(min-width: 1100px)').matches) row.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
+      if (row && !window.matchMedia('(min-width: 900px)').matches) row.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
     }
   };
   spots.forEach((b) => {
@@ -38,14 +38,6 @@ export function mountLicence(main) {
     listen(row, 'pointerenter', () => light(b, true));
     listen(row, 'pointerleave', () => light(b, false));
   });
-
-  // The span under the licence number
-  const span = $('[data-licence-span]', main);
-  if (span) {
-    if (window.gsap && !reducedMotion()) {
-      window.gsap.fromTo(span, { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: 'expo.inOut', delay: 0.2, scrollTrigger: { trigger: span, start: 'top 90%', once: true } });
-    } else span.classList.add('is-drawn');
-  }
 
   // Lightbox with zoom and pan
   const dlg = $('[data-lightbox]', main);

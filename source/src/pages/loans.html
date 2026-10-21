@@ -1,155 +1,119 @@
-<section class="section phero grain" aria-labelledby="page-title">
-  <img class="phero__bg" src="/assets/img/texture/rosette-ink.svg" width="600" height="600" alt="" aria-hidden="true">
-  <div class="wrap">
-    <div class="runhead"><p class="label muted">Part Two · What we offer</p><p class="label muted">Four products · One set of terms</p></div>
-    <div class="grid phero__grid">
-      <p class="phero__num s-1"><span class="pier-sq" aria-hidden="true"></span>03</p>
-      <div class="s-8 o-2">
-        <h1 class="h1 phero__title" id="page-title" data-lines>Our loan solutions</h1>
-        <p class="phero__lede mt-6">Our main purpose is short&#8209;term bridge financing for temporary cash&#8209;flow gaps. Four products support education, salary, asset and business needs, with a maximum term of six months.</p>
-      </div>
-    </div>
-    <dl class="stats stats--4 mt-8">
-      <div class="stat"><dt class="stat__label label"><x-icon name="briefcase"></x-icon>Products</dt><dd class="stat__fig figure"><x-odo value="04"></x-odo></dd><dd class="stat__cap">Short&#8209;term facilities</dd></div>
-      <div class="stat"><dt class="stat__label label"><x-icon name="coins"></x-icon>Range</dt><dd class="stat__fig figure"><x-odo value="1–50M" label="1 million to 50 million"></x-odo></dd><dd class="stat__cap">UGX per facility</dd></div>
-      <div class="stat stat--red stat--outline"><dt class="stat__label label"><x-icon name="percent"></x-icon>Interest</dt><dd class="stat__fig figure"><x-odo value="2.8%"></x-odo><x-fn note="interest"></x-fn></dd><dd class="stat__cap">Per month, all products</dd></div>
-      <div class="stat"><dt class="stat__label label"><x-icon name="hourglass"></x-icon>Term</dt><dd class="stat__fig figure"><x-odo value="6" label="6 months"></x-odo><span class="stat__unit">months</span></dd><dd class="stat__cap">Maximum tenure</dd></div>
+<section class="page-head" aria-labelledby="page-title">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Loans</li></ol></nav>
+    <h1 id="page-title">Our loan solutions</h1>
+    <p class="lede">Our main purpose is short&#8209;term bridge financing for temporary cash&#8209;flow gaps. Four products support education, salary, asset and business needs, with a maximum term of six months.</p>
+    <dl class="stats stats--4 stats--light mt-6">
+      <div class="stat"><dt><x-icon name="briefcase"></x-icon>Products</dt><dd class="stat__fig">04</dd><dd class="stat__cap">Short&#8209;term facilities</dd></div>
+      <div class="stat"><dt><x-icon name="coins"></x-icon>Range</dt><dd class="stat__fig">1–50M</dd><dd class="stat__cap">UGX per facility</dd></div>
+      <div class="stat stat--accent"><dt><x-icon name="percent"></x-icon>Interest</dt><dd class="stat__fig">2.8%<x-fn note="interest"></x-fn></dd><dd class="stat__cap">Per month, all products</dd></div>
+      <div class="stat"><dt><x-icon name="hourglass"></x-icon>Term</dt><dd class="stat__fig">6<span class="stat__unit">months</span></dd><dd class="stat__cap">Maximum tenure</dd></div>
     </dl>
   </div>
 </section>
 
-<section class="section section--top0" id="products" aria-labelledby="products-title">
-  <div class="wrap">
+<section class="section" id="products" aria-labelledby="products-title">
+  <div class="container">
     <h2 class="sr-only" id="products-title">The four products</h2>
-    <ol class="rows prodrows" role="list">
-      <li class="row prodrow" id="school-fees"><span class="row__n tnum">01</span><x-tile name="book"></x-tile><h3 class="row__t">School Fees Loans</h3><div class="row__d"><p>Short&#8209;term finance for eligible clients to meet school&#8209;fee obligations and manage education cash flow across a term.</p><p class="prodrow__cta"><a class="link-arrow" href="/apply/?product=school-fees" data-cursor="apply">Apply for this product<x-icon name="arrow-right"></x-icon></a><a class="link-arrow" href="https://wa.me/{{contact.whatsapp}}?text=Hello%20Biashara%2C%20I%20would%20like%20to%20ask%20about%20School%20Fees%20Loans." rel="noopener" target="_blank"><x-icon name="chat"></x-icon>Ask on WhatsApp<span class="sr-only"> about School Fees Loans (opens in a new tab)</span></a></p></div></li>
-      <li class="row prodrow" id="salary"><span class="row__n tnum">02</span><x-tile name="wallet"></x-tile><h3 class="row__t">Salary Loans</h3><div class="row__d"><p>Short&#8209;term facilities for eligible salaried clients with approved personal or household needs, repaid against verified income.</p><p class="prodrow__cta"><a class="link-arrow" href="/apply/?product=salary" data-cursor="apply">Apply for this product<x-icon name="arrow-right"></x-icon></a><a class="link-arrow" href="https://wa.me/{{contact.whatsapp}}?text=Hello%20Biashara%2C%20I%20would%20like%20to%20ask%20about%20Salary%20Loans." rel="noopener" target="_blank"><x-icon name="chat"></x-icon>Ask on WhatsApp<span class="sr-only"> about Salary Loans (opens in a new tab)</span></a></p></div></li>
-      <li class="row prodrow" id="asset"><span class="row__n tnum">03</span><x-tile name="key"></x-tile><h3 class="row__t">Asset Financing</h3><div class="row__d"><p>Finance for approved vehicle, land and other productive asset purchases, structured within a maximum six&#8209;month term.</p><p class="prodrow__cta"><a class="link-arrow" href="/apply/?product=asset" data-cursor="apply">Apply for this product<x-icon name="arrow-right"></x-icon></a><a class="link-arrow" href="https://wa.me/{{contact.whatsapp}}?text=Hello%20Biashara%2C%20I%20would%20like%20to%20ask%20about%20Asset%20Financing." rel="noopener" target="_blank"><x-icon name="chat"></x-icon>Ask on WhatsApp<span class="sr-only"> about Asset Financing (opens in a new tab)</span></a></p></div></li>
-      <li class="row prodrow" id="business"><span class="row__n tnum">04</span><x-tile name="store"></x-tile><h3 class="row__t">Business Loans</h3><div class="row__d"><p>Working&#8209;capital finance for stock purchase, cash&#8209;flow gaps and other approved business needs.</p><p class="prodrow__cta"><a class="link-arrow" href="/apply/?product=business" data-cursor="apply">Apply for this product<x-icon name="arrow-right"></x-icon></a><a class="link-arrow" href="https://wa.me/{{contact.whatsapp}}?text=Hello%20Biashara%2C%20I%20would%20like%20to%20ask%20about%20Business%20Loans." rel="noopener" target="_blank"><x-icon name="chat"></x-icon>Ask on WhatsApp<span class="sr-only"> about Business Loans (opens in a new tab)</span></a></p></div></li>
-    </ol>
+    <x-products tpl="product-row"></x-products>
   </div>
 </section>
 
-<section class="section is-paper-2 tenuresec" id="tenure" aria-labelledby="tenure-title">
-  <div class="tenure__pin" data-tenure-pin>
-    <div class="wrap">
-      <header class="secthead grid">
-        <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>A</p>
-        <div class="secthead__body s-7 o-2">
-          <h2 class="h2" id="tenure-title" data-lines>Six months, at most</h2>
-          <p class="secthead__lede">Every product shares one maximum term. Choose a product to run its marker along the ruler.</p>
-        </div>
-      </header>
-      <div class="tenure" data-tenure>
-        <div class="tenure__track">
-          <span class="tenure__line" data-tenure-line></span>
-          <span class="tenure__marker" data-tenure-marker aria-hidden="true"><i></i><span data-tenure-name>School Fees Loans · up to 6 months</span></span>
-          <ol class="tenure__ticks" role="list" aria-hidden="true">
-            <li><span>Start</span></li><li><span>1</span></li><li><span>2</span></li><li><span>3</span></li><li><span>4</span></li><li><span>5</span></li><li><span>6 months</span></li>
-          </ol>
-        </div>
-        <div class="tenure__products" role="group" aria-label="Products on the ruler">
-          <button type="button" data-tenure-product="School Fees Loans" aria-pressed="true"><span class="n tnum">01</span><x-tile name="book"></x-tile><span class="tenure__pname">School Fees</span><span class="m tnum">≤ 6 months</span></button>
-          <button type="button" data-tenure-product="Salary Loans" aria-pressed="false"><span class="n tnum">02</span><x-tile name="wallet"></x-tile><span class="tenure__pname">Salary</span><span class="m tnum">≤ 6 months</span></button>
-          <button type="button" data-tenure-product="Asset Financing" aria-pressed="false"><span class="n tnum">03</span><x-tile name="key"></x-tile><span class="tenure__pname">Asset Financing</span><span class="m tnum">≤ 6 months</span></button>
-          <button type="button" data-tenure-product="Business Loans" aria-pressed="false"><span class="n tnum">04</span><x-tile name="store"></x-tile><span class="tenure__pname">Business</span><span class="m tnum">≤ 6 months</span></button>
-        </div>
-      </div>
+<section class="section section--surface" id="tenure" aria-labelledby="tenure-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Term</p>
+      <h2 id="tenure-title">Six months, at most</h2>
+      <p class="lede">Every product shares one maximum term.</p>
+    </div>
+    <div class="termbar">
+      <ol class="termbar__track" role="list" aria-label="Months one to six"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li></ol>
+      <p class="termbar__scale"><span>Start</span><span>6 months</span></p>
+      <ul class="termbar__products" role="list">
+        <li><x-tile name="book"></x-tile><span>School Fees<small class="tnum">≤ 6 months</small></span></li>
+        <li><x-tile name="wallet"></x-tile><span>Salary<small class="tnum">≤ 6 months</small></span></li>
+        <li><x-tile name="key"></x-tile><span>Asset Financing<small class="tnum">≤ 6 months</small></span></li>
+        <li><x-tile name="store"></x-tile><span>Business<small class="tnum">≤ 6 months</small></span></li>
+      </ul>
     </div>
   </div>
 </section>
 
-<section class="section grain" id="matrix" aria-labelledby="matrix-title">
-  <div class="wrap">
-    <header class="secthead grid">
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>B</p>
-      <div class="secthead__body s-7 o-2">
-        <h2 class="h2" id="matrix-title" data-lines>Product matrix</h2>
-        <p class="secthead__lede">One page, every product, side by side. Figures shown are the standard published terms; final approved terms follow assessment.<x-fn note="figures"></x-fn></p>
-      </div>
-    </header>
+<section class="section" id="matrix" aria-labelledby="matrix-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Compare</p>
+      <h2 id="matrix-title">Product matrix</h2>
+      <p class="lede">One page, every product, side by side. Figures shown are the standard published terms; final approved terms follow assessment.<x-fn note="figures"></x-fn></p>
+    </div>
     <table class="matrix">
       <caption class="sr-only">Product matrix: amount, term, interest, typical purpose and security for each product</caption>
       <thead><tr><th scope="col">Product</th><th scope="col">Amount (UGX)</th><th scope="col">Term</th><th scope="col">Interest</th><th scope="col">Typical purpose</th><th scope="col">Security</th></tr></thead>
       <tbody>
-        <tr><th scope="row"><x-tile name="book"></x-tile>School Fees</th><td class="num" data-label="Amount (UGX)">1M&nbsp;–&nbsp;50M</td><td class="num" data-label="Term">≤&nbsp;6 months</td><td class="num" data-label="Interest">2.8% p.m.</td><td class="txt" data-label="Typical purpose">Termly school&#8209;fee obligations</td><td class="txt" data-label="Security">As required by the facility</td></tr>
-        <tr><th scope="row"><x-tile name="wallet"></x-tile>Salary</th><td class="num" data-label="Amount (UGX)">1M&nbsp;–&nbsp;50M</td><td class="num" data-label="Term">≤&nbsp;6 months</td><td class="num" data-label="Interest">2.8% p.m.</td><td class="txt" data-label="Typical purpose">Approved personal or household needs</td><td class="txt" data-label="Security">Verified income; security if required</td></tr>
-        <tr><th scope="row"><x-tile name="key"></x-tile>Asset Financing</th><td class="num" data-label="Amount (UGX)">1M&nbsp;–&nbsp;50M</td><td class="num" data-label="Term">≤&nbsp;6 months</td><td class="num" data-label="Interest">2.8% p.m.</td><td class="txt" data-label="Typical purpose">Vehicle, land and other approved productive assets</td><td class="txt" data-label="Security">Financed asset and/or other approved security</td></tr>
-        <tr><th scope="row"><x-tile name="store"></x-tile>Business</th><td class="num" data-label="Amount (UGX)">1M&nbsp;–&nbsp;50M</td><td class="num" data-label="Term">≤&nbsp;6 months</td><td class="num" data-label="Interest">2.8% p.m.</td><td class="txt" data-label="Typical purpose">Stock, cash&#8209;flow gaps and working capital</td><td class="txt" data-label="Security">As required by the facility</td></tr>
+        <tr><th scope="row"><x-tile name="book"></x-tile>School Fees</th><td class="num" data-label="Amount (UGX)">1M&nbsp;–&nbsp;50M</td><td class="num" data-label="Term">≤&nbsp;6 months</td><td class="num" data-label="Interest">2.8% p.m.</td><td data-label="Typical purpose">Termly school&#8209;fee obligations</td><td data-label="Security">As required by the facility</td></tr>
+        <tr><th scope="row"><x-tile name="wallet"></x-tile>Salary</th><td class="num" data-label="Amount (UGX)">1M&nbsp;–&nbsp;50M</td><td class="num" data-label="Term">≤&nbsp;6 months</td><td class="num" data-label="Interest">2.8% p.m.</td><td data-label="Typical purpose">Approved personal or household needs</td><td data-label="Security">Verified income; security if required</td></tr>
+        <tr><th scope="row"><x-tile name="key"></x-tile>Asset Financing</th><td class="num" data-label="Amount (UGX)">1M&nbsp;–&nbsp;50M</td><td class="num" data-label="Term">≤&nbsp;6 months</td><td class="num" data-label="Interest">2.8% p.m.</td><td data-label="Typical purpose">Vehicle, land and other approved productive assets</td><td data-label="Security">Financed asset and/or other approved security</td></tr>
+        <tr><th scope="row"><x-tile name="store"></x-tile>Business</th><td class="num" data-label="Amount (UGX)">1M&nbsp;–&nbsp;50M</td><td class="num" data-label="Term">≤&nbsp;6 months</td><td class="num" data-label="Interest">2.8% p.m.</td><td data-label="Typical purpose">Stock, cash&#8209;flow gaps and working capital</td><td data-label="Security">As required by the facility</td></tr>
       </tbody>
     </table>
-    <p class="matrix__note label muted mt-4">p.m. = per month. Interest is quoted per month, not per year.</p>
+    <p class="matrix__note">p.m. = per month. Interest is quoted per month, not per year.</p>
 
-    <div class="twoup mt-9 fixedvaries">
+    <div class="two-up mt-7">
       <div class="panel">
-        <p class="panel__head label"><x-icon name="lock"></x-icon>What is fixed</p>
+        <p class="panel__head"><x-icon name="lock"></x-icon>What is fixed</p>
         <dl class="ledger">
-          <div><dt>Interest rate, all products</dt><dd>2.8% p.m.</dd></div>
-          <div><dt>Minimum facility</dt><dd>UGX&nbsp;1,000,000</dd></div>
-          <div><dt>Maximum facility</dt><dd>UGX&nbsp;50,000,000</dd></div>
-          <div><dt>Maximum tenure</dt><dd>6 months</dd></div>
+          <div class="ledger__row"><dt>Interest rate, all products</dt><dd>2.8% p.m.</dd></div>
+          <div class="ledger__row"><dt>Minimum facility</dt><dd>UGX&nbsp;1,000,000</dd></div>
+          <div class="ledger__row"><dt>Maximum facility</dt><dd>UGX&nbsp;50,000,000</dd></div>
+          <div class="ledger__row"><dt>Maximum tenure</dt><dd>6 months</dd></div>
         </dl>
       </div>
-      <div class="panel panel--varies">
-        <p class="panel__head label"><x-icon name="scale"></x-icon>What varies by client</p>
+      <div class="panel">
+        <p class="panel__head"><x-icon name="scale"></x-icon>What varies by client</p>
         <dl class="ledger">
-          <div><dt>Approved amount and tenure</dt><dd>Assessed</dd></div>
-          <div><dt>Security requirement</dt><dd>Assessed</dd></div>
-          <div><dt>Repayment arrangement</dt><dd>Assessed</dd></div>
-          <div><dt>Processing fee &amp; other charges</dt><dd>Disclosed</dd></div>
+          <div class="ledger__row"><dt>Approved amount and tenure</dt><dd>Assessed</dd></div>
+          <div class="ledger__row"><dt>Security requirement</dt><dd>Assessed</dd></div>
+          <div class="ledger__row"><dt>Repayment arrangement</dt><dd>Assessed</dd></div>
+          <div class="ledger__row"><dt>Processing fee &amp; other charges</dt><dd>Disclosed</dd></div>
         </dl>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section is-paper-2 grain" id="cost" aria-labelledby="cost-title">
-  <div class="wrap">
-    <header class="secthead grid">
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>C</p>
-      <div class="secthead__body s-6 o-2">
-        <h2 class="h2" id="cost-title" data-lines>Indicative cost</h2>
-        <p class="secthead__lede">2.8% per month applies across all four products, calculated on the approved principal.</p>
-      </div>
-    </header>
+<section class="section section--surface" id="cost" aria-labelledby="cost-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Cost</p>
+      <h2 id="cost-title">Indicative cost</h2>
+      <p class="lede">2.8% per month applies across all four products, calculated on the approved principal.</p>
+    </div>
     <x-calc variant="loans"></x-calc>
   </div>
 </section>
 
 <section class="section" id="in-action" aria-labelledby="action-title">
-  <div class="wrap">
-    <header class="secthead grid">
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>D</p>
-      <div class="secthead__body s-7 o-2">
-        <h2 class="h2" id="action-title" data-lines>Financing in action</h2>
-        <p class="secthead__lede">Short&#8209;term credit is only useful if it lands somewhere productive. These are the two places it most often does.</p>
-      </div>
-    </header>
-    <div class="grid action">
-      <figure class="fig s-8" data-cursor="view">
-        <div class="fig__media"><x-img key="vehicle-acquisition" sizes="(min-width: 1100px) 62vw, 100vw"></x-img></div>
-        <figcaption class="figcap"><span class="figcap__n tnum" data-fig="1">Fig. 01</span><span class="figcap__t">Asset finance / vehicle acquisition</span></figcaption>
-      </figure>
-      <div class="s-3 o-10 self-end action__text" data-reveal>
-        <p class="label accent"><x-icon name="key"></x-icon> Vehicles &amp; land</p>
-        <p class="mt-4">Asset financing can support approved vehicle or land purchases, helping clients acquire productive assets through a clearly assessed short&#8209;term facility.</p>
-      </div>
-      <div class="s-3 o-1 action__text action__text--b" data-reveal>
-        <p class="label accent"><x-icon name="store"></x-icon> Stock &amp; cash flow</p>
-        <p class="mt-4">Business loans keep shelves stocked and suppliers paid while receivables catch up — what shuts down most small enterprises is timing, not demand.</p>
-      </div>
-      <figure class="fig s-8 o-5 action__fig--b" data-cursor="view">
-        <div class="fig__media"><x-img key="stock-cash-flow" sizes="(min-width: 1100px) 62vw, 100vw"></x-img></div>
-        <figcaption class="figcap"><span class="figcap__n tnum" data-fig="2">Fig. 02</span><span class="figcap__t">Practical finance supporting movement and growth</span></figcaption>
-      </figure>
-      <figure class="fig s-6 o-2 action__fig--c" data-cursor="view">
-        <div class="fig__media"><x-img key="real-enterprise" sizes="(min-width: 1100px) 46vw, 100vw"></x-img></div>
-        <figcaption class="figcap"><span class="figcap__n tnum" data-fig="3">Fig. 03</span><span class="figcap__t">Productive assets · Real enterprise</span></figcaption>
-      </figure>
-      <div class="s-4 o-9 self-end" data-reveal>
-        <a class="btn" href="/apply/" data-cursor="apply" data-magnetic>Apply now<x-icon name="arrow-right"></x-icon></a>
-      </div>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">In practice</p>
+      <h2 id="action-title">Financing in action</h2>
+      <p class="lede">Short&#8209;term credit is only useful if it lands somewhere productive. These are the two places it most often does.</p>
     </div>
+    <div class="cards cards--2">
+      <article class="card card--media">
+        <figure><x-img key="vehicle-acquisition" sizes="(min-width: 1024px) 560px, (min-width: 600px) 46vw, 100vw"></x-img><figcaption>Asset finance / vehicle acquisition</figcaption></figure>
+        <div class="card__body"><p class="eyebrow mb-0"><x-icon name="key"></x-icon>Vehicles &amp; land</p><p>Asset financing can support approved vehicle or land purchases, helping clients acquire productive assets through a clearly assessed short&#8209;term facility.</p></div>
+      </article>
+      <article class="card card--media">
+        <figure><x-img key="stock-cash-flow" sizes="(min-width: 1024px) 560px, (min-width: 600px) 46vw, 100vw"></x-img><figcaption>Practical finance supporting movement and growth</figcaption></figure>
+        <div class="card__body"><p class="eyebrow mb-0"><x-icon name="store"></x-icon>Stock &amp; cash flow</p><p>Business loans keep shelves stocked and suppliers paid while receivables catch up — what shuts down most small enterprises is timing, not demand.</p></div>
+      </article>
+    </div>
+    <figure class="mt-6">
+      <x-img key="real-enterprise" sizes="(min-width: 1240px) 1200px, 100vw"></x-img>
+      <figcaption>Productive assets · Real enterprise</figcaption>
+    </figure>
+    <p class="mt-6 mb-0"><a class="btn btn--lg" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a></p>
   </div>
 </section>
 <x-notes></x-notes>

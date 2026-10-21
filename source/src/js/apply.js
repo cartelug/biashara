@@ -1,5 +1,5 @@
-// Apply: a five-step loan file. Left, the current step; right, the "Your file" ledger
-// (a bottom sheet on small screens). The red span is the progress bar.
+// Apply: a five-step loan file. Left, the current step; right, the "Your file" summary
+// (a collapsible card on small screens).
 // The page never says a facility is approved: it prepares and sends an application.
 import { $, $$, store, announce, copyText, reducedMotion, fmtUGX, mq, withBase } from './utils.js';
 import { CONFIG } from './config.js';
@@ -30,7 +30,7 @@ export function mountApply(main) {
   const listen = (el, type, fn, o) => { el.addEventListener(type, fn, o); offs.push(() => el.removeEventListener(type, fn, o)); };
   const startedAt = Date.now();
 
-  const steps = $$('[data-step]', form);
+  const steps = $$('fieldset[data-step]', form);
   const errsum = $('[data-errsum]', form);
   const prevBtn = $('[data-prev]', form), nextBtn = $('[data-next]', form), submitBtn = $('[data-submit]', form);
   const savedOut = $('[data-saved]', form);
@@ -173,9 +173,8 @@ export function mountApply(main) {
   }
 
   // ---- steps
-  function go(n, { focus = true, animate = true, persist = true } = {}) {
+  function go(n, { focus = true, persist = true } = {}) {
     n = Math.min(5, Math.max(1, n));
-    const from = state.step;
     state.step = n;
     if (n === 5) { if (!state.ref) state.ref = makeReference(); renderReview(); }
     steps.forEach((s) => { s.hidden = Number(s.dataset.step) !== n; });
@@ -187,15 +186,8 @@ export function mountApply(main) {
       li.classList.toggle('is-current', i + 1 === n);
       if (i + 1 === n) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
     });
-    const p = (n - 1) / 4;
-    if (fill) {
-      if (window.gsap && animate && !reducedMotion()) window.gsap.to(fill, { scaleX: p, duration: 0.9, ease: 'expo.out' });
-      else fill.style.transform = `scaleX(${p})`;
-    }
+    if (fill) fill.style.transform = `scaleX(${(n - 1) / 4})`;
     const cur = steps[n - 1];
-    if (animate && from !== n && window.gsap && !reducedMotion()) {
-      window.gsap.fromTo(cur, { autoAlpha: 0, x: n > from ? 28 : -28 }, { autoAlpha: 1, x: 0, duration: 0.55, ease: 'expo.out', clearProps: 'transform,opacity,visibility' });
-    }
     paintFile(); if (persist) save();
     if (focus) {
       const h = $('.astep__t', cur);
@@ -344,15 +336,15 @@ export function mountApply(main) {
 
     done.textContent = '';
     done.insertAdjacentHTML('afterbegin', `
-      <div class="grid done__grid">
-        <div class="s-5 md-s-12 done__intro">
-          <p class="label accent tnum">Step 05 of 05 · ${sent ? 'Sent' : 'Prepared'}</p>
-          <h2 class="h2 mt-4" id="done-t"></h2>
-          <p class="secthead__lede" data-done-lede></p>
+      <div class="done__grid">
+        <div class="done__intro">
+          <p class="eyebrow tnum">Step 05 of 05 · ${sent ? 'Sent' : 'Prepared'}</p>
+          <h2 id="done-t"></h2>
+          <p class="lede" data-done-lede></p>
           <div class="mt-6" data-done-actions></div>
           <p class="mt-6 done__restart"><button class="link-arrow" type="button" data-restart>Start a new file<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></button></p>
         </div>
-        <article class="ticket s-6 o-7 md-s-12" aria-label="Application ticket">
+        <article class="ticket" aria-label="Application ticket">
           <div class="ticket__perf" aria-hidden="true"></div>
           <div class="ticket__body">
             <header class="ticket__head">
@@ -429,12 +421,6 @@ export function mountApply(main) {
     window.scrollTo({ top: Math.max(0, root.getBoundingClientRect().top + window.scrollY - 96), behavior: 'auto' });
     done.focus({ preventScroll: true });
     announce(title);
-    if (window.gsap && !reducedMotion()) {
-      const t = $('.ticket', done), st = $('.ticket__stamp', done);
-      window.gsap.from(t, { y: 40, autoAlpha: 0, duration: 0.8, ease: 'expo.out' });
-      window.gsap.from(st, { scale: 1.6, autoAlpha: 0, rotation: -8, duration: 0.42, delay: 0.55, ease: 'power4.in', clearProps: 'transform' });
-    }
-    window.ScrollTrigger?.refresh();
   }
 
   // ---- bottom sheet on small screens
@@ -445,7 +431,7 @@ export function mountApply(main) {
     fileEl.classList.toggle('is-open', open);
   });
   listen(document, 'keydown', (e) => { if (e.key === 'Escape' && fileEl.classList.contains('is-open')) { toggle.click(); toggle.focus(); } });
-  const mqDesk = mq('(min-width: 1100px)');
+  const mqDesk = mq('(min-width: 1024px)');
   const onMq = () => { if (mqDesk.matches) { fileEl.classList.remove('is-open'); toggle.setAttribute('aria-expanded', 'false'); } };
   mqDesk.addEventListener?.('change', onMq); offs.push(() => mqDesk.removeEventListener?.('change', onMq));
 
@@ -463,6 +449,6 @@ export function mountApply(main) {
   }
 
   writeForm();
-  go(1, { focus: false, animate: false, persist: false });
+  go(1, { focus: false, persist: false });
   return () => offs.forEach((fn) => fn && fn());
 }

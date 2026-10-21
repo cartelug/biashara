@@ -1,57 +1,47 @@
-<section class="section phero grain" aria-labelledby="page-title">
-  <img class="phero__bg" src="/assets/img/texture/rosette-ink.svg" width="600" height="600" alt="" aria-hidden="true">
-  <div class="wrap">
-    <div class="runhead"><p class="label muted">Part Three · How we work</p><p class="label muted">Four steps · Five standards</p></div>
-    <div class="grid phero__grid">
-      <p class="phero__num s-1"><span class="pier-sq" aria-hidden="true"></span>04</p>
-      <div class="s-8 o-2">
-        <h1 class="h1 phero__title" id="page-title" data-lines>How we lend</h1>
-        <p class="phero__lede mt-6">A four&#8209;step path. Every application follows the same sequence, whoever the applicant is.</p>
-      </div>
-    </div>
+<section class="page-head" aria-labelledby="page-title">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">How we lend</li></ol></nav>
+    <h1 id="page-title">How we lend</h1>
+    <p class="lede">A four&#8209;step path. Every application follows the same sequence, whoever the applicant is.</p>
   </div>
 </section>
 
-<section class="section is-dark vignette steps" id="path" aria-labelledby="path-title" data-steps>
-  <div class="wrap">
-    <header class="secthead grid">
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>A</p>
-      <div class="secthead__body s-7 o-2">
-        <h2 class="h2" id="path-title" data-lines>From enquiry to disbursement</h2>
-        <p class="secthead__lede">The path from application to disbursement, the standards applied along the way, and the safeguards around them.</p>
-      </div>
-    </header>
+<section class="section" id="path" aria-labelledby="path-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">The path</p>
+      <h2 id="path-title">From enquiry to disbursement</h2>
+      <p class="lede">The path from application to disbursement, the standards applied along the way, and the safeguards around them.</p>
+    </div>
+    <!-- @include steps -->
   </div>
-  <!-- @include steps -->
 </section>
 
-<section class="section discuss" aria-label="Team discussions">
-  <div class="wrap grid">
-    <div class="discuss__row s-12">
-      <figure class="fig" data-cursor="view"><div class="fig__media"><x-img key="discussion-1" sizes="(min-width: 760px) 30vw, 100vw"></x-img></div></figure>
-      <figure class="fig" data-cursor="view"><div class="fig__media"><x-img key="discussion-2" sizes="(min-width: 760px) 30vw, 100vw"></x-img></div></figure>
-      <figure class="fig" data-cursor="view"><div class="fig__media"><x-img key="discussion-3" sizes="(min-width: 760px) 30vw, 100vw"></x-img></div>
-        <figcaption class="figcap"><span class="figcap__n tnum" data-fig="1">Fig. 01</span><span class="figcap__t">Team discussions · Biashara colleagues</span></figcaption></figure>
+<section class="section section--surface" aria-label="Team discussions">
+  <div class="container">
+    <div class="gallery gallery--3">
+      <figure><x-img key="discussion-1" sizes="(min-width: 1024px) 380px, 31vw"></x-img></figure>
+      <figure><x-img key="discussion-2" sizes="(min-width: 1024px) 380px, 31vw"></x-img></figure>
+      <figure><x-img key="discussion-3" sizes="(min-width: 1024px) 380px, 31vw"></x-img></figure>
     </div>
-    <div class="callout s-8 o-3 mt-8" data-reveal>
-      <p class="label"><x-icon name="clock"></x-icon>Your deadline matters</p>
+    <p class="figcap">Team discussions · Biashara colleagues</p>
+    <div class="callout callout--white mt-6">
+      <p class="callout__title"><x-icon name="clock"></x-icon>Your deadline matters</p>
       <p>We handle complete files promptly and work towards your target date. Review time runs during office hours.<x-fn note="deadline"></x-fn> Final approval and disbursement remain subject to verification, accepted terms and completion of all conditions.</p>
     </div>
   </div>
 </section>
 
-<section class="section is-paper-2 grain" id="eligibility" aria-labelledby="elig-title">
-  <div class="wrap">
-    <header class="secthead grid">
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>B</p>
-      <div class="secthead__body s-7 o-2">
-        <h2 class="h2" id="elig-title" data-lines>Eligibility &amp; documents</h2>
-        <p class="secthead__lede">Assessment moves faster when the file is complete. These lists are the usual starting point; more may be requested depending on the product and amount.<x-fn note="documents"></x-fn></p>
-      </div>
-    </header>
-    <div class="twoup">
+<section class="section" id="eligibility" aria-labelledby="elig-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Before you apply</p>
+      <h2 id="elig-title">Eligibility &amp; documents</h2>
+      <p class="lede">Assessment moves faster when the file is complete. These lists are the usual starting point; more may be requested depending on the product and amount.<x-fn note="documents"></x-fn></p>
+    </div>
+    <div class="two-up">
       <div class="panel">
-        <p class="panel__head label"><x-icon name="user-check"></x-icon>Who is eligible</p>
+        <p class="panel__head"><x-icon name="user-check"></x-icon>Who is eligible</p>
         <ul class="ticklist" role="list">
           <li>Individuals and enterprises operating in Uganda</li>
           <li>Salaried clients with verifiable income</li>
@@ -64,7 +54,7 @@
       </div>
       <div class="panel doclist" id="documents">
         <div class="print-head print-only"><img src="/assets/img/logo/biashara-logo-96.png" width="96" height="125" alt="Biashara Trading Company Limited"><span class="label">Documents checklist · {{contact.phone1Text}} · {{contact.email}}</span></div>
-        <p class="panel__head label"><x-icon name="document"></x-icon>Documents usually requested</p>
+        <p class="panel__head"><x-icon name="document"></x-icon>Documents usually requested</p>
         <ul class="doclist__list" role="list">
           <li><label class="check"><input type="checkbox"><span>Valid national identification</span></label></li>
           <li><label class="check"><input type="checkbox"><span>Proof of income — payslips or business records</span></label></li>
@@ -74,66 +64,60 @@
           <li><label class="check"><input type="checkbox"><span>Security documentation, where the facility requires it</span></label></li>
           <li><label class="check"><input type="checkbox"><span>Contact and referee details</span></label></li>
         </ul>
-        <p class="mt-5 no-print"><button class="btn btn--ghost btn--sm" type="button" data-print><x-icon name="print"></x-icon>Print this checklist</button></p>
+        <p class="mt-5 mb-0 no-print needs-js"><button class="btn btn--secondary btn--sm" type="button" data-print="checklist"><x-icon name="print"></x-icon>Print this checklist</button></p>
       </div>
     </div>
-    <div class="twoup mt-6">
-      <div class="callout callout--dark" data-reveal>
-        <p class="label"><x-icon name="eye"></x-icon>A note on honesty</p>
-        <p>Accurate information speeds up a decision and protects you from taking on a facility you cannot comfortably service.</p>
-      </div>
-      <div class="callout callout--dark" data-reveal>
-        <p class="label"><x-icon name="document"></x-icon>If documents are missing</p>
-        <p>Come in anyway. The team will tell you exactly what is outstanding before the file goes to assessment.</p>
-      </div>
+    <div class="two-up callout-row mt-4">
+      <div class="callout"><p class="callout__title"><x-icon name="eye"></x-icon>A note on honesty</p><p>Accurate information speeds up a decision and protects you from taking on a facility you cannot comfortably service.</p></div>
+      <div class="callout"><p class="callout__title"><x-icon name="document"></x-icon>If documents are missing</p><p>Come in anyway. The team will tell you exactly what is outstanding before the file goes to assessment.</p></div>
     </div>
   </div>
 </section>
 
-<section class="section grain fivecs" id="credit-assessment" aria-labelledby="cs-title">
-  <div class="wrap">
-    <header class="secthead grid">
-      <p class="secthead__num s-1"><span class="pier-sq" aria-hidden="true"></span>C</p>
-      <div class="secthead__body s-7 o-2">
-        <h2 class="h2" id="cs-title" data-lines>Credit assessment</h2>
-        <p class="secthead__lede">Every file is measured against the same five standards, in the same order, whoever the applicant is.</p>
-      </div>
-    </header>
+<section class="section section--surface" id="credit-assessment" aria-labelledby="cs-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Standards</p>
+      <h2 id="cs-title">Credit assessment</h2>
+      <p class="lede">Every file is measured against the same five standards, in the same order, whoever the applicant is.</p>
+    </div>
     <!-- @include five-cs -->
-    <div class="grid trio mt-8">
-      <div class="s-4" data-reveal><p class="label accent">Free access to service</p><p class="mt-4">No fees or commissions are required to be served. Enquiries, application and credit assessment are free.</p></div>
-      <div class="s-4" data-reveal><p class="label accent">Every fee has a schedule</p><p class="mt-4">Every applicable loan charge is disclosed on a written schedule and accepted before commitment.</p></div>
-      <div class="s-4" data-reveal><p class="label accent">4-hour review target</p><p class="mt-4">We aim to review complete files within 4&nbsp;working hours. We prioritise your target date and keep you informed.<x-fn note="officehours"></x-fn></p></div>
+    <div class="cards cards--3 mt-6">
+      <article class="card"><h3>Free access to service</h3><p>No fees or commissions are required to be served. Enquiries, application and credit assessment are free.</p></article>
+      <article class="card"><h3>Every fee has a schedule</h3><p>Every applicable loan charge is disclosed on a written schedule and accepted before commitment.</p></article>
+      <article class="card"><h3>4-hour review target</h3><p>We aim to review complete files within 4&nbsp;working hours. We prioritise your target date and keep you informed.<x-fn note="officehours"></x-fn></p></article>
     </div>
   </div>
 </section>
 
-<section class="section section--flush" aria-label="Every file reviewed before approval">
-  <figure class="fig band" data-cursor="view">
-    <div class="fig__media"><x-img key="file-review" sizes="100vw"></x-img></div>
-    <figcaption class="figcap"><span class="figcap__n tnum" data-fig="2">Fig. 02</span><span class="figcap__t">Every file reviewed before approval</span></figcaption>
-  </figure>
+<section class="section section--tight" aria-label="Every file reviewed before approval">
+  <div class="container">
+    <figure>
+      <x-img key="file-review" sizes="(min-width: 1240px) 1200px, 100vw"></x-img>
+      <figcaption>Every file reviewed before approval</figcaption>
+    </figure>
+  </div>
 </section>
 
-<section class="section is-paper-2" id="self-check" aria-labelledby="sc-title">
-  <div class="wrap grid">
-    <header class="s-4">
-      <p class="label accent">Self&#8209;check · not binding</p>
-      <h2 class="h2 mt-4" id="sc-title" data-lines>Before you apply</h2>
-      <p class="secthead__lede">Six questions drawn from the eligibility list. Nothing is scored and nothing is sent anywhere.</p>
+<section class="section section--surface" id="self-check" aria-labelledby="sc-title">
+  <div class="container split split--5-7 split--top">
+    <header>
+      <p class="eyebrow">Self&#8209;check · not binding</p>
+      <h2 id="sc-title">Before you apply</h2>
+      <p class="lede">Six questions drawn from the eligibility list. Nothing is scored and nothing is sent anywhere.</p>
     </header>
-    <form class="selfcheck s-7 o-6" data-selfcheck novalidate>
+    <form class="selfcheck" data-selfcheck novalidate>
       <fieldset class="yn"><legend><span class="tnum">01</span>Are you an individual or an enterprise operating in Uganda?</legend><div class="yn__opts"><label><input type="radio" name="q1" value="yes"><span>Yes</span></label><label><input type="radio" name="q1" value="no"><span>No</span></label></div></fieldset>
       <fieldset class="yn"><legend><span class="tnum">02</span>Are you a salaried client with verifiable income?</legend><div class="yn__opts"><label><input type="radio" name="q2" value="yes"><span>Yes</span></label><label><input type="radio" name="q2" value="no"><span>No</span></label></div></fieldset>
       <fieldset class="yn"><legend><span class="tnum">03</span>Do you own a micro or small business with a productive need?</legend><div class="yn__opts"><label><input type="radio" name="q3" value="yes"><span>Yes</span></label><label><input type="radio" name="q3" value="no"><span>No</span></label></div></fieldset>
       <fieldset class="yn"><legend><span class="tnum">04</span>Are you a sole proprietor, a company or a registered organisation?</legend><div class="yn__opts"><label><input type="radio" name="q4" value="yes"><span>Yes</span></label><label><input type="radio" name="q4" value="no"><span>No</span></label></div></fieldset>
       <fieldset class="yn"><legend><span class="tnum">05</span>Can you demonstrate capacity to repay?</legend><div class="yn__opts"><label><input type="radio" name="q5" value="yes"><span>Yes</span></label><label><input type="radio" name="q5" value="no"><span>No</span></label></div></fieldset>
       <fieldset class="yn"><legend><span class="tnum">06</span>Can you provide security where the facility requires it?</legend><div class="yn__opts"><label><input type="radio" name="q6" value="yes"><span>Yes</span></label><label><input type="radio" name="q6" value="no"><span>No</span></label></div></fieldset>
-      <div class="callout selfcheck__out" data-selfcheck-out hidden aria-live="polite">
-        <p class="label"><x-icon name="scale"></x-icon>Your answers</p>
+      <div class="callout callout--white selfcheck__out" data-selfcheck-out hidden aria-live="polite">
+        <p class="callout__title"><x-icon name="scale"></x-icon>Your answers</p>
         <p>This is a guide, not a decision. Every file is assessed and approved by Biashara.</p>
         <p>Eligibility is assessed on repayment capacity, purpose and security where required — not on the category a client falls into.<x-fn note="eligibility"></x-fn></p>
-        <p class="mt-4"><a class="btn btn--sm" href="/apply/" data-cursor="apply">Apply now<x-icon name="arrow-right"></x-icon></a></p>
+        <p class="mt-4 mb-0"><a class="btn btn--sm" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a></p>
       </div>
     </form>
   </div>

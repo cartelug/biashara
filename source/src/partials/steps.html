@@ -1,36 +1,26 @@
-<div class="steps__pin" data-steps-pin>
-  <div class="wrap">
-    <div class="steps__rail" aria-hidden="true"><span class="steps__line" data-steps-line></span></div>
-      <ol class="steps__list" role="list">
-        <li class="step" data-step>
-          <span class="step__pier" aria-hidden="true"></span>
-          <x-tile name="pen"></x-tile>
-          <p class="step__n label tnum">Step 01</p>
-          <h3 class="h3">Enquire &amp; apply</h3>
-          <p>Begin your loan request by email: <a href="mailto:{{contact.email}}">{{contact.email}}</a>. We guide your application and required documents.</p>
-        </li>
-        <li class="step" data-step>
-          <span class="step__pier" aria-hidden="true"></span>
-          <x-tile name="search"></x-tile>
-          <p class="step__n label tnum">Step 02</p>
-          <h3 class="h3">Assess</h3>
-          <p>Complete files: review target within 4&nbsp;working hours.<x-fn note="review"></x-fn> We check purpose, affordability and required security.</p>
-        </li>
-        <li class="step" data-step>
-          <span class="step__pier" aria-hidden="true"></span>
-          <x-tile name="file-check"></x-tile>
-          <p class="step__n label tnum">Step 03</p>
-          <h3 class="h3">Approve &amp; accept</h3>
-          <p>Approved terms, interest and any loan charges are scheduled in writing. You accept them before signing.</p>
-        </li>
-        <li class="step" data-step>
-          <span class="step__pier" aria-hidden="true"></span>
-          <x-tile name="send"></x-tile>
-          <p class="step__n label tnum">Step 04</p>
-          <h3 class="h3">Disburse</h3>
-          <p>Funds are released once verification, accepted terms and all conditions are complete.</p>
-        </li>
-      </ol>
-    <p class="steps__more"><a class="link-arrow" href="/how-we-lend/">Eligibility, documents and the full path<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></p>
-  </div>
-</div>
+<ol class="steps" role="list">
+  <li class="step">
+    <span class="step__n" aria-hidden="true">1</span>
+    <p class="label muted sr-only">Step 01</p>
+    <h3>Enquire &amp; apply</h3>
+    <p>Begin your loan request by email: <a href="mailto:{{contact.email}}">{{contact.email}}</a>. We guide your application and required documents.</p>
+  </li>
+  <li class="step">
+    <span class="step__n" aria-hidden="true">2</span>
+    <p class="label muted sr-only">Step 02</p>
+    <h3>Assess</h3>
+    <p>Complete files: review target within 4&nbsp;working hours.<x-fn note="review"></x-fn> We check purpose, affordability and required security.</p>
+  </li>
+  <li class="step">
+    <span class="step__n" aria-hidden="true">3</span>
+    <p class="label muted sr-only">Step 03</p>
+    <h3>Approve &amp; accept</h3>
+    <p>Approved terms, interest and any loan charges are scheduled in writing. You accept them before signing.</p>
+  </li>
+  <li class="step">
+    <span class="step__n" aria-hidden="true">4</span>
+    <p class="label muted sr-only">Step 04</p>
+    <h3>Disburse</h3>
+    <p>Funds are released once verification, accepted terms and all conditions are complete.</p>
+  </li>
+</ol>

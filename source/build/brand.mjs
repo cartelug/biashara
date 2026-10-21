@@ -5,7 +5,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import sharp from 'sharp';
 import opentype from 'opentype.js';
-import { rosette, toPath } from '../src/js/guilloche.js';
+import { rosette, toPath } from './guilloche.mjs';
 
 // The red square of the logo (with the B) — measured from the logo file: x 36–858, y 6–908.
 const MARK = { left: 36, top: 6, width: 822, height: 902 };

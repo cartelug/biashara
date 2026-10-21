@@ -1,58 +1,52 @@
-<section class="section phero grain" aria-labelledby="page-title">
-  <img class="phero__bg" src="/assets/img/texture/rosette-ink.svg" width="600" height="600" alt="" aria-hidden="true">
-  <div class="wrap">
-    <div class="runhead"><p class="label muted">Part Two · What we offer</p><p class="label muted">Urban · Semi&#8209;urban · Rural</p></div>
-    <div class="grid phero__grid">
-      <p class="phero__num s-1"><span class="pier-sq" aria-hidden="true"></span>06</p>
-      <div class="s-8 o-2">
-        <h1 class="h1 phero__title" id="page-title" data-lines>Who we serve</h1>
-        <p class="phero__lede mt-6">Eligible clients across urban, semi&#8209;urban and rural Uganda. All facilities remain subject to assessment and approval.</p>
+<section class="page-head" aria-labelledby="page-title">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Who we serve</li></ol></nav>
+    <h1 id="page-title">Who we serve</h1>
+    <p class="lede">Eligible clients across urban, semi&#8209;urban and rural Uganda. All facilities remain subject to assessment and approval.</p>
+    <ul class="chips" role="list"><li class="chip">Urban</li><li class="chip">Semi&#8209;urban</li><li class="chip">Rural</li></ul>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="groups-title">
+  <div class="container">
+    <h2 class="sr-only" id="groups-title">The four groups</h2>
+    <div class="split split--top">
+      <div class="photo-pair">
+        <figure><x-img key="salaried-clients" sizes="(min-width: 768px) 24vw, 46vw"></x-img><figcaption>Salaried clients</figcaption></figure>
+        <figure><x-img key="emerging-entrepreneurs" sizes="(min-width: 768px) 24vw, 46vw"></x-img><figcaption>Emerging entrepreneurs</figcaption></figure>
+      </div>
+      <div class="callout">
+        <p class="callout__title"><x-icon name="pin"></x-icon>Where we work</p>
+        <p>Urban, semi&#8209;urban and rural Uganda, served from a single Kampala office so that decisions stay close to the people who make them.</p>
       </div>
     </div>
+    <ul class="group-list group-list--2 mt-7" role="list">
+      <li class="group"><x-tile name="store"></x-tile><div><h3>Entrepreneurs</h3><p>Micro and small business owners with viable productive needs.</p><a class="link-arrow" href="/loans/#business">Business Loans<x-icon name="arrow-right"></x-icon></a></div></li>
+      <li class="group"><x-tile name="wallet"></x-tile><div><h3>Salaried clients</h3><p>Eligible employees with a sound ability to meet approved repayment requirements.</p><a class="link-arrow" href="/loans/#salary">Salary Loans<x-icon name="arrow-right"></x-icon></a></div></li>
+      <li class="group"><x-tile name="building"></x-tile><div><h3>Companies &amp; NGOs</h3><p>Organisations seeking approved short&#8209;term financial solutions.</p><a class="link-arrow" href="/loans/#business">Business Loans<x-icon name="arrow-right"></x-icon></a></div></li>
+      <li class="group"><x-tile name="chart"></x-tile><div><h3>Growing businesses</h3><p>Sole proprietors and companies financing stock, cash flow or productive assets.</p><a class="link-arrow" href="/loans/#asset">Asset Financing<x-icon name="arrow-right"></x-icon></a></div></li>
+    </ul>
   </div>
 </section>
 
-<section class="section section--top0 serve" aria-labelledby="groups-title">
-  <div class="wrap grid">
-    <div class="serve__photos s-7">
-      <figure class="fig fig--a" data-parallax="-6" data-cursor="view">
-        <div class="fig__media"><x-img key="salaried-clients" sizes="(min-width: 1100px) 26vw, 50vw"></x-img></div>
-        <figcaption class="figcap"><span class="figcap__n tnum" data-fig="1">Fig. 01</span><span class="figcap__t">Salaried clients</span></figcaption>
-      </figure>
-      <figure class="fig fig--b" data-parallax="8" data-cursor="view">
-        <div class="fig__media"><x-img key="emerging-entrepreneurs" sizes="(min-width: 1100px) 26vw, 50vw"></x-img></div>
-        <figcaption class="figcap"><span class="figcap__n tnum" data-fig="2">Fig. 02</span><span class="figcap__t">Emerging entrepreneurs</span></figcaption>
-      </figure>
+<section class="section section--night section--tight" aria-label="Assessment">
+  <div class="container">
+    <div class="callout callout--dark">
+      <p class="callout__title"><x-icon name="scale"></x-icon>All facilities remain subject to assessment and approval</p>
+      <p class="lead mb-0">Eligibility is assessed on repayment capacity, purpose and security where required — not on the category a client falls into.<x-fn note="eligibility"></x-fn></p>
     </div>
-    <div class="s-4 o-9 self-end" data-reveal>
-      <p class="label accent"><x-icon name="pin"></x-icon> Where we work</p>
-      <p class="mt-4">Urban, semi&#8209;urban and rural Uganda, served from a single Kampala office so that decisions stay close to the people who make them.</p>
+    <div class="btn-row mt-6">
+      <a class="btn btn--light" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a>
+      <a class="link-arrow" href="/how-we-lend/#eligibility">Who is eligible<x-icon name="arrow-right"></x-icon></a>
     </div>
-    <h2 class="sr-only" id="groups-title">The four groups</h2>
-    <ol class="rows groups s-12" role="list">
-      <li class="row"><span class="row__n tnum">01</span><x-tile name="store"></x-tile><h3 class="row__t">Entrepreneurs</h3><div class="row__d"><p>Micro and small business owners with viable productive needs.</p><p><a class="link-arrow" href="/loans/#business">Business Loans<x-icon name="arrow-right"></x-icon></a></p></div></li>
-      <li class="row"><span class="row__n tnum">02</span><x-tile name="wallet"></x-tile><h3 class="row__t">Salaried clients</h3><div class="row__d"><p>Eligible employees with a sound ability to meet approved repayment requirements.</p><p><a class="link-arrow" href="/loans/#salary">Salary Loans<x-icon name="arrow-right"></x-icon></a></p></div></li>
-      <li class="row"><span class="row__n tnum">03</span><x-tile name="building"></x-tile><h3 class="row__t">Companies &amp; NGOs</h3><div class="row__d"><p>Organisations seeking approved short&#8209;term financial solutions.</p><p><a class="link-arrow" href="/loans/#business">Business Loans<x-icon name="arrow-right"></x-icon></a></p></div></li>
-      <li class="row"><span class="row__n tnum">04</span><x-tile name="chart"></x-tile><h3 class="row__t">Growing businesses</h3><div class="row__d"><p>Sole proprietors and companies financing stock, cash flow or productive assets.</p><p><a class="link-arrow" href="/loans/#asset">Asset Financing<x-icon name="arrow-right"></x-icon></a></p></div></li>
-    </ol>
   </div>
 </section>
 
-<section class="section is-dark vignette section--tight" aria-label="Assessment">
-  <div class="wrap grid">
-    <div class="callout callout--dark s-9 o-2" data-reveal>
-      <p class="label"><x-icon name="scale"></x-icon>All facilities remain subject to assessment and approval</p>
-      <p class="lead mt-4">Eligibility is assessed on repayment capacity, purpose and security where required — not on the category a client falls into.<x-fn note="eligibility"></x-fn></p>
-    </div>
-    <p class="s-9 o-2 mt-6 actions"><a class="btn" href="/apply/" data-cursor="apply" data-magnetic>Apply now<x-icon name="arrow-right"></x-icon></a> <a class="link-arrow" href="/how-we-lend/#eligibility">Who is eligible<x-icon name="arrow-right"></x-icon></a></p>
-  </div>
-</section>
-
-<section class="section section--flush" aria-label="Biashara colleagues">
-  <div class="wrap">
-    <figure class="fig band band--narrow" data-cursor="view">
-      <div class="fig__media"><x-img key="how-we-work" sizes="(min-width: 1100px) 1100px, 100vw"></x-img></div>
-      <figcaption class="figcap"><span class="figcap__n tnum" data-fig="3">Fig. 03</span><span class="figcap__t">Part Three · How we work</span></figcaption>
+<section class="section section--tight" aria-label="Biashara colleagues">
+  <div class="container">
+    <figure>
+      <x-img key="how-we-work" sizes="(min-width: 1240px) 1200px, 100vw"></x-img>
+      <figcaption>Part Three · How we work</figcaption>
     </figure>
   </div>
 </section>

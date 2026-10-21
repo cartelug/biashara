@@ -1,0 +1,23 @@
+<article class="product-card" id="{{p.slug}}" aria-labelledby="pc-{{p.slug}}-t">
+  <header class="product-card__head">
+    <x-tile name="{{p.icon}}"></x-tile>
+    <div>
+      <p class="product-card__n">Product {{p.n}} of 04</p>
+      <h3 id="pc-{{p.slug}}-t">{{p.name}}</h3>
+    </div>
+  </header>
+  <p class="product-card__desc">{{p.desc}}</p>
+  <dl class="specs">
+    <div><dt>Typical purpose</dt><dd>{{p.purpose}}</dd></div>
+    <div><dt>Security</dt><dd>{{p.security}}</dd></div>
+  </dl>
+  <ul class="chips" role="list">
+    <li class="chip">UGX&nbsp;1M&nbsp;–&nbsp;50M</li>
+    <li class="chip">≤&nbsp;6 months</li>
+    <li class="chip">2.8% per month</li>
+  </ul>
+  <div class="product-card__cta">
+    <a class="btn" href="/apply/?product={{p.slug}}">Apply for this product<x-icon name="arrow-right"></x-icon></a>
+    <a class="link-arrow" href="https://wa.me/{{contact.whatsapp}}?text=Hello%20Biashara%2C%20I%20would%20like%20to%20ask%20about%20{{p.nameUrl}}." rel="noopener" target="_blank"><x-icon name="chat"></x-icon>Ask on WhatsApp<span class="sr-only"> about {{p.name}} (opens in a new tab)</span></a>
+  </div>
+</article>
