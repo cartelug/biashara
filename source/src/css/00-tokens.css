@@ -1,7 +1,4 @@
-/* Design tokens and fonts. Every font is self-hosted: no third-party requests. */
-@font-face { font-family: "Archivo"; src: url("/assets/fonts/archivo-wght.woff2") format("woff2-variations"), url("/assets/fonts/archivo-wght.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
-@font-face { font-family: "Source Serif 4"; src: url("/assets/fonts/sourceserif4-opsz.woff2") format("woff2-variations"), url("/assets/fonts/sourceserif4-opsz.woff2") format("woff2"); font-weight: 400 500; font-style: normal; font-display: swap; }
-@font-face { font-family: "Source Serif 4"; src: url("/assets/fonts/sourceserif4-italic-opsz.woff2") format("woff2-variations"), url("/assets/fonts/sourceserif4-italic-opsz.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+/* Design tokens. The font files themselves are declared in 15-fonts.css (self-hosted, no third-party requests). */
 /* Fallbacks sized to match the real fonts, so text does not jump when the fonts arrive */
 @font-face { font-family: "Archivo Fallback"; src: local("Arial"), local("Helvetica Neue"), local("Liberation Sans"); size-adjust: 104%; ascent-override: 84%; descent-override: 20%; line-gap-override: 0%; }
 @font-face { font-family: "Source Serif Fallback"; src: local("Georgia"), local("Times New Roman"), local("Liberation Serif"); size-adjust: 98%; ascent-override: 98%; descent-override: 31%; line-gap-override: 0%; }

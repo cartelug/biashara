@@ -1,5 +1,5 @@
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-EIbyl9qZlx/IXXOd5kO6QbmOjjq0YMeDpd2y7zE1a14='; style-src 'self' 'sha256-Fh7WwdqZyOld9UZHoMJaJffo8MYkGvrvZJJ+qDwdFWQ='; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' mailto:; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-M3gPR0uBmStuQLPEMAGla9tZ8hCZUt3K+cqS0IzX2ZM='; style-src 'self' 'sha256-vhibmn/sS1+JT7G386Zenm8dbsfbkbCUMdWPbHbZZWI='; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' mailto:; object-src 'none'; upgrade-insecure-requests
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
@@ -17,9 +17,6 @@
 
 /assets/img/*
   Cache-Control: public, max-age=2592000
-
-/assets/js/config.js
-  Cache-Control: public, max-age=0, must-revalidate
 
 /sw.js
   Cache-Control: public, max-age=0, must-revalidate

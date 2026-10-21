@@ -34,7 +34,7 @@ The site is committed at the repository root, so no build step is needed.
 
 - **Netlify:** **Add new site → Import an existing project → GitHub**, pick the repository. `netlify.toml` already tells Netlify to publish the root.
 - **Cloudflare Pages:** **Workers & Pages → Create → Pages → Connect to Git**, pick the repository, leave the build command empty and set the build output directory to `/`.
-- **GitHub Pages** works. A repository is published in a folder (`https://<user>.github.io/<repository>/`), so `BASE_PATH` in `src/js/config.js` must match that folder (it is `/biashara` now). **When you use a custom domain, a different repository name, Netlify, Cloudflare Pages or cPanel, change `BASE_PATH` to `''` (or the new folder) and rebuild**, or the site loads without images, styles or scripts. GitHub Pages ignores `_headers`, so Netlify or Cloudflare Pages are better.
+- **GitHub Pages** works as it is. Pages link to their files with relative paths, so the site works at `https://<user>.github.io/<repository>/`, on a custom domain or in any folder; nothing to change when you move it. It ignores `_headers`, so Netlify or Cloudflare Pages are better.
 
 ### cPanel (shared hosting)
 
@@ -60,7 +60,7 @@ All settings live in one file: **`src/js/config.js`**. Open it in any text edito
 | `CONTACT` | Email, phone numbers, WhatsApp number and address. |
 | `HOURS` | Office hours used by the live “Open now / Closed” sign (Kampala time). |
 | `SITE_URL` | Your public web address, used for search engines and link previews. Change it if the domain is not `www.biasharafinance.com`. |
-| `BASE_PATH` | The folder the site is served from. `''` when the site is at the top of a domain (Netlify, Cloudflare Pages, cPanel, a custom domain); `'/biashara'` when it is at `https://<user>.github.io/biashara/`. Every link, image, font and script is built with this prefix, so it must match where the site really lives. The `BASE_PATH` environment variable overrides it for one build. |
+| `BASE_PATH` | The folder the site is published in (`''` at the top of a domain, `'/biashara'` at `https://<user>.github.io/biashara/`). Only the 404 page needs it, because a host can show that page for a missing address at any depth; every other page works anywhere. If it is wrong, only the 404 page looks unstyled. The `BASE_PATH` environment variable overrides it for one build. |
 | `SERVICE_WORKER` | Offline support. Set to `false` to switch it off. |
 
 **After editing `config.js`, rebuild the site** (section 3: `npm run release`), then commit and push.

@@ -26,22 +26,27 @@ const t0 = Date.now();
 const FAST = process.argv.includes('--fast'); // reuse cached images and social cards
 const ONLY = (process.argv.find((a) => a.startsWith('--only=')) || '').slice(7).split(',').filter(Boolean); // build just these pages while designing
 
-// ---------------------------------------------------------------- base path
-// The folder the site is served from ('' at a domain root, '/biashara' on a GitHub Pages project site).
-// Templates and CSS are written with root paths ("/assets/..."); they are prefixed with BASE on the way out.
+// ---------------------------------------------------------------- links
+// Every page links to its files with RELATIVE paths: "assets/css/main.css" on the home page, "../assets/css/main.css"
+// one folder down. So the site works opened straight from disk, at the top of a domain, or in any folder, with no setting.
+// Templates are written with root paths ("/assets/...") and converted for each page on the way out.
+// The one exception is 404.html: a host can show it for a missing address at any depth, so it uses absolute paths
+// that start with BASE, the folder the site is published in ('' at a domain root, '/biashara' on GitHub Pages).
 const BASE = (() => {
   const raw = (process.env.BASE_PATH ?? CONFIG.BASE_PATH ?? '').trim();
   const b = raw === '/' ? '' : raw.replace(/\/+$/, '');
   if (b && !/^\/[\w.~-]+(\/[\w.~-]+)*$/.test(b)) throw new Error(`BASE_PATH must look like "" or "/folder" (got "${raw}")`);
   return b;
 })();
-const atBase = (u) => (u.startsWith('/') && !u.startsWith('//') ? BASE + u : u); // one URL
-const atBaseSet = (v) => v.split(',').map((s) => s.trim().replace(/^\S+/, atBase)).join(', '); // srcset / imagesrcset
-// Prefix every root path in the URL attributes of a page, and in the url(...) of a stylesheet.
-const rebaseHtml = (html) => !BASE ? html : html
-  .replace(/(\s(?:href|src|action|poster)=")([^"]*)"/g, (_, a, v) => `${a}${atBase(v)}"`)
-  .replace(/(\s(?:srcset|imagesrcset)=")([^"]*)"/g, (_, a, v) => `${a}${atBaseSet(v)}"`);
-const rebaseCss = (css) => !BASE ? css : css.replace(/url\((["']?)\/(?!\/)/g, (m, q) => `url(${q}${BASE}/`);
+const isRoot = (u) => u.startsWith('/') && !u.startsWith('//');
+const URL_ATTR = /(\s(?:href|src|action|poster)=")([^"]*)"/g;
+const SET_ATTR = /(\s(?:srcset|imagesrcset)=")([^"]*)"/g;
+const mapSet = (v, fn) => v.split(',').map((s) => s.trim().replace(/^\S+/, fn)).join(', ');
+const relUrl = (prefix) => (u) => (u === '/' ? prefix || './' : isRoot(u) ? prefix + u.slice(1) : u);
+const absUrl = (u) => (isRoot(u) ? BASE + u : u);
+const convertHtml = (html, fn) => html.replace(URL_ATTR, (_, a, v) => `${a}${fn(v)}"`).replace(SET_ATTR, (_, a, v) => `${a}${mapSet(v, fn)}"`);
+const relativeHtml = (html, depth) => convertHtml(html, relUrl('../'.repeat(depth)));
+const absoluteHtml = (html) => (BASE ? convertHtml(html, absUrl) : html);
 
 // ---------------------------------------------------------------- dates
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -86,24 +91,22 @@ const cssFiles = (await fs.readdir(rel(SRC, 'css'))).filter((f) => f.endsWith('.
 let css = '';
 for (const f of cssFiles) css += `/* ${f} */\n` + (await read(rel(SRC, 'css', f))) + '\n';
 css += generatedCss();
-const minCss = rebaseCss(minifyCss(css));
+const minCss = minifyCss(css);
 const cssHash = sha256(minCss).replace(/[^a-z0-9]/gi, '').slice(0, 10);
 await write(rel(DIST, 'assets/css/main.css'), minCss);
 
 // Critical CSS: tokens + base + the frame. Inlined in every page head.
-const critical = rebaseCss(minifyCss((await read(rel(SRC, 'css/00-tokens.css'))) + (await read(rel(SRC, 'css/10-base.css'))) + (await read(rel(SRC, 'critical/critical.css')))));
+const critical = minifyCss((await read(rel(SRC, 'css/00-tokens.css'))) + (await read(rel(SRC, 'css/10-base.css'))) + (await read(rel(SRC, 'critical/critical.css'))));
 
 // ---------------------------------------------------------------- JS
+// One classic script (not an ES module), so it also runs when a page is opened straight from disk; the settings are bundled in.
 const jsOut = await esbuild.build({
   entryPoints: [rel(SRC, 'js/app.js')],
-  bundle: true, format: 'esm', minify: true, target: ['es2020'], write: false,
-  external: ['./config.js'], legalComments: 'none',
-  define: { __BASE__: JSON.stringify(BASE) },
+  bundle: true, format: 'iife', minify: true, target: ['es2020'], write: false, legalComments: 'none',
 });
 const appJs = jsOut.outputFiles[0].text;
-const jsHash = sha256(appJs + (await read(rel(SRC, 'js/config.js')))).replace(/[^a-z0-9]/gi, '').slice(0, 10);
-await write(rel(DIST, 'assets/js/app.js'), appJs.replace(/["']\.\/config\.js["']/g, `"./config.js?v=${jsHash}"`));
-await fs.cp(rel(SRC, 'js/config.js'), rel(DIST, 'assets/js/config.js'));
+const jsHash = sha256(appJs).replace(/[^a-z0-9]/gi, '').slice(0, 10);
+await write(rel(DIST, 'assets/js/app.js'), appJs);
 
 // Inline head script: flags JS on and restores the high-contrast setting.
 const headScript = (await read(rel(SRC, 'critical/head.js'))).trim();
@@ -269,7 +272,6 @@ ${page.preloadImage || ''}
 <script>${headScript}</script>
 <style>${critical}</style>
 <link rel="stylesheet" href="/assets/css/main.css?v=${BUILD.css}">
-<link rel="modulepreload" href="/assets/js/app.js?v=${BUILD.js}">
 <script type="application/ld+json" id="ld">${jsonLd(page)}</script>`;
 }
 
@@ -293,7 +295,9 @@ for (const page of allPages) {
   if (!fss.existsSync(file)) { console.warn('  missing page', page.id); continue; }
   let body = await read(file);
   calcCounter = 0;
-  const ctx = { page };
+  // 404.html uses absolute paths (see above); every other page is one folder down, except the home page
+  const depth = page.id === 'home' || page.id === '404' ? 0 : 1;
+  const ctx = { page: { ...page, root: page.id === '404' ? BASE + '/' : '../'.repeat(depth) } };
   // Preload the hero image (LCP) when a page marks one as priority.
   const pri = body.match(/<x-img([^>]*\bpriority\b[^>]*)><\/x-img>/);
   if (pri) {
@@ -301,14 +305,15 @@ for (const page of allPages) {
     page.preloadImage = `<link rel="preload" as="image" type="image/avif" imagesrcset="${o.widths.map((w) => `/assets/img/photo/${at.key}-${w}.avif ${w}w`).join(', ')}" imagesizes="${at.sizes || '100vw'}" fetchpriority="high">`;
   }
   let html = layout
-    .replace('<!--HEAD-->', head(page))
+    .replace('<!--HEAD-->', head(ctx.page))
     .replace('<!--MAIN-->', body)
     .replace('<!--NAV-->', navLinks(page.id));
   html = html.replace(/\{\{page\.(\w+)\}\}/g, (_, k) => esc(ctx.page[k] ?? ''));
   html = await expand(html, ctx);
   // the header and footer partials arrive during expand, so fill their slots afterwards (the nav appears twice)
   html = html.replaceAll('<!--NAV-->', navLinks(page.id)).replaceAll('<!--MENU-->', menuLinks(page.id));
-  html = rebaseHtml(html.replace(/__BUILD__/g, BUILD.js));
+  html = html.replace(/__BUILD__/g, BUILD.js);
+  html = page.id === '404' ? absoluteHtml(html) : relativeHtml(html, depth);
   if (/\{\{|<x-/.test(html)) throw new Error('Unexpanded template token in ' + page.id + ': ' + html.match(/.{40}(\{\{|<x-).{40}/)?.[0]);
   const out = page.id === 'home' ? rel(DIST, 'index.html') : page.id === '404' ? rel(DIST, '404.html') : rel(DIST, page.id, 'index.html');
   await write(out, html);
@@ -327,12 +332,12 @@ ${sitemap.map((p) => `  <url><loc>${CONFIG.SITE_URL}${p}</loc><lastmod>${today}<
 `);
 await write(rel(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${CONFIG.SITE_URL}/sitemap.xml\n`);
 await write(rel(DIST, 'manifest.webmanifest'), JSON.stringify({
-  name: 'Biashara Trading Company Limited', short_name: 'Biashara', start_url: BASE + '/', scope: BASE + '/', display: 'standalone',
+  name: 'Biashara Trading Company Limited', short_name: 'Biashara', start_url: './', scope: './', display: 'standalone',
   background_color: '#f5f2ee', theme_color: '#f5f2ee', description: 'Short-term bridge financing in Kampala since 2014.',
   icons: [
-    { src: BASE + '/assets/img/logo/icon-192.png', sizes: '192x192', type: 'image/png' },
-    { src: BASE + '/assets/img/logo/icon-512.png', sizes: '512x512', type: 'image/png' },
-    { src: BASE + '/assets/img/logo/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+    { src: 'assets/img/logo/icon-192.png', sizes: '192x192', type: 'image/png' },
+    { src: 'assets/img/logo/icon-512.png', sizes: '512x512', type: 'image/png' },
+    { src: 'assets/img/logo/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
   ],
 }, null, 2));
 
@@ -374,9 +379,6 @@ await write(rel(DIST, '_headers'), `/*
 /assets/img/*
   Cache-Control: public, max-age=2592000
 
-/assets/js/config.js
-  Cache-Control: public, max-age=0, must-revalidate
-
 /sw.js
   Cache-Control: public, max-age=0, must-revalidate
 `);
@@ -399,7 +401,7 @@ ErrorDocument 404 ${BASE}/404.html
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript image/svg+xml application/json application/manifest+json application/xml text/plain
 </IfModule>
-# Caching: versioned assets for a year; pages, config.js and the service worker are always re-checked
+# Caching: versioned assets for a year; pages and the service worker are always re-checked
 <IfModule mod_headers.c>
   <FilesMatch "\\.(woff2|css)$|^app\\.js$">
     Header set Cache-Control "public, max-age=31536000, immutable"
@@ -407,17 +409,18 @@ ErrorDocument 404 ${BASE}/404.html
   <FilesMatch "\\.(avif|webp|jpe?g|png|svg|ico)$|\\.min\\.js$">
     Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
-  <FilesMatch "^(config\\.js|sw\\.js)$|\\.(html|webmanifest|xml|txt)$">
+  <FilesMatch "^sw\\.js$|\\.(html|webmanifest|xml|txt)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
 </IfModule>
 `);
 
-// Service worker with a precache list of every page, font and the core assets.
-const precache = [...sitemap, '/404.html', `/assets/css/main.css?v=${BUILD.css}`, `/assets/js/app.js?v=${BUILD.js}`, `/assets/js/config.js?v=${BUILD.js}`,
-  '/assets/fonts/archivo-wght.woff2', '/assets/fonts/sourceserif4-opsz.woff2', '/assets/fonts/sourceserif4-italic-opsz.woff2',
-  '/assets/img/logo/biashara-logo-320.png', '/assets/img/logo/mark-160.png'].map(atBase);
-const sw = (await read(rel(SRC, 'js/sw.js'))).replace('__VERSION__', BUILD.js).replace('__BASE__', JSON.stringify(BASE)).replace('__PRECACHE__', JSON.stringify(precache))
+// Service worker with a precache list of every page, font and the core assets. Paths are relative to the folder
+// the site is in (the worker works that folder out for itself), so no setting is needed.
+const precache = [...sitemap.map((p) => p.slice(1)), '404.html', `assets/css/main.css?v=${BUILD.css}`, `assets/js/app.js?v=${BUILD.js}`,
+  'assets/fonts/archivo-wght.woff2', 'assets/fonts/sourceserif4-opsz.woff2', 'assets/fonts/sourceserif4-italic-opsz.woff2',
+  'assets/img/logo/biashara-logo-320.png', 'assets/img/logo/mark-160.png'];
+const sw = (await read(rel(SRC, 'js/sw.js'))).replace('__VERSION__', BUILD.js).replace('__PRECACHE__', JSON.stringify(precache))
   .replace('__ENDPOINT__', JSON.stringify(CONFIG.SUBMIT_ENDPOINT || ''));
 await write(rel(DIST, 'sw.js'), sw);
 await write(rel(DIST, 'build.json'), JSON.stringify(BUILD, null, 2));
@@ -425,7 +428,7 @@ await write(rel(DIST, 'build.json'), JSON.stringify(BUILD, null, 2));
 // ---------------------------------------------------------------- report sizes
 const gz = (buf) => zlib.gzipSync(buf, { level: 9 }).length;
 const sizeOf = async (p) => gz(await fs.readFile(rel(DIST, p)));
-const jsTotal = (await sizeOf('assets/js/app.js')) + (await sizeOf('assets/js/config.js'));
+const jsTotal = await sizeOf('assets/js/app.js');
 const cssTotal = (await sizeOf('assets/css/main.css')) + gz(Buffer.from(critical));
 console.log(`Built ${allPages.length} pages for ${BASE || '/'} in ${((Date.now() - t0) / 1000).toFixed(1)}s · JS ${(jsTotal / 1024).toFixed(1)}KB gz · CSS ${(cssTotal / 1024).toFixed(1)}KB gz`);
 await write(rel(DIST, '..', '.cache', 'budget.json'), JSON.stringify({ jsGzip: jsTotal, cssGzip: cssTotal }, null, 2));

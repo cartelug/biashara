@@ -14,7 +14,7 @@ disclaimers are unchanged. The design and its specification are in `../DESIGN-PR
 | Facts and wording | 13 of 13 fact rules, 8 of 8 required disclaimers, 22 of 22 key facts traced to the Company Profile |
 | Lighthouse (mobile, slow 4G) | Performance 96–100, Accessibility 100, Best practices 100, SEO 100; layout shift 0 |
 | Budgets | JavaScript 15 KB gzip (budget 40) · CSS 14 KB gzip (budget 28) · 3 font files (budget 4) · largest hero image 99 KB |
-| Hosting | works at the top of a domain and in a folder (`BASE_PATH`); both checked by `qa/base-path.mjs` |
+| Portability | every page links to its files with relative paths: opens from disk, at the top of a domain, in `/biashara/` and in a deep folder (`qa/portable.mjs`); 1,169 references all point at files that exist (`qa/references.mjs`) |
 
 ## What changed
 
@@ -27,5 +27,5 @@ disclaimers are unchanged. The design and its specification are in `../DESIGN-PR
 
 1. **Form endpoint and mailbox.** `SUBMIT_ENDPOINT` is empty, so Apply and Contact hand visitors a ready-made email and WhatsApp message. Give a form service or server address (and confirm `inquiries@biasharafinance.com` is the mailbox) and applications arrive directly.
 2. **Licence renewal.** The 2026 licence expires 31 December 2026. From 1 January 2027 the site shows the verification notice automatically. When renewed, put the new dates and certificate in `src/js/config.js`.
-3. **Domain.** `SITE_URL` is `https://www.biasharafinance.com` (canonical links, sitemap, social cards). `BASE_PATH` is `/biashara` for the GitHub Pages address; set it to `''` for a domain root.
+3. **Domain.** `SITE_URL` is `https://www.biasharafinance.com` (canonical links, sitemap, social cards). Pages work wherever they are placed; only the 404 page uses `BASE_PATH` (`/biashara` for the GitHub Pages address, `''` at a domain root).
 4. **Reconstructed portraits and low-resolution photos.** Unchanged from the source material; original files would improve them with no code change.

@@ -3,10 +3,11 @@
 const VERSION = 'btc-__VERSION__';
 const PRECACHE = __PRECACHE__;
 const ENDPOINT = __ENDPOINT__;
-const BASE = __BASE__;
+// The folder the site is in, with a trailing slash ('/' at a domain root, '/biashara/' on GitHub Pages).
+const ROOT = new URL('./', self.location.href).pathname;
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(PRECACHE.map((p) => ROOT + p))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', (e) => {
   e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== VERSION).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
@@ -17,14 +18,14 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
   if (ENDPOINT && req.url.startsWith(ENDPOINT)) return;
-  if (url.pathname.startsWith(BASE + '/apply/submit')) return;
+  if (url.pathname.startsWith(ROOT + 'apply/submit')) return;
   const isPage = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html') || req.headers.get('X-Requested-With') === 'router';
   if (isPage) {
     e.respondWith(
       fetch(req).then((res) => {
         if (res.ok) { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(url.pathname, copy)); }
         return res;
-      }).catch(() => caches.match(url.pathname).then((r) => r || caches.match(BASE + '/404.html')))
+      }).catch(() => caches.match(url.pathname).then((r) => r || caches.match(ROOT + '404.html')))
     );
     return;
   }

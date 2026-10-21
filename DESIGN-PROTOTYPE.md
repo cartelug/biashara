@@ -377,9 +377,12 @@ The Apply flow on a phone (menu, step 2, validation errors, review, result ticke
 | JavaScript (gzip) | **15.4 KB** (was 78 KB plus 136 KB of animation libraries) |
 | CSS (gzip) | **14.0 KB** (was 20 KB) |
 | Page height, home | 9,100 px on desktop and 14,800 px on a phone (was 16,500 and 18,200) |
-| Works from a domain root and from `/biashara/` | yes, checked by `qa/base-path.mjs` on both builds |
+| Portability | opens correctly **straight from disk** (double-click `index.html`), at the top of a domain, in `/biashara/` and in a deep folder (`/a/b/c/`): stylesheet, scripts, fonts, images, every internal link, the phone menu and the calculator link connect (`qa/portable.mjs`) |
+| Reference integrity | 1,169 references (links, images, srcset, stylesheet `url()`, manifest icons, offline-cache entries) in the 14 pages all point at files that exist, checked on the repository root itself (`qa/references.mjs`) |
 
 ### 12.3 Changes made while building
+
+- **Relative links everywhere:** `index.html` links to `assets/css/main.css`, `assets/js/app.js`, the fonts, images and other pages with relative paths (`../assets/…` one folder down), so the site no longer depends on where it is published and there is no setting to change when it moves. The font files are declared in the stylesheet (paths relative to it), the script is one classic (non-module) file with the settings bundled in so it also runs from disk, the manifest and the service worker work out their own folder, and script-made links use the `data-root` marker the build writes on every page. Opened from disk, folder links gain `index.html` automatically. Browsers refuse font files opened from disk, so only then do system fonts show. The 404 page keeps absolute paths (`BASE_PATH`), because a host can show it for a missing address at any depth.
 
 - **Weights:** 600, 700 and 800 only (the specification said 650 and 750). They are standard values, the checker accepts them and the look is the same.
 - **Grids:** every one-column grid uses `minmax(0, 1fr)`. Without it a long label or a no-wrap chip made a grid column wider than the screen and the whole page 33 px wider than a phone. The audit now runs at a fixed viewport width so it cannot be hidden by a phone's automatic zoom-out.

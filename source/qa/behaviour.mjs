@@ -73,7 +73,7 @@ await test('Calculator: interest is 2.8% of principal per month, edges are refus
   assert(r.total === 'UGX 2,800,000', '50M×2: ' + JSON.stringify(r));
   out.push('term keys Home/End/Arrow 1–6 months');
   // apply link carries the values
-  const href = await page.locator('[data-calculator] [data-calc-apply]').first().getAttribute('href');
+  const href = await page.locator('[data-calculator] [data-calc-apply]').first().evaluate((a) => a.pathname + a.search);
   assert(href === '/apply/?amount=50000000&term=2', 'apply link: ' + href);
   out.push('Apply link ' + href);
   // text never shows APR or a schedule
@@ -338,7 +338,7 @@ await test('Mobile menu: opens, lists every page, locks scroll, Esc closes and r
   assert(await page.locator('[data-menu]').isHidden(), 'Esc did not close');
   assert(await page.evaluate(() => document.activeElement?.hasAttribute('data-menu-toggle')), 'focus not returned to the button');
   await btn.click();
-  await page.locator('[data-menu] a[href$="/loans/"]').first().click();
+  await page.locator('[data-menu] a[href$="loans/"]').first().click();
   await page.waitForURL('**/loans/');
   assert(await page.locator('[data-menu]').isHidden(), 'menu still open on the next page');
   return n + ' links in the menu';

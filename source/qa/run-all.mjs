@@ -16,10 +16,10 @@ const run = (label, cmd, a, env = process.env) => {
 };
 
 const results = [];
-// The checks below address pages as /about/, /apply/ and so on, so they run on a build for the top of a domain.
-// The configured BASE_PATH (the folder the real site is published in) is built and checked at the end.
+// The preview server below serves at the top of a domain, so the first build is for that (this only affects the 404 page,
+// whose paths are absolute). The configured build (the folder the real site is published in) is built and checked at the end.
 const atRoot = { ...process.env, BASE_PATH: '' };
-results.push(run('Build (site at the top of a domain)', 'node', ['build/build.mjs', ...(args.includes('--fast') ? ['--fast'] : [])], atRoot));
+results.push(run('Build (for the preview server)', 'node', ['build/build.mjs', ...(args.includes('--fast') ? ['--fast'] : [])], atRoot));
 const server = spawn('node', ['build/serve.mjs', String(PORT)], { cwd: ROOT, stdio: 'ignore' });
 await new Promise((r) => setTimeout(r, 800));
 try {
@@ -32,14 +32,10 @@ try {
 } finally {
   server.kill();
 }
-results.push(run('Build (configured BASE_PATH)', 'node', ['build/build.mjs', '--fast']));
-const baseServer = spawn('node', ['build/serve.mjs', String(PORT)], { cwd: ROOT, stdio: 'ignore' });
-await new Promise((r) => setTimeout(r, 800));
-try {
-  results.push(run('Base path (files, images, links, the phone menu and the calculator link work from the configured folder)', 'node', ['qa/base-path.mjs', BASE]));
-} finally {
-  baseServer.kill();
-}
+results.push(run('Build (configured BASE_PATH, the files that get published)', 'node', ['build/build.mjs', '--fast']));
+// Opens the built site from disk and from three server locations (domain root, /biashara, a deep folder)
+results.push(run('References: every link, file, font, icon and offline-cache entry exists', 'node', ['qa/references.mjs']));
+results.push(run('Portable: every file and link connects from disk, a domain root and any folder', 'node', ['qa/portable.mjs']));
 console.log('\n══ Summary');
 for (const r of results) console.log(`${r.ok ? 'PASS' : 'FAIL'} · ${r.label}`);
 console.log('Reports: qa/report/');

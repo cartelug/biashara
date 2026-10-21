@@ -1,10 +1,13 @@
 // Small shared helpers.
 
-// The folder the site is served from: '' at a domain root, '/biashara' on a GitHub Pages project site.
-// The build sets it (config.js BASE_PATH); links in the HTML already carry it, paths made in script need withBase().
-export const BASE = __BASE__;
-export const withBase = (path) => BASE + path;
-export const sitePath = (pathname) => (BASE && pathname.startsWith(BASE + '/') ? pathname.slice(BASE.length) : pathname);
+// Where the site's root folder is, relative to this page ('' on the home page, '../' one folder down). The build writes
+// it into <html data-root>; links made in script use siteUrl() so they work wherever the site is placed.
+export const ROOT = document.documentElement.dataset.root || '';
+// siteUrl('/apply/?amount=1') -> 'apply/?amount=1' or '../apply/?amount=1'. Opened from disk, a folder link needs index.html.
+export const siteUrl = (path) => {
+  const url = ROOT + path.replace(/^\//, '');
+  return location.protocol === 'file:' ? url.replace(/^([^?#]*\/)($|[?#])/, '$1index.html$2') : url;
+};
 export const $ = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 export const clamp = (v, a, b) => Math.min(b, Math.max(a, v));

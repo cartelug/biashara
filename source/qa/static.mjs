@@ -111,6 +111,13 @@ for (const [name, re] of DISCLAIMERS) {
 
 // ------------------------------------------------------------------ links, anchors, alt text
 const exists = async (p) => fs.stat(p).then(() => true, () => false);
+const BUILT_BASE = JSON.parse(await fs.readFile(path.join(DIST, 'build.json'), 'utf8')).base || '';
+// Where a link in a given file points on disk: relative links resolve from the file's folder; the 404 page uses
+// absolute links that start with the folder the site is published in.
+const resolveRef = (file, ref) => {
+  if (ref.startsWith('/')) return path.join(DIST, BUILT_BASE && ref.startsWith(BUILT_BASE + '/') ? ref.slice(BUILT_BASE.length) : ref);
+  return path.resolve(path.dirname(file), ref);
+};
 for (const f of html) {
   const h = await read(f);
   const ids = new Set([...h.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
@@ -120,7 +127,7 @@ for (const f of html) {
     const [p, hash] = href.split('#');
     if (!p) { if (hash && !['top', 'main'].includes(hash) && !ids.has(hash)) fail('links', `${rel(f)}: missing #${hash}`); continue; }
     const clean = p.split('?')[0];
-    let target = path.join(DIST, clean);
+    let target = resolveRef(f, clean);
     if (clean.endsWith('/')) target = path.join(target, 'index.html');
     if (!(await exists(target))) { fail('links', `${rel(f)}: broken ${href}`); continue; }
     if (hash && target.endsWith('.html')) {
@@ -128,9 +135,12 @@ for (const f of html) {
       if (!new RegExp(`\\sid="${hash}"`).test(th)) fail('links', `${rel(f)}: ${href} anchor missing`);
     }
   }
+  for (const m of h.matchAll(/<script\s[^>]*src="([^"]+)"/g)) {
+    if (!/^https?:/.test(m[1]) && !(await exists(resolveRef(f, m[1].split('?')[0])))) fail('links', `${rel(f)}: missing script ${m[1]}`);
+  }
   for (const m of h.matchAll(/<(?:img|source)\s[^>]*(?:src|srcset)="([^" ,]+)/g)) {
     const src = m[1].split('?')[0];
-    if (src.startsWith('/') && !(await exists(path.join(DIST, src)))) fail('links', `${rel(f)}: missing image ${src}`);
+    if (!/^(https?:|data:)/.test(src) && !(await exists(resolveRef(f, src)))) fail('links', `${rel(f)}: missing image ${src}`);
   }
   for (const m of h.matchAll(/<img\s[^>]*>/g)) if (!/\salt="/.test(m[0])) fail('alt', `${rel(f)}: img without alt ${m[0].slice(0, 80)}`);
 }

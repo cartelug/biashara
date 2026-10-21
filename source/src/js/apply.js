@@ -1,7 +1,7 @@
 // Apply: a five-step loan file. Left, the current step; right, the "Your file" summary
 // (a collapsible card on small screens).
 // The page never says a facility is approved: it prepares and sends an application.
-import { $, $$, store, announce, copyText, reducedMotion, fmtUGX, mq, withBase } from './utils.js';
+import { $, $$, store, announce, copyText, reducedMotion, fmtUGX, mq, siteUrl } from './utils.js';
 import { CONFIG } from './config.js';
 import { Odometer } from './odometer.js';
 import { amountControl, termControl, interest, MIN, MAX } from './calculator.js';
@@ -348,7 +348,7 @@ export function mountApply(main) {
           <div class="ticket__perf" aria-hidden="true"></div>
           <div class="ticket__body">
             <header class="ticket__head">
-              <img src="${withBase('/assets/img/logo/biashara-logo-96.png')}" width="48" height="62" alt="">
+              <img src="${siteUrl('/assets/img/logo/biashara-logo-96.png')}" width="48" height="62" alt="">
               <div><p class="ticket__co">Biashara Trading Company Limited</p><p class="label muted">Loan application · Money Lending Licence 1451/ML</p></div>
             </header>
             <div class="ticket__stamp${sent ? '' : ' ticket__stamp--wait'}" aria-hidden="true">
