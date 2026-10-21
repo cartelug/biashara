@@ -1,4 +1,5 @@
 // Local preview of /dist with the same clean URLs and 404 page as the hosts in the README.
+// When the site was built with a BASE_PATH (dist/build.json), it is served under that folder, as GitHub Pages does.
 // Usage: node build/serve.mjs [port]
 import http from 'node:http';
 import fs from 'node:fs/promises';
@@ -8,6 +9,8 @@ import zlib from 'node:zlib';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'dist');
 const PORT = Number(process.argv[2] || process.env.PORT || 4173);
+let BASE = '';
+try { BASE = JSON.parse(await fs.readFile(path.join(ROOT, 'build.json'), 'utf8')).base || ''; } catch { /* built without a base */ }
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8', '.json': 'application/json', '.webmanifest': 'application/manifest+json',
@@ -43,12 +46,16 @@ async function hostHeaders(urlPath) {
 }
 
 http.createServer(async (req, res) => {
-  const r = await resolve(req.url);
-  if (r?.redirect) { res.writeHead(301, { Location: r.redirect }); return res.end(); }
+  const [rawPath, query = ''] = req.url.split('?');
+  const inBase = !BASE || rawPath.startsWith(BASE + '/');
+  if (BASE && (rawPath === '/' || rawPath === BASE)) { res.writeHead(302, { Location: BASE + '/' + (query ? '?' + query : '') }); return res.end(); }
+  const sitePath = inBase ? rawPath.slice(BASE.length) || '/' : rawPath;
+  const r = inBase ? await resolve(sitePath) : null;
+  if (r?.redirect) { res.writeHead(301, { Location: BASE + r.redirect + (query ? '?' + query : '') }); return res.end(); }
   const file = r?.file || path.join(ROOT, '404.html');
   let body = await fs.readFile(file);
   const type = TYPES[path.extname(file)] || 'application/octet-stream';
-  const headers = { ...(await hostHeaders(req.url.split('?')[0])), 'Content-Type': type, 'Cache-Control': 'no-cache', Vary: 'Accept-Encoding' };
+  const headers = { ...(await hostHeaders(sitePath)), 'Content-Type': type, 'Cache-Control': 'no-cache', Vary: 'Accept-Encoding' };
   // the preview runs on plain http, so drop the https upgrade from the policy
   if (headers['Content-Security-Policy']) headers['Content-Security-Policy'] = headers['Content-Security-Policy'].replace(/;\s*upgrade-insecure-requests/, '');
   // Compress text the way Netlify, Cloudflare Pages and most cPanel hosts do, so local measurements match
@@ -59,4 +66,4 @@ http.createServer(async (req, res) => {
   }
   res.writeHead(r ? 200 : 404, headers);
   res.end(body);
-}).listen(PORT, () => console.log(`Preview: http://localhost:${PORT}/`));
+}).listen(PORT, () => console.log(`Preview: http://localhost:${PORT}${BASE}/`));

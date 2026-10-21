@@ -1,7 +1,7 @@
 // A small client-side router: fetch the next page, swap <main>, update head tags and JSON-LD,
 // run page lifecycle hooks, restore scroll, move focus to the new H1 and announce the change.
 // Any failure falls back to a normal navigation.
-import { $, $$, announce, reducedMotion, wait } from './utils.js';
+import { $, $$, announce, reducedMotion, sitePath, wait } from './utils.js';
 import { pages } from '../data/site.mjs';
 
 const cache = new Map();
@@ -80,7 +80,7 @@ export function createRouter({ curtain, onLeave, onEnter, onIntro, scrollTo }) {
     if (busy) { location.href = href; return; }
     busy = true;
     const url = new URL(href, location.href);
-    const meta = pageFor(url.pathname);
+    const meta = pageFor(sitePath(url.pathname));
     try {
       const htmlP = prefetch(url.href);
       const cover = curtain.in(meta);

@@ -1,7 +1,7 @@
 // Cost calculator (indicative) and the accessible custom slider it is built from.
 // Interest is 2.8% per month, calculated on the approved principal (Company Profile p. 15).
 // Interest over the term = interest per month × months. No instalment schedule is invented.
-import { $, $$, clamp, fmtNumber, fmtUGX, parseAmount } from './utils.js';
+import { $, $$, clamp, fmtNumber, fmtUGX, parseAmount, withBase } from './utils.js';
 import { Odometer } from './odometer.js';
 
 export const RATE = 0.028;
@@ -174,7 +174,7 @@ export function mountCalculator(root, { onChange } = {}) {
     const m = `${state.months} month${state.months === 1 ? '' : 's'}`;
     if (monthsLabel) monthsLabel.textContent = m;
     if (termLabel) termLabel.textContent = m;
-    if (applyLink) applyLink.href = `/apply/?amount=${state.amount}&term=${state.months}`;
+    if (applyLink) applyLink.href = withBase(`/apply/?amount=${state.amount}&term=${state.months}`);
     onChange?.({ ...state, monthly, total });
   };
   const amt = amountControl(root, { value: state.amount, onChange: (v) => { state.amount = v; render(); } });

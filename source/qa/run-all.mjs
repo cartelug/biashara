@@ -9,14 +9,17 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = 4179;
 const BASE = `http://localhost:${PORT}`;
 const args = process.argv.slice(2);
-const run = (label, cmd, a) => {
+const run = (label, cmd, a, env = process.env) => {
   process.stdout.write(`\n── ${label}\n`);
-  const r = spawnSync(cmd, a, { cwd: ROOT, stdio: 'inherit' });
+  const r = spawnSync(cmd, a, { cwd: ROOT, stdio: 'inherit', env });
   return { label, ok: r.status === 0 };
 };
 
 const results = [];
-results.push(run('Build', 'node', ['build/build.mjs', ...(args.includes('--fast') ? ['--fast'] : [])]));
+// The checks below address pages as /about/, /apply/ and so on, so they run on a build for the top of a domain.
+// The configured BASE_PATH (the folder the real site is published in) is built and checked at the end.
+const atRoot = { ...process.env, BASE_PATH: '' };
+results.push(run('Build (site at the top of a domain)', 'node', ['build/build.mjs', ...(args.includes('--fast') ? ['--fast'] : [])], atRoot));
 const server = spawn('node', ['build/serve.mjs', String(PORT)], { cwd: ROOT, stdio: 'ignore' });
 await new Promise((r) => setTimeout(r, 800));
 try {
@@ -28,6 +31,14 @@ try {
   if (args.includes('--lighthouse')) results.push(run('Lighthouse (mobile)', 'bash', ['qa/lighthouse.sh', BASE]));
 } finally {
   server.kill();
+}
+results.push(run('Build (configured BASE_PATH)', 'node', ['build/build.mjs', '--fast']));
+const baseServer = spawn('node', ['build/serve.mjs', String(PORT)], { cwd: ROOT, stdio: 'ignore' });
+await new Promise((r) => setTimeout(r, 800));
+try {
+  results.push(run('Base path (files, images, links and the router all work from the configured folder)', 'node', ['qa/base-path.mjs', BASE]));
+} finally {
+  baseServer.kill();
 }
 console.log('\n══ Summary');
 for (const r of results) console.log(`${r.ok ? 'PASS' : 'FAIL'} · ${r.label}`);

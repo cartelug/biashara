@@ -1,7 +1,7 @@
 // Entry point. Boots the motion engine, global furniture and the router, then runs each page's
 // init/destroy lifecycle. Everything degrades: if this file fails, the site is still complete HTML.
 import { CONFIG } from './config.js';
-import { $, reducedMotion } from './utils.js';
+import { $, reducedMotion, withBase } from './utils.js';
 import { mountChrome, syncPageChrome } from './chrome.js';
 import { mountCursor } from './cursor.js';
 import { mountPalette } from './palette.js';
@@ -93,7 +93,7 @@ function boot() {
 
 function registerSW() {
   if (!CONFIG.SERVICE_WORKER || !('serviceWorker' in navigator) || location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') return;
-  window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(() => {}); });
+  window.addEventListener('load', () => { navigator.serviceWorker.register(withBase('/sw.js')).catch(() => {}); });
 }
 
 try { boot(); } catch (err) {

@@ -1,5 +1,5 @@
 // Command palette (K, / or Ctrl/Cmd+K): jump to any page or section, Apply, Call, WhatsApp, Show grid.
-import { $, $$ } from './utils.js';
+import { $, $$, withBase } from './utils.js';
 import { CONFIG } from './config.js';
 import { pages } from '../data/site.mjs';
 
@@ -13,7 +13,7 @@ export function mountPalette({ navigate, grid, chrome }) {
 
   function collect() {
     const out = [];
-    for (const p of pages) out.push({ group: 'Pages', n: p.num, t: p.name, k: p.nav, run: () => navigate(p.path) });
+    for (const p of pages) out.push({ group: 'Pages', n: p.num, t: p.name, k: p.nav, run: () => navigate(withBase(p.path)) });
     const main = $('#main');
     for (const h of $$('section[id] h2[id], section[id] > .wrap h2', main)) {
       const sec = h.closest('section[id]');
@@ -21,7 +21,7 @@ export function mountPalette({ navigate, grid, chrome }) {
       const num = sec.dataset.chapter || '·';
       out.push({ group: 'On this page', n: num, t: h.textContent.trim().replace(/\s+/g, ' '), k: 'Section', run: () => navigate('#' + sec.id) });
     }
-    out.push({ group: 'Actions', n: '→', t: 'Apply now', k: 'Assemble your loan file', run: () => navigate('/apply/') });
+    out.push({ group: 'Actions', n: '→', t: 'Apply now', k: 'Assemble your loan file', run: () => navigate(withBase('/apply/')) });
     CONFIG.CONTACT.phones.forEach((p) => out.push({ group: 'Actions', n: '☎', t: `Call ${phone(p)}`, k: 'Telephone', run: () => { location.href = 'tel:' + p; } }));
     out.push({ group: 'Actions', n: 'W', t: `WhatsApp ${phone('+' + CONFIG.CONTACT.whatsapp)}`, k: 'Opens WhatsApp', run: () => window.open('https://wa.me/' + CONFIG.CONTACT.whatsapp, '_blank', 'noopener') });
     out.push({ group: 'Actions', n: '@', t: `Email ${CONFIG.CONTACT.email}`, k: 'Opens your mail app', run: () => { location.href = 'mailto:' + CONFIG.CONTACT.email; } });

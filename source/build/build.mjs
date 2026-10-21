@@ -26,6 +26,23 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const t0 = Date.now();
 const FAST = process.argv.includes('--fast'); // reuse cached images and social cards
 
+// ---------------------------------------------------------------- base path
+// The folder the site is served from ('' at a domain root, '/biashara' on a GitHub Pages project site).
+// Templates and CSS are written with root paths ("/assets/..."); they are prefixed with BASE on the way out.
+const BASE = (() => {
+  const raw = (process.env.BASE_PATH ?? CONFIG.BASE_PATH ?? '').trim();
+  const b = raw === '/' ? '' : raw.replace(/\/+$/, '');
+  if (b && !/^\/[\w.~-]+(\/[\w.~-]+)*$/.test(b)) throw new Error(`BASE_PATH must look like "" or "/folder" (got "${raw}")`);
+  return b;
+})();
+const atBase = (u) => (u.startsWith('/') && !u.startsWith('//') ? BASE + u : u); // one URL
+const atBaseSet = (v) => v.split(',').map((s) => s.trim().replace(/^\S+/, atBase)).join(', '); // srcset / imagesrcset
+// Prefix every root path in the URL attributes of a page, and in the url(...) of a stylesheet.
+const rebaseHtml = (html) => !BASE ? html : html
+  .replace(/(\s(?:href|src|action|poster)=")([^"]*)"/g, (_, a, v) => `${a}${atBase(v)}"`)
+  .replace(/(\s(?:srcset|imagesrcset)=")([^"]*)"/g, (_, a, v) => `${a}${atBaseSet(v)}"`);
+const rebaseCss = (css) => !BASE ? css : css.replace(/url\((["']?)\/(?!\/)/g, (m, q) => `url(${q}${BASE}/`);
+
 // ---------------------------------------------------------------- dates
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const longDate = (iso) => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${MONTHS[m - 1]} ${y}`; };
@@ -78,19 +95,20 @@ const cssFiles = (await fs.readdir(rel(SRC, 'css'))).filter((f) => f.endsWith('.
 let css = '@layer tokens, base, layout, components, pages, motion, print, utilities;\n';
 for (const f of cssFiles) css += `/* ${f} */\n` + (await read(rel(SRC, 'css', f))) + '\n';
 css += generatedCss();
-const minCss = minifyCss(css);
+const minCss = rebaseCss(minifyCss(css));
 const cssHash = sha256(minCss).replace(/[^a-z0-9]/gi, '').slice(0, 10);
 await write(rel(DIST, 'assets/css/main.css'), minCss);
 
 // Critical CSS: tokens + base + the frame. Inlined in every page head.
-const critical = minifyCss('@layer tokens, base, layout, components, pages, motion, print, utilities;\n' +
-  (await read(rel(SRC, 'css/00-tokens.css'))) + (await read(rel(SRC, 'css/10-base.css'))) + (await read(rel(SRC, 'critical/critical.css'))));
+const critical = rebaseCss(minifyCss('@layer tokens, base, layout, components, pages, motion, print, utilities;\n' +
+  (await read(rel(SRC, 'css/00-tokens.css'))) + (await read(rel(SRC, 'css/10-base.css'))) + (await read(rel(SRC, 'critical/critical.css')))));
 
 // ---------------------------------------------------------------- JS
 const jsOut = await esbuild.build({
   entryPoints: [rel(SRC, 'js/app.js')],
   bundle: true, format: 'esm', minify: true, target: ['es2020'], write: false,
   external: ['./config.js'], legalComments: 'none',
+  define: { __BASE__: JSON.stringify(BASE) },
 });
 const appJs = jsOut.outputFiles[0].text;
 const jsHash = sha256(appJs + (await read(rel(SRC, 'js/config.js')))).replace(/[^a-z0-9]/gi, '').slice(0, 10);
@@ -101,7 +119,7 @@ await fs.cp(rel(SRC, 'js/config.js'), rel(DIST, 'assets/js/config.js'));
 const headScript = (await read(rel(SRC, 'critical/head.js'))).trim();
 const headScriptHash = sha256(headScript);
 
-const BUILD = { css: cssHash, js: jsHash, time: new Date().toISOString() };
+const BUILD = { css: cssHash, js: jsHash, base: BASE, time: new Date().toISOString() };
 
 // ---------------------------------------------------------------- templates
 const partialCache = new Map();
@@ -330,7 +348,7 @@ for (const page of allPages) {
   html = await expand(html, ctx);
   // the header, footer and chrome partials arrive during expand, so fill their slots afterwards
   html = html.replace('<!--NAV-->', navLinks(page.id)).replace('<!--INDEX-->', indexList()).replace('<!--FOOTLINKS-->', footerLinks());
-  html = html.replace(/__BUILD__/g, BUILD.js);
+  html = rebaseHtml(html.replace(/__BUILD__/g, BUILD.js));
   if (/\{\{|<x-/.test(html)) throw new Error('Unexpanded template token in ' + page.id + ': ' + html.match(/.{40}(\{\{|<x-).{40}/)?.[0]);
   const out = page.id === 'home' ? rel(DIST, 'index.html') : page.id === '404' ? rel(DIST, '404.html') : rel(DIST, page.id, 'index.html');
   await write(out, html);
@@ -349,12 +367,12 @@ ${sitemap.map((p) => `  <url><loc>${CONFIG.SITE_URL}${p}</loc><lastmod>${today}<
 `);
 await write(rel(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${CONFIG.SITE_URL}/sitemap.xml\n`);
 await write(rel(DIST, 'manifest.webmanifest'), JSON.stringify({
-  name: 'Biashara Trading Company Limited', short_name: 'Biashara', start_url: '/', scope: '/', display: 'standalone',
+  name: 'Biashara Trading Company Limited', short_name: 'Biashara', start_url: BASE + '/', scope: BASE + '/', display: 'standalone',
   background_color: '#f5f2ee', theme_color: '#f5f2ee', description: 'Short-term bridge financing in Kampala since 2014.',
   icons: [
-    { src: '/assets/img/logo/icon-192.png', sizes: '192x192', type: 'image/png' },
-    { src: '/assets/img/logo/icon-512.png', sizes: '512x512', type: 'image/png' },
-    { src: '/assets/img/logo/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+    { src: BASE + '/assets/img/logo/icon-192.png', sizes: '192x192', type: 'image/png' },
+    { src: BASE + '/assets/img/logo/icon-512.png', sizes: '512x512', type: 'image/png' },
+    { src: BASE + '/assets/img/logo/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
   ],
 }, null, 2));
 
@@ -408,7 +426,7 @@ await write(rel(DIST, '_headers'), `/*
 // Same headers for Apache / cPanel hosts.
 await write(rel(DIST, '.htaccess'), `# Biashara website — Apache / cPanel settings
 Options -Indexes
-ErrorDocument 404 /404.html
+ErrorDocument 404 ${BASE}/404.html
 <IfModule mod_headers.c>
   Header always set Content-Security-Policy "${csp}"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
@@ -442,8 +460,8 @@ ErrorDocument 404 /404.html
 const precache = [...sitemap, '/404.html', `/assets/css/main.css?v=${BUILD.css}`, `/assets/js/app.js?v=${BUILD.js}`, `/assets/js/config.js?v=${BUILD.js}`,
   '/assets/vendor/gsap.min.js', '/assets/vendor/ScrollTrigger.min.js', '/assets/vendor/lenis.min.js',
   '/assets/fonts/archivo-wght.woff2', '/assets/fonts/sourceserif4-opsz.woff2', '/assets/fonts/sourceserif4-italic-opsz.woff2',
-  '/assets/img/logo/biashara-logo-320.png', '/assets/img/logo/mark-160.png'];
-const sw = (await read(rel(SRC, 'js/sw.js'))).replace('__VERSION__', BUILD.js).replace('__PRECACHE__', JSON.stringify(precache))
+  '/assets/img/logo/biashara-logo-320.png', '/assets/img/logo/mark-160.png'].map(atBase);
+const sw = (await read(rel(SRC, 'js/sw.js'))).replace('__VERSION__', BUILD.js).replace('__BASE__', JSON.stringify(BASE)).replace('__PRECACHE__', JSON.stringify(precache))
   .replace('__ENDPOINT__', JSON.stringify(CONFIG.SUBMIT_ENDPOINT || ''));
 await write(rel(DIST, 'sw.js'), sw);
 await write(rel(DIST, 'build.json'), JSON.stringify(BUILD, null, 2));
@@ -453,5 +471,5 @@ const gz = (buf) => zlib.gzipSync(buf, { level: 9 }).length;
 const sizeOf = async (p) => gz(await fs.readFile(rel(DIST, p)));
 const jsTotal = (await sizeOf('assets/js/app.js')) + (await sizeOf('assets/js/config.js')) + (await sizeOf('assets/vendor/gsap.min.js')) + (await sizeOf('assets/vendor/ScrollTrigger.min.js')) + (await sizeOf('assets/vendor/lenis.min.js'));
 const cssTotal = (await sizeOf('assets/css/main.css')) + gz(Buffer.from(critical));
-console.log(`Built ${allPages.length} pages in ${((Date.now() - t0) / 1000).toFixed(1)}s · JS ${(jsTotal / 1024).toFixed(1)}KB gz · CSS ${(cssTotal / 1024).toFixed(1)}KB gz`);
+console.log(`Built ${allPages.length} pages for ${BASE || '/'} in ${((Date.now() - t0) / 1000).toFixed(1)}s · JS ${(jsTotal / 1024).toFixed(1)}KB gz · CSS ${(cssTotal / 1024).toFixed(1)}KB gz`);
 await write(rel(DIST, '..', '.cache', 'budget.json'), JSON.stringify({ jsGzip: jsTotal, cssGzip: cssTotal }, null, 2));

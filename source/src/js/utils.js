@@ -1,4 +1,10 @@
 // Small shared helpers.
+
+// The folder the site is served from: '' at a domain root, '/biashara' on a GitHub Pages project site.
+// The build sets it (config.js BASE_PATH); links in the HTML already carry it, paths made in script need withBase().
+export const BASE = __BASE__;
+export const withBase = (path) => BASE + path;
+export const sitePath = (pathname) => (BASE && pathname.startsWith(BASE + '/') ? pathname.slice(BASE.length) : pathname);
 export const $ = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 export const clamp = (v, a, b) => Math.min(b, Math.max(a, v));

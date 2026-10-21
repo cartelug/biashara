@@ -19,6 +19,12 @@ export const CONFIG = {
   // Example: 'https://formspree.io/f/xxxxxxx' or your own server URL.
   SUBMIT_ENDPOINT: '',
 
+  // The folder the site is served from. '' when the site is at the top of a domain (Netlify, Cloudflare
+  // Pages, cPanel, a custom domain). '/biashara' when it is at https://<user>.github.io/biashara/ (a GitHub
+  // Pages project site). Every link, image, font and script is built with this prefix, so it must match
+  // where the site really lives. No trailing slash. The BASE_PATH environment variable overrides it.
+  BASE_PATH: '/biashara',
+
   // Offline shell (service worker). Set to false to switch it off.
   SERVICE_WORKER: true,
 
