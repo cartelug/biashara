@@ -2,7 +2,7 @@
 Options -Indexes
 ErrorDocument 404 /biashara/404.html
 <IfModule mod_headers.c>
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-M3gPR0uBmStuQLPEMAGla9tZ8hCZUt3K+cqS0IzX2ZM='; style-src 'self' 'sha256-vhibmn/sS1+JT7G386Zenm8dbsfbkbCUMdWPbHbZZWI='; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' mailto:; object-src 'none'; upgrade-insecure-requests"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-IBblDfyMDosHsXN8jy/BeUw/GqZgzIUvhWb6NgWWQAs='; style-src 'self' 'sha256-9d7wXGNLaTwxlJsQ7pINY79zywlA01cwrMA/P5iEe+U='; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' mailto:; object-src 'none'; upgrade-insecure-requests"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "DENY"

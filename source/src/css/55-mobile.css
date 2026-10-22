@@ -1,0 +1,84 @@
+/* Mobile refinements apply to the existing page system and all fourteen routes. */
+html { scroll-padding-top: calc(var(--header-offset, var(--header-h)) + 20px); }
+.site-header { padding-top: env(safe-area-inset-top); }
+.site-header__tools, .brand, .menu__aside { min-width: 0; }
+.site-header .btn { white-space: nowrap; }
+button, a, input, select, textarea, summary { -webkit-tap-highlight-color: rgba(216, 32, 40, .1); }
+input, textarea { scroll-margin-top: calc(var(--header-offset, var(--header-h)) + 24px); }
+.hero__eyebrow .icon { flex-shrink: 0; }
+.product-card__head > div { min-width: 0; }
+
+@media (max-width: 767.98px) {
+  :root { --section-y: clamp(52px, 10vw, 72px); }
+  .hero { padding-block: 28px 40px; }
+  .hero__grid { gap: 20px; }
+  .hero__text { display: contents; }
+  .hero__eyebrow { order: 0; justify-self: start; max-width: 100%; margin: 0; font-size: .6875rem; padding: 8px 12px; line-height: 1.4; }
+  .hero h1 { order: 1; max-width: 14ch; margin: 0; font-size: clamp(2.5rem, 10.3vw, 4rem); letter-spacing: -.04em; line-height: 1.03; }
+  .hero .lede { order: 2; max-width: 43ch; margin: 0; font-size: 1.125rem; line-height: 1.5; }
+  .hero .btn-row { order: 3; gap: 10px; }
+  .hero .btn-row .btn { width: 100%; min-height: 52px; padding: 12px 14px; font-size: .875rem; line-height: 1.35; }
+  .hero__media { order: 4; margin-top: 4px; }
+  .hero__media .ph { aspect-ratio: 4 / 3; border-radius: 18px; }
+  .hero__licence { left: 12px; bottom: 12px; gap: 10px; padding: 10px 12px; font-size: .75rem; }
+  .hero__licence .tile { width: 36px; height: 36px; }
+  .hero__licence b { font-size: .9375rem; }
+  .hero__facts { order: 5; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; }
+  .hero__facts .chip { justify-content: center; min-width: 0; min-height: 40px; padding-inline: 8px; font-size: .75rem; }
+  .section-head { margin-bottom: 26px; }
+  .section-head .lede, .page-head .lede { font-size: 1.125rem; }
+  .product-card, .card, .product-row { padding: 20px; }
+  .card--media { padding: 0; }
+  .product-card__cta { gap: 8px; }
+  .product-card__cta .btn { min-height: 48px; padding-inline: 14px; font-size: .875rem; }
+  .product-card__cta > a { max-width: 100%; }
+  .product-card h3, .product-row h3 { font-size: 1.25rem; }
+  .group { padding: 16px; gap: 12px; }
+  .stat { padding: 18px 14px; }
+  .stat dt { font-size: .625rem; gap: 6px; }
+  .stat__fig { font-size: clamp(1.875rem, 8vw, 3rem); }
+  .stat__cap { font-size: .8125rem; line-height: 1.5; }
+  .licence-strip { padding: 24px 20px; }
+  .licence-strip__no { font-size: clamp(2.25rem, 10vw, 3.5rem); }
+  .calc__inputs, .ledgercard, .apply__form { border-radius: 18px; }
+  .ledger__row { gap: 12px; font-size: .9375rem; }
+  .ledger dd { min-width: 0; }
+  .ledgercard .ledger__row--key { align-items: flex-start; }
+  .ledgercard .ledger__row--key dd { font-size: 1.375rem; }
+  .field .chips { gap: 6px; }
+  .field .chips .chip { padding-inline: 12px; }
+  .step { padding-left: 54px; }
+  .step p a { overflow-wrap: anywhere; }
+  .cta-band .btn-row .btn { width: 100%; }
+  .site-footer__grid { gap: 28px 24px; }
+  .site-footer__base { line-height: 1.6; }
+  .to-top { right: max(14px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom)); }
+  .preloader__top { font-size: .5625rem; }
+}
+@media (min-width: 360px) and (max-width: 767.98px) {
+  .hero .btn-row { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+}
+@media (max-width: 359.98px) {
+  .site-header__tools { gap: 6px; }
+  .brand__wordmark { font-size: .875rem; margin-left: 6px; }
+  .brand__wordmark > span { font-size: .3125rem; }
+  .brand img { width: 27px; }
+  .product-card .chips { gap: 6px; }
+  .product-card .chip { padding-inline: 10px; font-size: .75rem; }
+  .calc__inputs, .ledgercard, .apply__form { padding: 16px; }
+  .money { padding-inline: 12px; }
+  .ledgercard .ledger__row--key { flex-direction: column; gap: 6px; }
+  .pchoice__box { grid-template-columns: 36px minmax(0, 1fr) 20px; padding: 12px; gap: 2px 10px; }
+  .pchoice__box .tile { width: 36px; height: 36px; }
+  .pchoice__mark { width: 20px; height: 20px; }
+}
+@media (min-width: 768px) and (max-width: 899.98px) {
+  .hero__grid { gap: 32px; }
+  .hero h1 { max-width: 15ch; }
+  .hero__media { max-width: 640px; width: 100%; }
+}
+@media (min-width: 1024px) and (max-width: 1199.98px) {
+  .brand__wordmark { font-size: 1rem; }
+  .primary-nav { margin-left: 0; }
+  .primary-nav a { padding-inline: 10px; font-size: .875rem; }
+}
