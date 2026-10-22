@@ -1,7 +1,7 @@
 // Offline shell. Pages: network first, falling back to cache. Assets: cache first.
 // The form endpoint and any non-GET request are never cached.
-const VERSION = 'btc-9FD8UZWKIK';
-const PRECACHE = ["","about/","loans/","how-we-lend/","terms/","who-we-serve/","team/","licence/","faq/","contact/","apply/","profile/","privacy/","404.html","assets/css/main.css?v=5WPEIoAutw","assets/js/app.js?v=9FD8UZWKIK","assets/fonts/archivo-wght.woff2","assets/fonts/sourceserif4-opsz.woff2","assets/fonts/sourceserif4-italic-opsz.woff2","assets/img/logo/biashara-logo-320.png","assets/img/logo/mark-160.png"];
+const VERSION = 'btc-6vvcDE6wRl';
+const PRECACHE = ["","about/","loans/","how-we-lend/","terms/","who-we-serve/","team/","licence/","faq/","contact/","apply/","profile/","privacy/","404.html","assets/css/main.css?v=sLgng8hMPM","assets/js/app.js?v=6vvcDE6wRl","assets/fonts/archivo-wght.woff2","assets/fonts/sourceserif4-opsz.woff2","assets/fonts/sourceserif4-italic-opsz.woff2","assets/img/logo/biashara-logo-320.png","assets/img/logo/mark-160.png"];
 const ENDPOINT = "";
 // The folder the site is in, with a trailing slash ('/' at a domain root, '/biashara/' on GitHub Pages).
 const ROOT = new URL('./', self.location.href).pathname;

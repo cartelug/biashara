@@ -2,6 +2,7 @@
   <div class="container site-header__in">
     <a class="brand" href="/" aria-label="Biashara Trading Company Limited, home">
       <img src="/assets/img/logo/biashara-logo-96.png" srcset="/assets/img/logo/biashara-logo-96.png 96w, /assets/img/logo/biashara-logo-192.png 192w" sizes="34px" width="96" height="125" alt="">
+      <span class="brand__wordmark" aria-hidden="true">Biashara<span>Trading Company Limited</span></span>
     </a>
     <nav class="primary-nav" aria-label="Main">
       <ul role="list"><!--NAV--></ul>
@@ -9,21 +10,26 @@
     <div class="site-header__tools">
       <a class="header-phone" href="tel:{{contact.phone1}}"><x-icon name="phone"></x-icon><span class="tnum">{{contact.phone1Text}}</span></a>
       <a class="btn btn--sm" href="/apply/">Apply now</a>
-      <button class="menu-btn needs-js" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
+      <button class="menu-btn needs-js" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="menu" data-menu-toggle>
         <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-menu" data-menu-icon/></svg><span data-menu-label>Menu</span>
       </button>
     </div>
   </div>
   <div class="menu" id="menu" data-menu hidden>
     <div class="container">
-      <nav aria-label="Menu">
-        <ul class="menu__list" role="list"><!--NAV--></ul>
-        <p class="menu__h">More</p>
-        <ul class="menu__list menu__list--more" role="list"><!--MENU--></ul>
-      </nav>
-      <div class="menu__cta">
-        <a class="btn btn--lg" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a>
-        <a class="btn btn--ghost btn--lg" href="tel:{{contact.phone1}}"><x-icon name="phone"></x-icon>Call {{contact.phone1Text}}</a>
+      <p class="menu__intro"><span>Explore Biashara</span><span>Kampala · Uganda</span></p>
+      <div class="menu__grid">
+        <nav aria-label="Menu"><ul class="menu__list" role="list"><!--NAV--></ul></nav>
+        <div class="menu__aside">
+          <nav aria-label="More pages">
+            <p class="menu__h">More to explore</p>
+            <ul class="menu__list menu__list--more" role="list"><!--MENU--></ul>
+          </nav>
+          <div class="menu__cta">
+            <a class="btn btn--lg" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a>
+            <a class="menu__phone" href="tel:{{contact.phone1}}"><x-icon name="phone"></x-icon>{{contact.phone1Text}}</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
