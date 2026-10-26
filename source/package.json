@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Static website for Biashara Trading Company Limited",
   "scripts": {
+    "test:express": "node --test qa/express/domain.test.mjs",
     "build": "node build/build.mjs",
     "preview": "node build/serve.mjs",
     "qa": "node qa/run-all.mjs",

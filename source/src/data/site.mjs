@@ -1,5 +1,6 @@
 // Page list, products and footnotes. Every fact here comes from the
 // 2026 Company Profile (Edition 2026, Version 5); the page number is noted beside it.
+// The isolated Express preview follows the separate V6 proposal dated 26 October 2026.
 
 export const parts = {
   front: 'FRONT MATTER',
@@ -11,6 +12,9 @@ export const parts = {
 
 // num: the number shown in the curtain, index and chapter rail.
 export const pages = [
+  { id: 'express', path: '/express/', num: '14', name: 'Biashara Express', nav: 'Express V6', part: 'end', noindex: true,
+    title: 'Biashara Express V6 · Interactive preview',
+    description: 'An interactive preview of the V6 borrower journey, officer review and collections workflows. Synthetic records only. UGX 2,000,000 maximum principal per Express loan.' },
   { id: 'home', path: '/', num: '01', name: 'Cover', nav: 'Home', part: 'front',
     title: 'Biashara Trading Company Limited · Short-term bridge financing in Kampala',
     description: 'Licensed short-term bridge financing in Kampala since 2014. UGX 1–50M, 2.8% per month on the approved principal, up to 6 months. School fees, salary, asset and business loans.' },

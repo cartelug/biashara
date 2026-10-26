@@ -4,6 +4,7 @@ import { mountCalculator } from './calculator.js';
 import { mountApply } from './apply.js';
 import { mountEnquiry } from './enquiry.js';
 import { mountLicence } from './licence.js';
+import { mountExpress } from './express/workspace.js';
 
 // "Print this checklist" prints the documents checklist alone; other print buttons print the page.
 function mountPrint(main) {
@@ -47,5 +48,6 @@ export function initPage(main) {
   if (id === 'apply') off.push(mountApply(main));
   if (id === 'contact') off.push(mountEnquiry(main));
   if (id === 'licence') off.push(mountLicence(main));
+  if (id === 'express') off.push(mountExpress(main));
   return () => off.forEach((f) => f && f());
 }
