@@ -67,6 +67,7 @@ export async function buildOgImages({ pages, parts, outDir, fontDir, logo, cache
   const spaced = (s) => s.split('').join(' ');
 
   const headlines = {
+    express: ['BIASHARA', 'EXPRESS / V6'],
     home: ['SHORT-TERM', 'BRIDGE FINANCING.'],
     about: ['ABOUT', 'BIASHARA'], loans: ['OUR LOAN', 'SOLUTIONS'], 'how-we-lend': ['HOW WE', 'LEND'],
     terms: ['TERMS', '& CHARGES'], 'who-we-serve': ['WHO WE', 'SERVE'], team: ['LEADERSHIP &', 'ORGANISATION'],
