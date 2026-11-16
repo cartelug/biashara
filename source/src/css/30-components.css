@@ -371,3 +371,9 @@ figcaption, .figcap { margin-top: 10px; font-size: .875rem; color: var(--slate);
 .section--night .card h3 { color: #fff; }
 .section--night .card p { color: var(--on-dark-mute); }
 @media (max-width: 599.98px) { .field .chips { gap: 6px; } button.chip { padding: 0 12px; } }
+/* Design credit: the 97 Design mark (white, for the dark footer) */
+.site-footer__base .credit { display: inline-flex; align-items: center; gap: 10px; color: var(--on-dark-mute); }
+.site-footer__base .credit img { width: auto; height: 22px; opacity: .9; }
+.site-footer__base .credit b { color: #fff; font-weight: 700; }
+@media (min-width: 768px) { .site-footer__base .credit { margin-left: auto; } }
+@media (max-width: 767.98px) { .site-footer__base .credit { flex-basis: 100%; margin-top: 6px; } .site-footer__base { padding-bottom: 72px; } }
