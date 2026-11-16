@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { D, E, STAGGER } from './tokens.js';
-import { createThread } from './thread.js';
+// The page-long thread (thread.js) was removed at the owner's request; its smaller roles remain.
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -387,7 +387,7 @@ let setProgress = null;
 try {
   bleeds();
   chapters();
-  thread = main ? createThread({ main, tier, mobile: isMobile(), still }) : null;
+  thread = null;
   stats();
   repayment();
   rope();

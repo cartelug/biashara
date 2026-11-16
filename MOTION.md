@@ -158,3 +158,7 @@ Full version once per browser session, under 2.2 s; short version (0.4 to 0.6 s)
   2. Underlines and the statistics curve cut through introductions (measured mid-entrance, and crossing to the far gutter diagonally). Now measured from layout and routed through gaps.
   3. The final knot crossed the paragraph and the second button. Now it approaches through the column gap and loops the Apply button only, leaving a loose end.
   Also: the film's slice line lingered over the hero; it now fades as the panels peel.
+
+## 10. Owner change (16 November 2026)
+
+The page-long thread that drew itself down every page as you scrolled has been removed at the owner's request (`src/js/motion/thread.js` deleted). The film, page wipe, pinned process line, product reel, statistics count-up, calculator line, scroll progress, closing band and interactions remain. The process steps show their plain connector line again.
