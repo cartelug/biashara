@@ -1,6 +1,6 @@
 # Biashara website: redesign prototype
 
-**Status:** built and tested. Sections 1–11 are the specification written before the build; section 12 records what was built, the measured results and the changes made while building.
+**Status:** built and tested. **Superseded for motion (November 2026):** the owner asked for a signature motion identity; see `MOTION.md` (the red thread) and `AUDIT.md`. The removals listed below were reversed deliberately, with the fixes those sections describe (native scrolling on touch, no hijacked scroll on phones, a skippable film under 2.2 s). Sections 1–11 are the specification written before the build; section 12 records what was built, the measured results and the changes made while building.
 **Scope:** every page, PC and mobile. Content, facts and disclaimers are unchanged; only the design, layout, styles and scripts change.
 **Site:** Biashara Trading Company Limited, short-term bridge financing, Kampala.
 

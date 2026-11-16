@@ -115,3 +115,16 @@ qa/                 checks and their reports
 ```
 
 Keyboard: **Esc** closes the menu, the licence viewer and the Apply summary. The design is described in `../DESIGN-PROTOTYPE.md`.
+
+## 6. Motion and extra checks
+
+The motion identity (the red thread, the opening film, pinned chapters) is described in `../MOTION.md`; the audit and its fixes in `../AUDIT.md`.
+Motion code lives in `src/js/intro.js` (first script) and `src/js/motion/` (loaded after first paint as `assets/js/motion.js`).
+
+```bash
+PW_CHROMIUM=/path/to/chrome npm run qa      # use a specific browser for the browser tests
+node qa/sweep.mjs http://localhost:4179     # every page at 12 screen sizes: overflow, tap targets, console errors
+node qa/film.mjs http://localhost:4179 out --page=/ --w=390 --scroll   # film-strip screenshots for design review
+```
+
+Add `?motion=full`, `?motion=lite` or `?motion=still` to any address to see a motion tier.
