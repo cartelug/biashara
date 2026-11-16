@@ -96,7 +96,7 @@ export function mountSite() {
       const sweep = $('.menu__thread path', menu);
       sizeThreadSvg($('.menu__thread', menu), menu.clientWidth, menu.clientHeight, (w, h) => `M${w * 1.04} ${-0.04 * h}C${w * .7} ${h * .2} ${w * .6} ${h * .3} ${w * .5} ${h * .48}S${w * .2} ${h * .8} ${-0.04 * w} ${h * 1.04}`);
       if (sweep) linkAnimations.push(sweep.animate([{ strokeDashoffset: 1, opacity: 1 }, { strokeDashoffset: 0, opacity: 1, offset: .7 }, { strokeDashoffset: -1, opacity: 0 }], { duration: 900, easing: 'cubic-bezier(.65,.05,.36,1)' }));
-      $$('.menu__intro, .menu__list > li, .menu__h, .menu__cta', menu).forEach((el, i) => {
+      $$('.menu__intro, .menu__h, .mloans > li, .mrows > li, .mchips > li, .menu__cta', menu).forEach((el, i) => {
         linkAnimations.push(el.animate([{ opacity: 0, transform: 'translateY(40px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 640, delay: 180 + Math.min(i, 10) * 60, fill: 'backwards', easing: 'cubic-bezier(.16,1,.3,1)' }));
       });
       sheetAnimation.finished.then(() => { if (current === revision) menu.dataset.state = 'open'; }, () => {});
@@ -166,3 +166,14 @@ export function mountSite() {
   });
   syncContrast();
 }
+
+// Desktop panels open on hover and keyboard focus with CSS alone; Esc closes the open one and keeps focus on its link.
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const item = document.activeElement?.closest?.('.nav-item--panel');
+  if (!item) return;
+  item.classList.add('is-closed');
+  item.querySelector('.nav-link')?.focus();
+});
+document.addEventListener('pointerover', (e) => { const item = e.target.closest?.('.nav-item--panel'); if (item) item.classList.remove('is-closed'); });
+document.addEventListener('focusout', (e) => { const item = e.target.closest?.('.nav-item--panel'); if (item && !item.contains(e.relatedTarget)) item.classList.remove('is-closed'); });

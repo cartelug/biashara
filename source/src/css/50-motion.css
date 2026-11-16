@@ -356,3 +356,99 @@ body.menu-open .site-header__tools > .btn { display: none; }
 body.menu-open .brand img { background: #fff; border-radius: 6px; }
 .menu .menu__list--more { display: grid; }
 .menu .menu__list:not(.menu__list--more) a { min-height: 56px; }
+
+
+/* ==========================================================================
+   Navigation, desktop: symbol + text links; Loans and Company open panels on hover or keyboard focus (no script needed)
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .site-header__in { position: relative; }
+  .primary-nav > ul { gap: 2px; flex-wrap: nowrap; }
+  .primary-nav .nav-item { position: static; }
+  .primary-nav .nav-link { position: relative; display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; border-radius: 999px; color: var(--ink); font-weight: 600; font-size: .9375rem; text-decoration: none; white-space: nowrap; box-shadow: none; transition: background-color var(--d-1), color var(--d-1); }
+  .primary-nav .nav-link::after { display: none; }
+  .primary-nav .nav-link .icon { width: 18px; height: 18px; color: var(--red-text); transition: transform var(--d-2) var(--ease-spring); }
+  .primary-nav .nav-link:hover, .primary-nav .nav-item--panel:focus-within > .nav-link, .primary-nav .nav-item--panel:hover > .nav-link { background: var(--surface); color: var(--ink); }
+  .primary-nav .nav-link:hover .icon { transform: translateY(-2px) rotate(-8deg); }
+  .primary-nav .nav-link[aria-current] { background: var(--ink); color: #fff; box-shadow: none; border-radius: 999px; }
+  .primary-nav .nav-link[aria-current] .icon { color: var(--red-on-dark); }
+  .nav-chev { width: 7px; height: 7px; margin: -3px 0 0 2px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); transition: transform var(--d-2) var(--ease-out); }
+  .nav-item--panel:hover .nav-chev, .nav-item--panel:focus-within .nav-chev { transform: translateY(3px) rotate(225deg); }
+
+  .np { position: absolute; z-index: 60; top: calc(100% - 4px); left: 50%; width: min(880px, calc(100vw - 48px)); padding-top: 12px; transform: translate(-50%, 10px); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--d-1) var(--ease-out), transform var(--d-2) var(--ease-out), visibility 0s var(--d-1); }
+  .nav-item--panel:hover > .np, .nav-item--panel:focus-within > .np { opacity: 1; visibility: visible; pointer-events: auto; transform: translate(-50%, 0); transition: opacity var(--d-1) var(--ease-out), transform var(--d-2) var(--ease-out), visibility 0s; }
+  .nav-item--panel.is-closed > .np { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+  .np__grid { display: grid; grid-template-columns: minmax(0, 1fr) 260px; overflow: hidden; border: 1px solid var(--line); border-radius: 24px; background: #fff; box-shadow: 0 30px 60px -24px rgba(24, 25, 28, .35), 0 8px 20px -10px rgba(24, 25, 28, .2); }
+  .np__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin: 0; padding: 14px; list-style: none; }
+  .np__item { display: grid; grid-template-columns: 48px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 14px; row-gap: 2px; align-items: center; padding: 14px; border-radius: 16px; color: var(--ink); text-decoration: none; transition: background-color var(--d-1); }
+  .np__item:hover, .np__item:focus-visible { background: var(--surface); color: var(--ink); }
+  .np__item[aria-current] { background: var(--red-tint); }
+  .np__ico { grid-row: span 2; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: var(--red-tint); color: var(--red-text); transition: transform var(--d-2) var(--ease-spring), background-color var(--d-1), color var(--d-1); }
+  .np__ico .icon { width: 22px; height: 22px; }
+  .np__item:hover .np__ico, .np__item:focus-visible .np__ico { background: var(--red); color: #fff; transform: rotate(-6deg) scale(1.06); }
+  .np__t { align-self: end; font-weight: 700; font-size: 1rem; letter-spacing: -.01em; }
+  .np__d { align-self: start; font-size: .8125rem; line-height: 1.4; color: var(--slate); }
+  .np__aside { display: flex; flex-direction: column; gap: 10px; padding: 22px; background: var(--surface); border-left: 1px solid var(--line); }
+  .np__aside--dark { background: var(--ink); color: #fff; border-left: 0; }
+  .np__k { margin: 0 0 2px; font-size: .6875rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text); }
+  .np__aside--dark .np__k { color: var(--red-on-dark); }
+  .np__facts { display: grid; gap: 8px; margin: 0 0 6px; padding: 0; list-style: none; }
+  .np__facts li { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: .9375rem; }
+  .np__facts li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+  .np__more { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; margin-top: auto; padding: 0 14px; border-radius: 12px; background: #fff; border: 1px solid var(--line); color: var(--ink); font-weight: 600; font-size: .875rem; text-decoration: none; }
+  .np__more + .np__more { margin-top: 0; }
+  .np__more:hover { border-color: var(--ink); color: var(--ink); }
+  .np__more .icon { width: 16px; height: 16px; color: var(--red-text); }
+  .np__aside--dark .np__more { background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .16); color: #fff; justify-content: flex-start; }
+  .np__aside--dark .np__more:last-child { justify-content: space-between; }
+  .np__aside--dark .np__more .icon { color: var(--red-on-dark); }
+  .np__aside--dark .open-now { margin: 0 0 4px; color: #fff; font-size: .875rem; }
+  .np__aside--dark :focus-visible { outline-color: #fff; }
+}
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  .primary-nav .nav-link { padding: 0 10px; font-size: .875rem; gap: 6px; }
+  .primary-nav .nav-link .icon { width: 16px; height: 16px; }
+}
+
+/* ==========================================================================
+   Navigation, phone: loan cards, symbol rows with a line of text, quick links
+   ========================================================================== */
+.menu .menu__h { display: flex; margin: 6px 0 10px; }
+.menu .menu__h a { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; color: var(--on-dark-mute); text-decoration: none; }
+.menu .menu__h .icon { width: 14px; height: 14px; color: var(--red-on-dark); }
+.mloans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+.mloan { display: grid; justify-items: center; gap: 8px; padding: 14px 4px 12px; border-radius: 16px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1); color: #fff; font-size: .8125rem; font-weight: 600; text-align: center; text-decoration: none; transition: background-color var(--d-1), transform var(--d-1) var(--ease-out); }
+.mloan:active { transform: scale(.96); }
+.mloan:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+.mloan__ico { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: var(--red); color: #fff; }
+.mloan__ico .icon { width: 22px; height: 22px; }
+.mrows { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--on-dark-line); }
+.mrow { display: grid; grid-template-columns: 48px minmax(0, 1fr) 16px; grid-template-rows: auto auto; column-gap: 16px; align-items: center; min-height: 72px; padding: 12px 2px; border-bottom: 1px solid var(--on-dark-line); color: #fff; text-decoration: none; }
+.mrow::after { content: ""; grid-column: 3; grid-row: 1 / span 2; width: 9px; height: 9px; border-top: 1.5px solid var(--red-on-dark); border-right: 1.5px solid var(--red-on-dark); transform: rotate(45deg); transition: transform var(--d-1) var(--ease-out); }
+.mrow:hover { color: #fff; background: rgba(255, 255, 255, .03); }
+.mrow:active::after, .mrow:hover::after { transform: translateX(3px) rotate(45deg); }
+.mrow__ico { grid-row: span 2; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: rgba(255, 255, 255, .07); color: var(--red-on-dark); transition: transform var(--d-2) var(--ease-spring); }
+.mrow__ico .icon { width: 22px; height: 22px; }
+.mrow:active .mrow__ico { transform: scale(.92) rotate(-6deg); }
+.mrow__t { align-self: end; font-size: clamp(1.375rem, 5.6vw, 1.75rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.1; }
+.mrow__d { align-self: start; margin-top: 3px; font-size: .8125rem; line-height: 1.35; color: var(--on-dark-mute); }
+.mrow[aria-current] .mrow__ico { background: var(--red); color: #fff; }
+.mrow[aria-current] .mrow__t { color: var(--red-on-dark); }
+.menu__more { margin-top: 18px; }
+.mchips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.mchip { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 12px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .18); color: #e6e7ea; font-size: .875rem; font-weight: 600; text-decoration: none; }
+.mchip .icon { width: 16px; height: 16px; color: var(--red-on-dark); }
+.mchip:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+.mchip[aria-current] { background: #fff; color: var(--ink); }
+@media (min-width: 600px) and (max-width: 1023.98px) {
+  .mrows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+  .mloan { grid-template-columns: auto; padding: 18px 8px; font-size: .9375rem; }
+}
+@media (max-width: 359.98px) {
+  .mloans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* the phone menu starts below the header bar, so nothing scrolls behind it */
+.menu { top: var(--header-offset, var(--header-h)); padding-top: 14px; }
+.mloans > li { display: flex; }
+.mloan { flex: 1; align-content: start; }
+@media (min-width: 1024px) { .np__list { align-content: start; } }

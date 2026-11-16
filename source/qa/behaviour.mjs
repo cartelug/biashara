@@ -103,7 +103,7 @@ for (const [iso, open, label] of openCases) {
 }
 await test('Open-now: a visitor in another time zone still sees Kampala hours', async (page) => {
   await go(page, '/contact/');
-  const t = await page.locator('[data-open-now]').first().innerText();
+  const t = await page.locator('#main [data-open-now]').first().innerText();
   assert(/Open now/.test(t), t);
   return t.replace(/\s+/g, ' ');
 }, { now: '2026-10-21T06:30:00Z' }); // 09:30 in Kampala, 07:30 in London
@@ -311,7 +311,7 @@ await test('No-JS: every page shows its content and the navigation links', async
 await test('Desktop: five nav links and the phone number show; no menu button', async (page) => {
   await go(page, '/');
   const s = await page.evaluate(() => ({
-    links: [...document.querySelectorAll('.primary-nav a')].filter((a) => a.getBoundingClientRect().height > 0).length,
+    links: [...document.querySelectorAll('.primary-nav > ul > li > a')].filter((a) => a.getBoundingClientRect().height > 0).length,
     menu: getComputedStyle(document.querySelector('[data-menu-toggle]')).display,
     phone: document.querySelector('.header-phone') ? getComputedStyle(document.querySelector('.header-phone')).display : 'none',
   }));

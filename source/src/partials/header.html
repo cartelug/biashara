@@ -19,10 +19,13 @@
     <svg class="menu__thread" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M1040 -40C700 200 600 300 500 480S200 800 -40 1040"/></svg>
     <div class="container menu__in">
       <p class="menu__intro"><span>Menu</span><span class="open-now needs-js" data-open-now data-compact><span class="open-now__sq" aria-hidden="true"></span><span data-open-now-text>Checking office hours</span></span></p>
-      <nav aria-label="Menu"><ul class="menu__list" role="list"><!--MENUMAIN--></ul></nav>
+      <nav aria-label="Menu">
+        <p class="menu__h"><a href="/loans/">Loans<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a></p>
+        <ul class="mloans" role="list"><!--MENULOANS--></ul>
+        <ul class="mrows" role="list"><!--MENUMAIN--></ul>
+      </nav>
       <nav aria-label="More pages" class="menu__more">
-        <p class="menu__h">More</p>
-        <ul class="menu__list menu__list--more" role="list"><!--MENU--></ul>
+        <ul class="mchips" role="list"><!--MENU--></ul>
       </nav>
       <div class="menu__cta">
         <a class="btn btn--lg btn--block" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a>

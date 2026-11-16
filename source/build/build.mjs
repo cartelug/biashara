@@ -313,17 +313,47 @@ const layout = await read(rel(SRC, 'partials', 'layout.html'));
 const allPages = [...pages, { id: '404', path: '/404.html', num: '00', name: 'Page not found', nav: '', part: 'end', noindex: true,
   title: 'Page not found · Biashara Trading Company Limited', description: 'The page you asked for is not here. Links to the main pages of Biashara Trading Company Limited.' }];
 
-// The five pages in the main navigation; every other page is listed in the menu under "More".
-const MAIN_NAV = ['loans', 'how-we-lend', 'terms', 'about', 'contact'];
-const navLinks = (current) => pages.filter((p) => MAIN_NAV.includes(p.id))
-  .sort((a, b) => MAIN_NAV.indexOf(a.id) - MAIN_NAV.indexOf(b.id))
-  .map((p) => `<li><a href="${p.path}" data-nav="${p.id}"${p.id === current ? ' aria-current="page"' : ''}>${esc(p.nav)}</a></li>`).join('');
-// The phone menu leads with six pages (Team among them); every other page is listed under "More".
-const MENU_MAIN = ['loans', 'how-we-lend', 'terms', 'about', 'team', 'contact'];
-const menuMain = (current) => MENU_MAIN.map((id) => pages.find((p) => p.id === id))
-  .map((p, i) => `<li><a href="${p.path}"${p.id === current ? ' aria-current="page"' : ''}><span class="menu__n" aria-hidden="true">0${i + 1}</span>${esc(p.nav)}</a></li>`).join('');
-const menuLinks = (current) => pages.filter((p) => !MENU_MAIN.includes(p.id) && p.id !== 'apply')
-  .map((p) => `<li><a href="${p.path}"${p.id === current ? ' aria-current="page"' : ''}>${esc(p.nav === 'Home' ? 'Home' : p.name === 'Questions' ? 'FAQ' : p.nav)}</a></li>`).join('');
+// Navigation (desktop bar with two panels, and the phone menu). Every short line is wording already on the site.
+const NAVI = {
+  home: ['grid', 'Start page'],
+  loans: ['coins', 'Four products, UGX 1M–50M'],
+  'how-we-lend': ['compass', 'Four steps from enquiry to disbursement'],
+  terms: ['receipt', '2.8% per month · applying is free'],
+  about: ['building', 'Kampala lender since 2014'],
+  team: ['users', 'Board, management and staff'],
+  'who-we-serve': ['user-check', 'Entrepreneurs, salaried clients, companies & NGOs'],
+  licence: ['badge', 'Money Lending Licence 1451/ML'],
+  faq: ['chat', 'Answers from the Company Profile'],
+  contact: ['pin', 'Conrad Plaza, Entebbe Road, Kampala'],
+  profile: ['document', 'The full 2026 Company Profile'],
+  privacy: ['lock', 'How information is handled'],
+};
+const pg = (id) => pages.find((p) => p.id === id);
+const ico = (name) => `<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-${name}"/></svg>`;
+const cur = (id, current) => (id === current ? ' aria-current="page"' : '');
+const label = (id) => (id === 'profile' ? 'Company profile' : id === 'faq' ? 'FAQ' : pg(id).nav);
+const COMPANY = ['about', 'team', 'who-we-serve', 'licence', 'faq', 'profile'];
+const panelItem = (href, icon, title, text, current) => `<li><a class="np__item" href="${href}"${current ? ' aria-current="page"' : ''}><span class="np__ico">${ico(icon)}</span><span class="np__t">${esc(title)}</span><span class="np__d">${esc(text)}</span></a></li>`;
+const navLinks = (current) => {
+  const loansPanel = `<div class="np np--loans" id="np-loans"><div class="np__grid"><ul class="np__list" role="list">${products.map((p) => panelItem(`/loans/#${p.slug}`, p.icon, p.name, p.purpose)).join('')}</ul>
+    <div class="np__aside"><p class="np__k">Every product</p><ul class="np__facts" role="list"><li>UGX 1M – 50M</li><li>2.8% per month</li><li>Up to 6 months</li><li>Applying is free</li></ul>
+    <a class="np__more" href="/loans/">Compare all products${ico('arrow-right')}</a><a class="np__more" href="/loans/#cost">Work out the cost${ico('arrow-right')}</a></div></div></div>`;
+  const companyPanel = `<div class="np np--company" id="np-company"><div class="np__grid"><ul class="np__list" role="list">${COMPANY.map((id) => panelItem(pg(id).path, NAVI[id][0], label(id), NAVI[id][1], id === current)).join('')}</ul>
+    <div class="np__aside np__aside--dark"><p class="np__k">Talk to us</p><p class="open-now needs-js" data-open-now data-compact><span class="open-now__sq" aria-hidden="true"></span><span data-open-now-text>Checking office hours</span></p>
+    <a class="np__more" href="tel:${vars.contact.phone1}">${ico('phone')}${esc(vars.contact.phone1Text)}</a><a class="np__more" href="/contact/">Visit or write to us${ico('arrow-right')}</a></div></div></div>`;
+  const top = (id, extra = '') => `<a class="nav-link" href="${pg(id).path}" data-nav="${id}"${cur(id, current)}>${ico(NAVI[id][0])}<span>${esc(label(id))}</span>${extra}</a>`;
+  const chev = '<span class="nav-chev" aria-hidden="true"></span>';
+  return `<li class="nav-item nav-item--panel">${top('loans', chev)}${loansPanel}</li>`
+    + `<li class="nav-item">${top('how-we-lend')}</li><li class="nav-item">${top('terms')}</li>`
+    + `<li class="nav-item nav-item--panel"><a class="nav-link" href="/about/"${COMPANY.includes(current) ? ' aria-current="true"' : ''}>${ico('building')}<span>Company</span>${chev}</a>${companyPanel}</li>`
+    + `<li class="nav-item">${top('contact')}</li>`;
+};
+// The phone menu: the four loans as cards, the main pages as rows with a symbol and a line of text, then the rest.
+const MENU_MAIN = ['how-we-lend', 'terms', 'about', 'team', 'who-we-serve', 'contact'];
+const MENU_MORE = ['home', 'licence', 'faq', 'profile', 'privacy'];
+const menuLoans = () => products.map((p) => `<li><a class="mloan" href="/loans/#${p.slug}"><span class="mloan__ico">${ico(p.icon)}</span><span>${esc(p.short === 'Asset Financing' ? 'Asset' : p.short)}</span></a></li>`).join('');
+const menuMain = (current) => MENU_MAIN.map((id) => `<li><a class="mrow" href="${pg(id).path}"${cur(id, current)}><span class="mrow__ico">${ico(NAVI[id][0])}</span><span class="mrow__t">${esc(label(id))}</span><span class="mrow__d">${esc(NAVI[id][1])}</span></a></li>`).join('');
+const menuLinks = (current) => MENU_MORE.map((id) => `<li><a class="mchip" href="${pg(id).path}"${cur(id, current)}>${ico(NAVI[id][0])}${esc(label(id))}</a></li>`).join('');
 
 const sitemap = [];
 for (const page of allPages) {
@@ -349,7 +379,7 @@ for (const page of allPages) {
   html = html.replace(/\{\{page\.(\w+)\}\}/g, (_, k) => esc(ctx.page[k] ?? ''));
   html = await expand(html, ctx);
   // the header and footer partials arrive during expand, so fill their slots afterwards (the nav appears twice)
-  html = html.replaceAll('<!--NAV-->', navLinks(page.id)).replaceAll('<!--MENU-->', menuLinks(page.id)).replaceAll('<!--MENUMAIN-->', menuMain(page.id));
+  html = html.replaceAll('<!--NAV-->', navLinks(page.id)).replaceAll('<!--MENU-->', menuLinks(page.id)).replaceAll('<!--MENUMAIN-->', menuMain(page.id)).replaceAll('<!--MENULOANS-->', menuLoans());
   html = html.replace(/__BUILD__/g, BUILD.js);
   html = page.id === '404' ? absoluteHtml(html) : relativeHtml(html, depth);
   if (/\{\{|<x-/.test(html)) throw new Error('Unexpanded template token in ' + page.id + ': ' + html.match(/.{40}(\{\{|<x-).{40}/)?.[0]);

@@ -192,3 +192,6 @@
 .ticket__next li + li { margin-top: 8px; }
 .ticket__fine { margin: 16px 0 0; font-size: .8125rem; color: var(--slate); }
 .done__restart { margin-bottom: 0; }
+
+.sendvia__to { flex-basis: 100%; margin: 4px 0 0; font-size: .9375rem; color: var(--slate); }
+.sendvia__to a { font-weight: 700; overflow-wrap: anywhere; }

@@ -80,7 +80,7 @@ input, textarea { scroll-margin-top: calc(var(--header-offset, var(--header-h)) 
 @media (min-width: 1024px) and (max-width: 1279.98px) {
   .brand__wordmark { font-size: 1rem; }
   .primary-nav { margin-left: 0; }
-  .primary-nav a { padding-inline: 10px; font-size: .875rem; }
+  .primary-nav > ul > li > a { padding-inline: 10px; font-size: .875rem; }
 }
 
 /* Tap targets: every control at least 44 x 44 px (AUDIT.md, responsive items R7 to R10) */
