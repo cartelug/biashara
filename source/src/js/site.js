@@ -1,22 +1,37 @@
 // Global behaviour: header shadow, mobile menu, back to top, copy buttons and the high-contrast toggle.
 // Everything here is an enhancement: links, navigation and content work without it.
 import { $, $$, copyText, announce, reducedMotion } from './utils.js';
+import { sizeThreadSvg } from './intro.js';
 
 export function mountSite() {
   const html = document.documentElement;
   const header = $('[data-header]');
   const totops = $$('.to-top');
 
-  // Header shadow after a few pixels of scroll; back-to-top button after about two screens
+  // Header: shadow after a few pixels; hides on the way down and returns on the way up; compacts after the hero.
+  // The header's layout height never changes (compaction is a transform), so nothing below it moves.
   let ticking = false;
+  let lastY = window.scrollY;
+  let travel = 0;
+  const hero = $('#main .hero, #main .page-head');
   const onScroll = () => {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
       ticking = false;
       const y = window.scrollY;
+      const dy = y - lastY; lastY = y;
       header?.classList.toggle('is-scrolled', y > 8);
       totops.forEach((t) => t.classList.toggle('is-on', y > window.innerHeight * 1.5));
+      if (!header || document.body.classList.contains('menu-open')) return;
+      const heroEnd = hero ? hero.offsetTop + hero.offsetHeight - header.offsetHeight : window.innerHeight * .6;
+      header.classList.toggle('is-compact', y > heroEnd);
+      travel = Math.sign(dy) === Math.sign(travel) ? travel + dy : dy;
+      const hide = y > heroEnd && travel > 24 ? true : travel < -12 || y < header.offsetHeight * 2 ? false : null;
+      if (hide !== null && hide !== header.classList.contains('is-hidden')) {
+        header.classList.toggle('is-hidden', hide);
+        html.classList.toggle('header-hidden', hide);
+      }
     });
   };
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -76,9 +91,13 @@ export function mountSite() {
       $('a', menu)?.focus({ preventScroll: true });
       if (reducedMotion() || !menu.animate) { menu.dataset.state = 'open'; return; }
       const current = revision;
-      sheetAnimation = menu.animate([{ opacity: 0, transform: 'translateY(-14px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 360, easing: 'cubic-bezier(.16,1,.3,1)' });
+      // The thread sweeps across the screen and the sheet opens behind it; the oversized links follow, 60 ms apart.
+      sheetAnimation = menu.animate([{ clipPath: 'polygon(100% 0, 100% 0, 100% 0, 100% 0)' }, { clipPath: 'polygon(100% 0, -60% 0, -60% 0, 100% 160%)' }, { clipPath: 'polygon(100% 0, -100% 0, -100% 200%, 100% 200%)' }], { duration: 640, easing: 'cubic-bezier(.65,.05,.36,1)' });
+      const sweep = $('.menu__thread path', menu);
+      sizeThreadSvg($('.menu__thread', menu), menu.clientWidth, menu.clientHeight, (w, h) => `M${w * 1.04} ${-0.04 * h}C${w * .7} ${h * .2} ${w * .6} ${h * .3} ${w * .5} ${h * .48}S${w * .2} ${h * .8} ${-0.04 * w} ${h * 1.04}`);
+      if (sweep) linkAnimations.push(sweep.animate([{ strokeDashoffset: 1, opacity: 1 }, { strokeDashoffset: 0, opacity: 1, offset: .7 }, { strokeDashoffset: -1, opacity: 0 }], { duration: 900, easing: 'cubic-bezier(.65,.05,.36,1)' }));
       $$('.menu__intro, .menu__list > li, .menu__h, .menu__cta', menu).forEach((el, i) => {
-        linkAnimations.push(el.animate([{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 480, delay: Math.min(i, 10) * 28 + 50, fill: 'backwards', easing: 'cubic-bezier(.16,1,.3,1)' }));
+        linkAnimations.push(el.animate([{ opacity: 0, transform: 'translateY(40px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 640, delay: 180 + Math.min(i, 10) * 60, fill: 'backwards', easing: 'cubic-bezier(.16,1,.3,1)' }));
       });
       sheetAnimation.finished.then(() => { if (current === revision) menu.dataset.state = 'open'; }, () => {});
     };
@@ -94,7 +113,7 @@ export function mountSite() {
       };
       if (immediate || reducedMotion() || !menu.animate) { done(); return; }
       menu.dataset.state = 'closing';
-      sheetAnimation = menu.animate([{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-10px)' }], { duration: 180, easing: 'ease-in' });
+      sheetAnimation = menu.animate([{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-10px)' }], { duration: 240, easing: 'cubic-bezier(.65,.05,.36,1)' });
       sheetAnimation.finished.then(done, () => {});
     };
     btn.addEventListener('click', () => (opened ? close(true) : open()));

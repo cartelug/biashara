@@ -100,9 +100,18 @@ const critical = minifyCss((await read(rel(SRC, 'css/00-tokens.css'))) + (await 
 
 // ---------------------------------------------------------------- JS
 // One classic script (not an ES module), so it also runs when a page is opened straight from disk; the settings are bundled in.
+// The scroll-driven motion (GSAP, ScrollTrigger, Lenis and the red thread) is a second file, loaded after first paint.
+const motionOut = await esbuild.build({
+  entryPoints: [rel(SRC, 'js/motion/index.js')],
+  bundle: true, format: 'iife', minify: true, target: ['es2020'], write: false, legalComments: 'none',
+});
+const motionJs = motionOut.outputFiles[0].text;
+const motionHash = sha256(motionJs).replace(/[^a-z0-9]/gi, '').slice(0, 10);
+await write(rel(DIST, 'assets/js/motion.js'), motionJs);
 const jsOut = await esbuild.build({
   entryPoints: [rel(SRC, 'js/app.js')],
   bundle: true, format: 'iife', minify: true, target: ['es2020'], write: false, legalComments: 'none',
+  define: { __MOTION_V__: JSON.stringify(motionHash) },
 });
 const appJs = jsOut.outputFiles[0].text;
 const jsHash = sha256(appJs).replace(/[^a-z0-9]/gi, '').slice(0, 10);
@@ -112,7 +121,7 @@ await write(rel(DIST, 'assets/js/app.js'), appJs);
 const headScript = (await read(rel(SRC, 'critical/head.js'))).trim();
 const headScriptHash = sha256(headScript);
 
-const BUILD = { css: cssHash, js: jsHash, base: BASE, time: new Date().toISOString() };
+const BUILD = { css: cssHash, js: jsHash, motion: motionHash, base: BASE, time: new Date().toISOString() };
 
 // ---------------------------------------------------------------- templates
 const partialCache = new Map();
@@ -247,7 +256,7 @@ function head(page) {
 <title>${esc(page.title)}</title>
 <meta name="description" content="${esc(page.description)}">
 ${page.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${url}">`}
-<meta name="theme-color" content="#f5f2ee">
+<meta name="theme-color" content="#fcfbf8">
 <meta name="color-scheme" content="light">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Biashara Trading Company Limited">
@@ -275,6 +284,30 @@ ${page.preloadImage || ''}
 <script type="application/ld+json" id="ld">${jsonLd(page)}</script>`;
 }
 
+// ---------------------------------------------------------------- film shapes
+// The thread forms a shape that hints at the page before the reveal (MOTION.md section 4). 200 x 200 box.
+const B_PATH = 'M30 268C140 200 260 150 400 128C520 112 610 130 640 190C670 250 640 330 590 380C550 420 520 470 470 500C420 525 330 520 270 500C230 490 250 530 330 545C420 560 480 640 495 740C505 820 480 870 420 875C330 880 200 875 130 860C80 850 70 790 110 770C160 650 250 450 330 270C350 220 370 170 395 80';
+const scalePath = (d, k, dx, dy) => d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (_, x, y) => `${(x * k + dx).toFixed(1)} ${(y * k + dy).toFixed(1)}`);
+const SHAPES = {
+  b: scalePath(B_PATH, 0.165, 28, 2),
+  growth: 'M14 170C40 168 52 150 70 146S92 156 108 128 136 100 148 82 170 52 186 26M186 26L166 30M186 26L184 46',
+  steps: 'M12 182H56V140H100V98H144V56H188V18',
+  ledger: 'M48 18H128L156 46V182H48ZM128 18V46H156M68 80H136M68 104H136M68 128H116M68 156H136',
+  handshake: 'M8 120C40 120 58 82 88 82C118 82 120 124 96 124C72 124 76 82 110 82C140 82 160 120 192 120',
+  pin: 'M100 184C72 142 46 116 46 80A54 54 0 1 1 154 80C154 116 128 142 100 184ZM100 58A22 22 0 1 0 100.1 58',
+  links: 'M14 100C14 70 40 56 64 56S112 70 112 100 88 144 64 144 14 130 14 100M88 100C88 70 112 56 136 56S186 70 186 100 160 144 136 144 88 130 88 100',
+  seal: 'M100 22A58 58 0 1 1 99.9 22M74 128L58 186L80 172L94 192L100 138L106 192L120 172L142 186L126 128',
+  question: 'M66 70C66 34 134 34 134 70C134 100 100 100 100 132V142M100 168V170',
+  document: 'M48 18H128L156 46V182H48ZM128 18V46H156M64 148C78 128 88 164 104 144S126 138 146 150',
+  shield: 'M100 18L166 44V100C166 146 136 170 100 186C64 170 34 146 34 100V44ZM68 100L92 124L136 78',
+  knot: 'M8 112C56 112 76 58 110 58C150 58 152 132 110 132C70 132 78 78 122 90C150 98 164 112 192 112',
+};
+const PAGE_SHAPE = { home: 'b', loans: 'growth', 'how-we-lend': 'steps', terms: 'ledger', about: 'handshake', 'who-we-serve': 'pin',
+  team: 'links', licence: 'seal', faq: 'question', contact: 'pin', apply: 'document', profile: 'document', privacy: 'shield', '404': 'knot' };
+
+// The closing band (the thread ties off here) sits at the end of every page that does not already end with a call to action.
+const FOOT_CTA_SKIP = ['home', 'apply', '404'];
+
 // ---------------------------------------------------------------- pages
 const layout = await read(rel(SRC, 'partials', 'layout.html'));
 const allPages = [...pages, { id: '404', path: '/404.html', num: '00', name: 'Page not found', nav: '', part: 'end', noindex: true,
@@ -297,7 +330,8 @@ for (const page of allPages) {
   calcCounter = 0;
   // 404.html uses absolute paths (see above); every other page is one folder down, except the home page
   const depth = page.id === 'home' || page.id === '404' ? 0 : 1;
-  const ctx = { page: { ...page, root: page.id === '404' ? BASE + '/' : '../'.repeat(depth) } };
+  const ctx = { page: { ...page, root: page.id === '404' ? BASE + '/' : '../'.repeat(depth), shapePath: SHAPES[PAGE_SHAPE[page.id] || 'knot'] } };
+  if (!FOOT_CTA_SKIP.includes(page.id)) body += '\n<!-- @include foot-cta -->\n';
   // Preload the hero image (LCP) when a page marks one as priority.
   const pri = body.match(/<x-img([^>]*\bpriority\b[^>]*)><\/x-img>/);
   if (pri) {
@@ -333,7 +367,7 @@ ${sitemap.map((p) => `  <url><loc>${CONFIG.SITE_URL}${p}</loc><lastmod>${today}<
 await write(rel(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${CONFIG.SITE_URL}/sitemap.xml\n`);
 await write(rel(DIST, 'manifest.webmanifest'), JSON.stringify({
   name: 'Biashara Trading Company Limited', short_name: 'Biashara', start_url: './', scope: './', display: 'standalone',
-  background_color: '#f5f2ee', theme_color: '#f5f2ee', description: 'Short-term bridge financing in Kampala since 2014.',
+  background_color: '#fcfbf8', theme_color: '#fcfbf8', description: 'Short-term bridge financing in Kampala since 2014.',
   icons: [
     { src: 'assets/img/logo/icon-192.png', sizes: '192x192', type: 'image/png' },
     { src: 'assets/img/logo/icon-512.png', sizes: '512x512', type: 'image/png' },
@@ -373,6 +407,9 @@ await write(rel(DIST, '_headers'), `/*
 /assets/js/app.js
   Cache-Control: public, max-age=31536000, immutable
 
+/assets/js/motion.js
+  Cache-Control: public, max-age=31536000, immutable
+
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
@@ -403,7 +440,7 @@ ErrorDocument 404 ${BASE}/404.html
 </IfModule>
 # Caching: versioned assets for a year; pages and the service worker are always re-checked
 <IfModule mod_headers.c>
-  <FilesMatch "\\.(woff2|css)$|^app\\.js$">
+  <FilesMatch "\\.(woff2|css)$|^(app|motion)\\.js$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
   <FilesMatch "\\.(avif|webp|jpe?g|png|svg|ico)$|\\.min\\.js$">
@@ -417,7 +454,7 @@ ErrorDocument 404 ${BASE}/404.html
 
 // Service worker with a precache list of every page, font and the core assets. Paths are relative to the folder
 // the site is in (the worker works that folder out for itself), so no setting is needed.
-const precache = [...sitemap.map((p) => p.slice(1)), '404.html', `assets/css/main.css?v=${BUILD.css}`, `assets/js/app.js?v=${BUILD.js}`,
+const precache = [...sitemap.map((p) => p.slice(1)), '404.html', `assets/css/main.css?v=${BUILD.css}`, `assets/js/app.js?v=${BUILD.js}`, `assets/js/motion.js?v=${BUILD.motion}`,
   'assets/fonts/archivo-wght.woff2', 'assets/fonts/sourceserif4-opsz.woff2', 'assets/fonts/sourceserif4-italic-opsz.woff2',
   'assets/img/logo/biashara-logo-320.png', 'assets/img/logo/mark-160.png'];
 const sw = (await read(rel(SRC, 'js/sw.js'))).replace('__VERSION__', BUILD.js).replace('__PRECACHE__', JSON.stringify(precache))
@@ -429,6 +466,7 @@ await write(rel(DIST, 'build.json'), JSON.stringify(BUILD, null, 2));
 const gz = (buf) => zlib.gzipSync(buf, { level: 9 }).length;
 const sizeOf = async (p) => gz(await fs.readFile(rel(DIST, p)));
 const jsTotal = await sizeOf('assets/js/app.js');
+const motionTotal = await sizeOf('assets/js/motion.js');
 const cssTotal = (await sizeOf('assets/css/main.css')) + gz(Buffer.from(critical));
-console.log(`Built ${allPages.length} pages for ${BASE || '/'} in ${((Date.now() - t0) / 1000).toFixed(1)}s · JS ${(jsTotal / 1024).toFixed(1)}KB gz · CSS ${(cssTotal / 1024).toFixed(1)}KB gz`);
-await write(rel(DIST, '..', '.cache', 'budget.json'), JSON.stringify({ jsGzip: jsTotal, cssGzip: cssTotal }, null, 2));
+console.log(`Built ${allPages.length} pages for ${BASE || '/'} in ${((Date.now() - t0) / 1000).toFixed(1)}s · JS ${(jsTotal / 1024).toFixed(1)}KB gz (+ motion ${(motionTotal / 1024).toFixed(1)}KB gz, after first paint) · CSS ${(cssTotal / 1024).toFixed(1)}KB gz`);
+await write(rel(DIST, '..', '.cache', 'budget.json'), JSON.stringify({ jsGzip: jsTotal, motionGzip: motionTotal, cssGzip: cssTotal }, null, 2));

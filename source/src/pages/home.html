@@ -16,7 +16,7 @@
       </ul>
     </div>
     <figure class="hero__media">
-      <x-img key="banknote-hands" priority sizes="(min-width: 900px) 46vw, 100vw"></x-img>
+      <x-img key="banknote-hands" priority sizes="(min-width: 1024px) 46vw, 100vw"></x-img>
       <div class="hero__licence">
         <x-tile name="badge"></x-tile>
         <p class="mb-0"><span>Money Lending Licence</span><b>{{licence.number}}</b></p>
@@ -50,8 +50,16 @@
       <h2 id="products-title">Four products</h2>
       <p class="lede">Our main purpose is short&#8209;term bridge financing for temporary cash&#8209;flow gaps. Four products support education, salary, asset and business needs, with a maximum term of six months.</p>
     </div>
-    <div class="cards cards--2">
+    <div class="cards cards--2 carousel" data-carousel data-reel role="region" aria-label="Product cards" tabindex="0">
       <x-products tpl="product-card"></x-products>
+    </div>
+    <div class="carousel-nav needs-js" data-carousel-nav>
+      <p class="carousel-nav__count mb-0" aria-hidden="true"><b data-carousel-count>1</b> / 4</p>
+      <span class="carousel-nav__track" aria-hidden="true"><span class="carousel-nav__fill"></span></span>
+      <span class="carousel-nav__btns">
+        <button type="button" data-carousel-prev aria-label="Previous product"><x-icon name="arrow-left"></x-icon></button>
+        <button type="button" data-carousel-next aria-label="Next product"><x-icon name="arrow-right"></x-icon></button>
+      </span>
     </div>
   </div>
 </section>
@@ -124,8 +132,8 @@
       </ul>
     </div>
     <div class="photo-pair">
-      <figure><x-img key="salaried-clients" sizes="(min-width: 900px) 22vw, 46vw"></x-img><figcaption>Salaried clients</figcaption></figure>
-      <figure><x-img key="emerging-entrepreneurs" sizes="(min-width: 900px) 22vw, 46vw"></x-img><figcaption>Emerging entrepreneurs</figcaption></figure>
+      <figure><x-img key="salaried-clients" sizes="(min-width: 1024px) 22vw, 46vw"></x-img><figcaption>Salaried clients</figcaption></figure>
+      <figure><x-img key="emerging-entrepreneurs" sizes="(min-width: 1024px) 22vw, 46vw"></x-img><figcaption>Emerging entrepreneurs</figcaption></figure>
     </div>
   </div>
 </section>
@@ -163,6 +171,7 @@
       </div>
     </div>
   </div>
+  <p class="bigtype" aria-hidden="true">Biashara</p>
 </section>
 
 <x-notes></x-notes>

@@ -1,115 +1,292 @@
-/* Biashara motion language: directional, brief and progressively enhanced. */
-:root { --ease-out: cubic-bezier(.16, 1, .3, 1); }
-.reading-progress { position: fixed; z-index: 80; inset: 0 0 auto; height: 2px; pointer-events: none; }
-.reading-progress span { display: block; height: 100%; background: var(--red); transform: scaleX(0); transform-origin: left; }
-.motion-word { display: inline-block; overflow: hidden; padding-block: .11em; margin-block: -.11em; vertical-align: bottom; }
-.motion-word__in { display: inline-block; }
-.motion-enabled .motion-wait { opacity: 0; transform: translateY(24px); }
-.motion-enabled .motion-wait:focus-within { opacity: 1; transform: none; }
+/* ==========================================================================
+   The Red Thread: motion identity (MOTION.md). Tokens live in 00-tokens.css.
+   Only transform, opacity and the thread's stroke-dashoffset are animated.
+   ========================================================================== */
 
-/* One composed introduction, followed by two curtains revealing the page. */
-@media (prefers-reduced-motion: no-preference) {
-  .intro-pending .preloader__logo { animation: intro-logo .8s var(--ease-out) both; }
-  .intro-pending .preloader__name { animation: intro-word .9s .1s var(--ease-out) both; }
-  .intro-pending .preloader__company { animation: intro-word .8s .25s var(--ease-out) both; }
-  .intro-pending .preloader__line, .intro-pending .preloader__top, .intro-pending .preloader__skip { animation: intro-fade .8s .35s ease both; }
-  .intro-pending .preloader__bridge i { transform-origin: bottom; animation: intro-bridge .7s var(--ease-out) both; }
-  .preloader__bridge i:nth-child(1) { animation-delay: .3s; }
-  .preloader__bridge i:nth-child(2) { animation-delay: .36s; }
-  .preloader__bridge i:nth-child(3) { animation-delay: .42s; }
-  .preloader__bridge i:nth-child(4) { animation-delay: .48s; }
-  .preloader__bridge i:nth-child(5) { animation-delay: .54s; }
-  .preloader__bridge i:nth-child(6) { animation-delay: .6s; }
-  .preloader__bridge i:nth-child(7) { animation-delay: .66s; }
-  .intro-finishing .preloader__stage { animation: intro-leave .32s ease both; }
-  .intro-finishing .preloader__top, .intro-finishing .preloader__skip { animation: intro-leave .18s ease both; }
-  .intro-finishing .preloader__curtain--left { animation: curtain-up .65s .02s var(--ease-out) both; }
-  .intro-finishing .preloader__curtain--right { animation: curtain-up .65s .08s var(--ease-out) both; }
+/* ---------- Opening film: choreography ---------- */
+@keyframes pl-draw { to { stroke-dashoffset: 0; } }
+@keyframes pl-undraw { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1; } }
+@keyframes pl-logo { from { opacity: 0; transform: translateY(10px) scale(.96); clip-path: inset(100% 0 0 0); } to { opacity: 1; transform: none; clip-path: inset(0); } }
+@keyframes pl-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes pl-out { to { opacity: 0; transform: translateY(-14px) scale(.98); } }
+@keyframes pl-fadeout { to { opacity: 0; } }
+@keyframes pl-peel-a { to { transform: translateY(-101%); } }
+@keyframes pl-peel-b { to { transform: translateY(101%); } }
+@keyframes pl-close-a { from { transform: translateY(-101%); } to { transform: none; } }
+@keyframes pl-close-b { from { transform: translateY(101%); } to { transform: none; } }
+
+.pl-full .pl__b path { animation: pl-draw 760ms var(--ease-thread) 40ms forwards, pl-fadeout 320ms ease 1060ms forwards; }
+.pl-full .pl__logo { animation: pl-logo 520ms var(--ease-out) 640ms both; }
+.pl-full .pl__count, .pl-full .pl__cap { animation: pl-in var(--d-2) var(--ease-out) 260ms both; }
+.pl-full .pl__skip { animation: pl-in var(--d-2) ease 600ms both; }
+/* Inner pages: after the logo, the thread forms the page's own shape */
+.pl-full .pl__shape path { animation: pl-draw 420ms var(--ease-thread) 980ms forwards; }
+.pl-full body:not([data-page="home"]) .pl__brand { animation: pl-out 300ms var(--ease-thread) 940ms forwards; }
+.pl-full body[data-page="home"] .pl__shape { display: none; }
+.pl-short .pl__shape path { animation: pl-draw 220ms var(--ease-thread) forwards; }
+
+/* Exit: the thread snaps taut along the diagonal, then paper, ink and red peel apart */
+.pl { --x-stage: 160ms; --x-taut: 200ms; --x-peel: 420ms; --x-gap: 60ms; }
+.pl-short .pl { --x-stage: 100ms; --x-taut: 120ms; --x-peel: 300ms; --x-gap: 40ms; }
+.pl-exit .pl { pointer-events: none; }
+.pl-exit .pl__stage, .pl-exit .pl__skip { animation: pl-out var(--x-stage) var(--ease-thread) forwards !important; }
+.pl-exit .pl__shape path, .pl-exit .pl__b path { animation: pl-undraw var(--x-taut) var(--ease-thread) forwards !important; }
+.pl-exit .pl__taut path { animation: pl-draw var(--x-taut) var(--ease-thread) forwards, pl-fadeout 160ms ease calc(var(--x-taut) + var(--x-peel) * .4) forwards; }
+.pl-exit .pl__layer--paper .pl__half--a { animation: pl-peel-a var(--x-peel) var(--ease-thread) calc(var(--x-taut) * .5) forwards; }
+.pl-exit .pl__layer--paper .pl__half--b { animation: pl-peel-b var(--x-peel) var(--ease-thread) calc(var(--x-taut) * .5) forwards; }
+.pl-exit .pl__layer--ink .pl__half--a { animation: pl-peel-a var(--x-peel) var(--ease-thread) calc(var(--x-taut) * .5 + var(--x-gap)) forwards; }
+.pl-exit .pl__layer--ink .pl__half--b { animation: pl-peel-b var(--x-peel) var(--ease-thread) calc(var(--x-taut) * .5 + var(--x-gap)) forwards; }
+.pl-exit .pl__layer--red .pl__half--a { animation: pl-peel-a var(--x-peel) var(--ease-thread) calc(var(--x-taut) * .5 + 2 * var(--x-gap)) forwards; }
+.pl-exit .pl__layer--red .pl__half--b { animation: pl-peel-b var(--x-peel) var(--ease-thread) calc(var(--x-taut) * .5 + 2 * var(--x-gap)) forwards; }
+
+/* Page change: the same wipe, closing. Red first, then ink, then paper; the next page opens with the short film. */
+.pl-leave .pl { position: fixed; inset: 0; z-index: 200; display: block; overflow: hidden; pointer-events: all; }
+.pl-leave .pl__stage, .pl-leave .pl__skip { display: none; }
+.pl-leave .pl__half--a { animation: pl-close-a 300ms var(--ease-thread) both; }
+.pl-leave .pl__half--b { animation: pl-close-b 300ms var(--ease-thread) both; }
+.pl-leave .pl__layer--ink .pl__half { animation-delay: 50ms; }
+.pl-leave .pl__layer--paper .pl__half { animation-delay: 100ms; }
+.pl-leave .pl__taut path { animation: pl-draw 260ms var(--ease-thread) forwards; }
+
+/* While the film runs the page underneath is already painted (no layout shift); it just cannot be scrolled */
+.pl-on:not(.pl-exit):not(.pl-fade) body { overflow: hidden; }
+
+/* ---------- Header: hides on the way down, returns on the way up, compacts after the hero ---------- */
+.site-header { transition: transform var(--d-2) var(--ease-out), box-shadow .2s var(--ease); }
+.site-header.is-hidden { transform: translateY(calc(-100% - 2px)); }
+.site-header.is-hidden:focus-within { transform: none; }
+.site-header .brand img, .site-header .brand__wordmark { transform-origin: left center; transition: transform var(--d-2) var(--ease-out); }
+.site-header.is-compact .brand img { transform: scale(.86); }
+.site-header.is-compact .brand__wordmark { transform: translateX(-3px) scale(.94); }
+.menu-open .site-header { transform: none; }
+
+/* ---------- The thread ---------- */
+.has-thread main { position: relative; z-index: 0; }
+.has-thread main .container, .has-thread main .pl-keep { position: relative; z-index: 1; }
+.thread { position: absolute; z-index: 0; top: 0; left: 0; width: 100%; height: 10px; overflow: hidden; pointer-events: none; }
+.thread--front { z-index: 2; }
+.thread path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.thread__line { stroke: var(--red); stroke-width: var(--thread-w); }
+.thread__shade { stroke: var(--red-deep); stroke-width: calc(var(--thread-w) * .45); opacity: .55; }
+.thread__alt { stroke: #fff; stroke-width: var(--thread-w); }
+.thread__tip { fill: var(--red); }
+.thread__tipglow { fill: var(--red); opacity: .18; }
+.section--night .thread__tip { fill: var(--red-on-dark); }
+/* The thread replaces the drawn connector of the process steps */
+.has-thread .steps .step::before { opacity: 0; }
+
+/* Colour blocks that widen to full bleed as they arrive (transform only) */
+.bleed { position: relative; background: transparent !important; }
+.bleed::before { content: ""; position: absolute; z-index: -1; inset: 0; background: var(--bleed, var(--night)); border-radius: var(--bleed-r, 0); transform: scaleX(var(--bleed-s, 1)); transform-origin: center; }
+.bleed.cta-band { --bleed: var(--red); }
+
+/* ---------- Entrances (one designed entrance per section; neighbours differ) ---------- */
+.motion-enabled .motion-wait { opacity: 0; }
+.motion-enabled .motion-wait:focus-within { opacity: 1 !important; transform: none !important; }
+.line-mask { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.line-mask > span { display: block; }
+.h1-lines .line-mask:last-child { padding-bottom: .14em; }
+.mask-open { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+
+/* ---------- Scroll progress: a short thread ---------- */
+.reading-progress { position: fixed; z-index: 80; pointer-events: none; }
+.reading-progress svg { display: block; width: 100%; height: 100%; overflow: visible; fill: none; }
+.reading-progress .rp__track { stroke: var(--line); stroke-width: 2; }
+.reading-progress .rp__line { stroke: var(--red); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+.reading-progress .rp__bead { fill: var(--red); }
+@media (max-width: 1023.98px) {
+  .reading-progress { left: 0; right: 0; top: calc(var(--header-offset, var(--header-h)) - 3px); height: 6px; transition: transform var(--d-2) var(--ease-out); }
+  .header-hidden .reading-progress { transform: translateY(calc(-1 * var(--header-offset, var(--header-h)))); }
+  .reading-progress .rp__track { stroke: transparent; }
 }
-@keyframes intro-logo { from { opacity: 0; transform: translateY(14px); clip-path: inset(100% 0 0); } to { opacity: 1; transform: none; clip-path: inset(0); } }
-@keyframes intro-word { from { transform: translateY(115%); } to { transform: none; } }
-@keyframes intro-fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes intro-bridge { from { opacity: 0; transform: scaleY(0); } to { opacity: 1; transform: scaleY(1); } }
-@keyframes intro-leave { to { opacity: 0; transform: translateY(-18px); } }
-@keyframes curtain-up { to { transform: translateY(-101%); } }
-
-/* Touch-friendly navigation sheet. The main links have their own visual rhythm. */
-.menu { top: var(--header-offset, var(--header-h)); padding-block: 20px max(24px, env(safe-area-inset-bottom)); background: var(--surface); }
-.menu:not([hidden]) { animation: none; }
-.menu__intro { display: flex; justify-content: space-between; gap: 16px; margin: 0 0 20px; color: var(--slate); font-size: .625rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.menu__intro > :first-child { color: var(--red-text); }
-.menu__grid { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); }
-.menu__list:not(.menu__list--more) { counter-reset: nav; }
-.menu__list:not(.menu__list--more) li { position: relative; counter-increment: nav; }
-.menu__list:not(.menu__list--more) li::before { content: "0" counter(nav); position: absolute; left: 0; top: 50%; transform: translateY(-50%); color: var(--slate); font-size: .625rem; font-weight: 500; font-variant-numeric: tabular-nums; }
-.menu__list:not(.menu__list--more) a { gap: 12px; min-height: 59px; padding-inline: 28px 4px; font-size: clamp(1.375rem, 3.8vw, 2.5rem); letter-spacing: -.035em; font-weight: 600; }
-.menu__list:not(.menu__list--more) a::after { content: ""; flex: none; width: 9px; height: 9px; margin-inline: auto 4px; border-top: 1.5px solid var(--red-text); border-right: 1.5px solid var(--red-text); transform: rotate(45deg); }
-.menu__h { margin: 0 0 8px; font-size: .625rem; }
-.menu__list--more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
-.menu__list--more a { min-height: 44px; padding-block: 6px; font-size: .875rem; line-height: 1.35; }
-.menu__cta { gap: 8px; margin-top: 20px; }
-.menu__phone { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; color: var(--ink); font-size: .9375rem; font-weight: 600; text-decoration: none; }
-.menu__phone .icon { color: var(--red-text); }
-@media (min-width: 700px) and (max-width: 1023.98px) {
-  .menu { padding-block: 36px; }
-  .menu__intro { margin-bottom: 36px; }
-  .menu__grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 48px; }
-  .menu__list:not(.menu__list--more) a { min-height: 78px; }
-  .menu__list--more { grid-template-columns: minmax(0, 1fr); }
-  .menu__cta { margin-top: 28px; }
+@media (min-width: 1024px) {
+  .reading-progress { right: 14px; top: 50%; width: 10px; height: 34vh; transform: translateY(-50%); }
 }
+.reading-progress[hidden], .no-js .reading-progress { display: none; }
 
-/* Small interactions stay at the pointer, without moving any text baseline. */
-.btn .icon, .tile, .next-link .icon, .pchoice__mark, .seg span, .slider__thumb { transition: transform .3s var(--ease-out), background-color .2s, border-color .2s, box-shadow .2s; }
-.btn { transition: background-color .2s, color .2s, border-color .2s, box-shadow .3s, transform .25s var(--ease-out); }
-.input, .textarea, .select, .money { transition: border-color .2s, background-color .2s, box-shadow .2s; }
-.input:focus, .textarea:focus, .select:focus, .money:focus-within { box-shadow: 0 4px 0 var(--red-tint); }
-.product-card, .product-row, .card, .group, .quote-card, .next-link { transition: border-color .3s, box-shadow .3s, background-color .3s; }
-.product-card { position: relative; }
-.product-card::before { content: ""; position: absolute; top: -1px; left: 24px; right: 24px; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform .5s var(--ease-out); }
-.product-card:focus-within::before { transform: scaleX(1); }
-.primary-nav a { position: relative; }
-.primary-nav a::after { content: ""; position: absolute; inset: auto 12px 4px; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease-out); }
-.primary-nav a[aria-current]::after { display: none; }
-.ph img { transition: transform 1s var(--ease-out); }
-.motion-enabled .motion-wait .ph img { transform: scale(1.045); }
-.ledgercard output { display: inline-block; }
-.acc__icon { transition: transform .3s var(--ease-out); }
-.step::before { transform-origin: top left; }
-.motion-enabled .motion-revealed.step::before { animation: path-draw .9s .1s var(--ease-out) both; }
-@keyframes path-draw { from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0); } }
-.motion-enabled .motion-revealed .step__n, .motion-enabled .motion-revealed .cs__n { animation: number-arrive .7s .1s var(--ease-out) both; }
-@keyframes number-arrive { from { opacity: 0; transform: translateY(8px) rotate(-12deg); } to { opacity: 1; transform: none; } }
+/* ---------- Buttons: liquid fill, magnetic pull (desktop), press-down ---------- */
+.btn { position: relative; overflow: hidden; isolation: isolate; transition: color var(--d-1), border-color var(--d-1), box-shadow var(--d-1), transform var(--d-1) var(--ease-out), background-color var(--d-1); }
+.btn::after { content: ""; position: absolute; z-index: -1; left: var(--mx, 50%); top: var(--my, 50%); width: 240%; aspect-ratio: 1; border-radius: 50%; background: var(--fill, var(--red-deep)); transform: translate(-50%, -50%) scale(0); transition: transform var(--d-2) var(--ease-out); pointer-events: none; }
+.btn { --btn-base: var(--red); --fill: var(--red-deep); }
+.btn--secondary { --btn-base: #fff; --fill: var(--ink); }
+.btn--ghost { --btn-base: transparent; --fill: var(--surface-2); }
+.btn--ink { --btn-base: var(--ink); --fill: var(--red); }
+.btn--light { --btn-base: #fff; --fill: var(--ink); }
+.btn--outline-light { --btn-base: transparent; --fill: #fff; }
+.btn:active { transform: translateY(1px) scale(.97); transition-duration: 80ms; }
+.btn .icon { transition: transform var(--d-1) var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
-  .btn:hover { box-shadow: 0 7px 18px rgba(18, 20, 26, .12); transform: translateY(-2px); }
-  .btn:active { transform: translateY(0); }
+  .btn:hover { background: var(--btn-base); }
+  .btn:hover::after { transform: translate(-50%, -50%) scale(1); }
+  .btn--secondary:hover, .btn--light:hover, .btn--ink:hover { color: #fff; }
+  .btn--ghost:hover, .btn--outline-light:hover { color: var(--ink); }
   .btn:hover .icon { transform: translateX(3px); }
-  .primary-nav a:hover::after { transform: scaleX(1); }
-  .brand img { transition: transform .4s var(--ease-out); }
-  .brand:hover img { transform: translateY(-2px); }
-  .product-card:hover, .card:hover, .group:hover, .product-row:hover { border-color: var(--line-strong); box-shadow: 0 14px 34px -22px rgba(18, 20, 26, .35); }
-  .product-card:hover::before { transform: scaleX(1); }
-  .product-card:hover .tile, .card:hover > .tile, .group:hover > .tile { transform: translateY(-3px) rotate(-4deg); }
-  .portrait:hover .ph img, .card--media:hover .ph img, .photo-pair figure:hover .ph img { transform: scale(1.035); }
-  .next-link:hover .icon { transform: translateX(4px); }
-  .slider:hover .slider__thumb { box-shadow: 0 0 0 5px var(--red-tint); }
 }
-@media (min-width: 900px) and (hover: hover) and (pointer: fine) {
-  .motion-enabled .hero__media .ph img { transform: translateY(var(--hero-drift, 0px)) scale(1.075); }
+.btn.is-magnet { transition: transform var(--d-2) var(--ease-out), color var(--d-1), border-color var(--d-1), box-shadow var(--d-1); }
+
+/* ---------- Links: an underline drawn from left to right (the plain underline is always there) ---------- */
+.prose a:not(.btn), .lede a, main p a:not(.btn):not(.link-arrow), .acc__panel a, .site-footer__list a, .site-footer__col li a {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+  transition: background-size var(--d-2) var(--ease-out), color var(--d-1);
+}
+.prose a:not(.btn):hover, .lede a:hover, main p a:not(.btn):not(.link-arrow):hover, .acc__panel a:hover, .site-footer__list a:hover, .site-footer__col li a:hover,
+.prose a:not(.btn):focus-visible, main p a:not(.btn):not(.link-arrow):focus-visible { background-size: 100% 2px; }
+.link-arrow { background: linear-gradient(currentColor, currentColor) 0 calc(100% - 9px) / 0 2px no-repeat; transition: background-size var(--d-2) var(--ease-out), color var(--d-1); }
+.link-arrow:hover, .link-arrow:focus-visible { background-size: calc(100% - 26px) 2px; text-decoration: none; }
+
+/* ---------- Cards: tilt on desktop (script), lift and glow while pressed on touch ---------- */
+.tilt { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0px)); transition: transform var(--d-2) var(--ease-out), box-shadow var(--d-2) var(--ease-out), border-color var(--d-1); }
+.tilt.is-tilting { transition: transform 120ms linear, box-shadow var(--d-2) var(--ease-out), border-color var(--d-1); }
+@media (hover: none) {
+  .product-card:active, .card:active, .group:active, .cs__item:active, .next-link:active, .contact-item:active {
+    transform: translateY(-3px); box-shadow: 0 14px 30px -18px rgba(195, 47, 46, .55); border-color: rgba(195, 47, 46, .5);
+    transition: transform var(--d-1) var(--ease-out), box-shadow var(--d-1), border-color var(--d-1);
+  }
 }
 
-/* Native cross-document transitions, where the browser supports them. */
-@view-transition { navigation: auto; }
-@keyframes page-out { to { opacity: 0; } }
-@keyframes page-in { from { opacity: 0; } }
-::view-transition-old(root) { animation: page-out .16s ease both; }
-::view-transition-new(root) { animation: page-in .26s .06s ease both; }
+/* ---------- Custom cursor (desktop with a mouse; the native cursor stays) ---------- */
+.cursor { position: fixed; z-index: 150; left: 0; top: 0; width: 36px; height: 36px; margin: -18px 0 0 -18px; border: 1.5px solid var(--red); border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity var(--d-1), width var(--d-1) var(--ease-out), height var(--d-1) var(--ease-out), margin var(--d-1) var(--ease-out), background-color var(--d-1); display: grid; place-items: center; }
+.cursor.is-on { opacity: 1; }
+.cursor__label { font: 700 .625rem/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase; color: #fff; opacity: 0; transition: opacity var(--d-1); }
+.cursor.is-label { width: 72px; height: 72px; margin: -36px 0 0 -36px; background: var(--red); border-color: var(--red); }
+.cursor.is-label .cursor__label { opacity: 1; }
+.cursor.is-press { width: 26px; height: 26px; margin: -13px 0 0 -13px; }
+
+/* ---------- Forms: focus line, label shift, a gentle shake for errors ---------- */
+.input, .textarea, .select, .money, .tel { background-image: linear-gradient(var(--red), var(--red)); background-repeat: no-repeat; background-position: 0 100%; background-size: 0 2px; transition: background-size var(--d-2) var(--ease-out), border-color var(--d-1), box-shadow var(--d-1); }
+.input:focus, .textarea:focus, .select:focus, .money:focus-within, .tel:focus-within { background-size: 100% 2px; box-shadow: none; }
+.tel .input { background-image: none; }
+.field__label, .form__label, label.label { transition: color var(--d-1), transform var(--d-1) var(--ease-out); }
+.field:focus-within > .field__top .field__label, .field:focus-within > .field__label, .field:focus-within > label { color: var(--red-text); }
+@keyframes nudge { 0%, 100% { transform: none; } 20% { transform: translateX(-5px); } 45% { transform: translateX(4px); } 70% { transform: translateX(-2px); } }
+.is-shake { animation: nudge 360ms var(--ease-out); }
+
+/* ---------- Calculator: springy thumbs, odometer, repayment line ---------- */
+.slider__thumb { transition: transform var(--d-1) var(--ease-spring), box-shadow var(--d-1); }
+.slider.is-dragging .slider__thumb { transition: box-shadow var(--d-1); }
+.slider__thumb::after { content: ""; position: absolute; inset: 0; border-radius: 50%; transition: transform var(--d-1) var(--ease-spring); }
+.slider:active .slider__thumb, .slider.is-dragging .slider__thumb { box-shadow: 0 0 0 8px rgba(195, 47, 46, .16); }
+.slider__fill { transition: transform var(--d-1) var(--ease-out); }
+.slider.is-dragging .slider__fill { transition: none; }
+.odo-host { position: relative; }
+.odo.is-rolling { color: transparent; }
+.odo__vis { position: absolute; right: 0; top: 0; display: inline-flex; height: var(--lh, 1.2em); white-space: pre; color: inherit; pointer-events: none; }
+.odo:not(.is-rolling) + .odo__vis { visibility: hidden; }
+.odo__col { position: relative; display: inline-block; overflow: hidden; height: var(--lh, 1.2em); line-height: var(--lh, 1.2em); }
+.odo__reel { display: flex; flex-direction: column; transition: transform var(--d-2) var(--ease-out); }
+.odo__reel > span { height: var(--lh, 1.2em); }
+.repay { margin: 4px 0 18px; }
+.repay__h { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 6px; font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--slate); }
+.repay svg { display: block; width: 100%; height: auto; overflow: visible; }
+.repay__grid { stroke: var(--line); stroke-width: 1; }
+.repay__line { fill: none; stroke: var(--red); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.repay__area { fill: var(--red); opacity: .08; }
+.repay__dot { fill: #fff; stroke: var(--red); stroke-width: 2.5; }
+.repay__lbl { font: 600 11px/1 var(--font-sans); fill: var(--slate); }
+
+/* ---------- Accordions: smooth height, staggered answer ---------- */
+.acc__item { overflow: hidden; }
+.acc__item summary { transition: color var(--d-1); }
+.acc__icon { transition: transform var(--d-2) var(--ease-out); }
+
+/* ---------- Mobile menu: full-screen takeover with a thread wipe ---------- */
+.menu { top: 0; padding-top: calc(var(--header-offset, var(--header-h)) + 16px); background: var(--paper); z-index: -1; }
+.menu__thread { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; fill: none; stroke: var(--red); stroke-width: 3px; stroke-linecap: round; }
+.menu__thread path { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+.menu__list:not(.menu__list--more) a { font-size: clamp(2rem, 8.6vw, 3.25rem); min-height: 64px; letter-spacing: -.04em; font-weight: 700; }
+@media (min-width: 768px) and (max-width: 1023.98px) { .menu__list:not(.menu__list--more) a { min-height: 84px; } }
+.menu__intro { margin-bottom: 8px; }
+
+/* ---------- Products: snap carousel on phones, horizontal reel on desktop ---------- */
+@media (max-width: 767.98px) {
+  .carousel { display: flex !important; contain: paint; gap: 12px !important; margin-inline: calc(-1 * var(--gutter)); padding: 4px var(--gutter) 12px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+  .carousel::-webkit-scrollbar { display: none; }
+  .carousel > * { flex: 0 0 86%; min-width: 0; scroll-snap-align: start; scroll-snap-stop: always; }
+  .carousel:focus-visible { outline-offset: -3px; }
+}
+.carousel-nav { display: none; }
+@media (max-width: 767.98px) {
+  .carousel-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; }
+  .carousel-nav__count { font-size: .875rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--slate); }
+  .carousel-nav__count b { color: var(--ink); }
+  .carousel-nav__track { position: relative; flex: 1; height: 3px; border-radius: 3px; background: var(--line); overflow: hidden; }
+  .carousel-nav__fill { position: absolute; inset: 0; background: var(--red); transform-origin: left; transform: scaleX(var(--cp, .25)); transition: transform var(--d-2) var(--ease-out); }
+  .carousel-nav__btns { display: flex; gap: 8px; }
+  .carousel-nav__btns button { display: grid; place-items: center; width: 44px; height: 44px; border: 1.5px solid var(--line-strong); border-radius: 50%; background: var(--card); color: var(--ink); }
+  .carousel-nav__btns button[disabled] { opacity: .35; }
+}
+.reel-on { overflow: hidden; }
+.reel-on .reel { display: flex !important; gap: 24px; width: max-content; will-change: transform; }
+.reel-on .reel > * { width: min(560px, 42vw); flex: none; }
+.reel__rail { position: relative; height: 3px; margin-top: 28px; border-radius: 3px; background: var(--line); }
+.reel__fill { position: absolute; inset: 0; background: var(--red); transform-origin: left; transform: scaleX(0); }
+
+/* ---------- Statistics: the thread's growth curve sits over the numbers ---------- */
+.stats-wrap { position: relative; }
+.stats-curve { position: absolute; z-index: 3; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; fill: none; }
+.stats-curve path { stroke: var(--red-on-dark); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.stats-curve circle { fill: var(--red-on-dark); }
+
+/* ---------- Process steps: lit by the thread ---------- */
+.steps .step { transition: opacity var(--d-2) var(--ease-out); }
+.steps.is-scrub .step { opacity: .32; }
+.steps.is-scrub .step.is-lit { opacity: 1; }
+.steps .step__n { transition: transform var(--d-2) var(--ease-spring), box-shadow var(--d-2); }
+.steps.is-scrub .step.is-lit .step__n { transform: scale(1.12); box-shadow: 0 0 0 8px rgba(195, 47, 46, .14); }
+.steps-thread { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; fill: none; }
+.steps-thread path { stroke: var(--red); stroke-width: var(--thread-w); stroke-linecap: round; }
+.steps-host { position: relative; }
+.steps-host .steps { position: relative; z-index: 1; }
+
+/* ---------- Large drifting type (decorative) and the closing band ---------- */
+.cta-band .bigtype { position: absolute; z-index: 0; left: 0; bottom: -.12em; margin: 0; font: 800 clamp(5rem, 17vw, 16rem)/.8 var(--font-sans); letter-spacing: -.06em; white-space: nowrap; max-width: none; color: rgba(255, 255, 255, .1); pointer-events: none; user-select: none; will-change: transform; }
+.cta-band { position: relative; overflow: hidden; }
+.cta-band__grid { position: relative; z-index: 1; }
+.cta-band .knot-target { position: relative; }
+
+/* ---------- 404: a loose end you can pull ---------- */
+.nf { position: relative; overflow: hidden; }
+.nf-rope { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; fill: none; z-index: 0; }
+.nf-rope path { stroke: var(--red); stroke-width: 4px; stroke-linecap: round; stroke-linejoin: round; }
+.nf-rope circle { fill: var(--red); }
+.nf .container { position: relative; z-index: 1; }
+.nf__hint { margin: 8px 0 0; font-size: .875rem; color: var(--slate); }
+
+/* ---------- Success: the thread ties a tick ---------- */
+.tie { display: block; width: 72px; height: 72px; margin: 0 0 12px; overflow: visible; fill: none; stroke: var(--red); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.tie path { stroke-dasharray: 1 1; stroke-dashoffset: 1; animation: pl-draw var(--d-3) var(--ease-thread) 120ms forwards; }
+
+/* ---------- Native cross-document transitions are replaced by the thread wipe ---------- */
+@view-transition { navigation: none; }
+
+/* ---------- Reduced motion: still elegant, nothing moves ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .motion-wait, .motion-word__in { opacity: 1 !important; transform: none !important; }
-  .ph img { transform: none !important; }
-  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  .motion-wait, .line-mask > span { opacity: 1 !important; transform: none !important; }
+  .site-header, .site-header.is-hidden { transform: none !important; }
+  .btn::after { display: none; }
+  .tilt { transform: none !important; }
+  .cursor { display: none; }
+  .odo.is-rolling { color: inherit; }
+  .odo__vis { display: none; }
+  .tie path { animation: none; stroke-dashoffset: 0; }
 }
 @media print {
-  .preloader, .reading-progress { display: none !important; }
-  .motion-wait, .motion-word__in { opacity: 1 !important; transform: none !important; }
+  .pl, .reading-progress, .thread, .cursor, .bigtype, .stats-curve, .steps-thread, .nf-rope { display: none !important; }
+  .motion-wait, .line-mask > span { opacity: 1 !important; transform: none !important; }
+  .bleed { background: none !important; }
 }
+
+/* Smooth scrolling (desktop with a mouse) and pinned chapters */
+html.lenis, html.lenis body { height: auto; }
+html.lenis { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+section[data-pinned="true"]:not(.section--surface):not(.section--night) { background: var(--bg); }
+html:not(.motion-ready) .reading-progress { display: none; }
+.has-thread .section-head + .stats { margin-top: 24px; }
+.ledgercard .repay__h { color: var(--on-dark-mute); }
+.ledgercard .repay__h [data-r-end] { color: #fff; }
+.ledgercard .repay__grid { stroke: var(--on-dark-line); }
+.ledgercard .repay__line { stroke: var(--red-on-dark); }
+.ledgercard .repay__area { fill: var(--red-on-dark); opacity: .12; }
+.ledgercard .repay__dot { fill: var(--night); stroke: var(--red-on-dark); }
+.ledgercard .repay__lbl { fill: var(--on-dark-mute); }

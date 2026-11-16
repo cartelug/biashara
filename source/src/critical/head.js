@@ -2,21 +2,22 @@
   h.classList.remove('no-js');
   h.classList.add('js');
   try { if (localStorage.getItem('btc-contrast') === 'high') h.setAttribute('data-contrast', 'high'); } catch (e) {}
+  // The opening film (MOTION.md section 4): the full version once per visit, a short one on later pages,
+  // a plain fade with reduced motion, nothing when the page comes back from the back/forward cache.
   try {
-    var navigation = performance.getEntriesByType('navigation')[0];
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('btc-intro-v1') && (!navigation || navigation.type !== 'back_forward')) {
-      h.classList.add('intro-pending');
-      window.__btcIntroStarted = performance.now();
-    }
+    var nav = performance.getEntriesByType('navigation')[0];
+    var back = nav && nav.type === 'back_forward';
+    var seen = sessionStorage.getItem('btc-film');
+    var mode = back ? '' : matchMedia('(prefers-reduced-motion: reduce)').matches ? 'pl-fade' : seen ? 'pl-short' : 'pl-full';
+    if (mode) { h.classList.add('pl-on', mode); window.__btcFilm = { mode: mode, t0: performance.now() }; }
+    sessionStorage.setItem('btc-film', '1');
   } catch (e) {}
-  // A failed or slow main script must never leave the intro or navigation stuck.
+  // A failed or slow main script must never leave the film or any hidden content in place.
   setTimeout(function() {
     if (h.classList.contains('ready')) return;
-    h.classList.remove('intro-pending', 'intro-finishing', 'js');
+    h.classList.remove('pl-on', 'pl-full', 'pl-short', 'pl-exit', 'js');
     h.classList.add('no-js');
-    document.querySelectorAll('[data-intro-inert]').forEach(function(el) { el.inert = false; el.removeAttribute('data-intro-inert'); });
     document.querySelectorAll('.motion-wait').forEach(function(el) { el.classList.remove('motion-wait'); });
-    document.dispatchEvent(new Event('btc:intro-timeout'));
   }, 4000);
   if (location.protocol === 'file:') document.addEventListener('DOMContentLoaded', function() {
     var links = document.querySelectorAll('a[href]'), i, value, match;

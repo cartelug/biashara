@@ -66,7 +66,7 @@
   .primary-nav a { padding: 0 12px; }
   .menu { display: none !important; }
 }
-@media (min-width: 1200px) {
+@media (min-width: 1280px) {
   .primary-nav { margin-left: 16px; }
   .primary-nav a { padding: 0 14px; }
   .header-phone { display: inline-flex; }
@@ -85,27 +85,39 @@
 .menu__cta { display: grid; gap: 12px; margin-top: 28px; }
 body.menu-open { overflow: hidden; }
 
-/* The intro is opt-in, once per tab. If the enhancement fails, the head script
-   removes it after four seconds. No-JavaScript visitors see the page directly. */
-.preloader { display: none; }
-.intro-pending .preloader { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; min-height: 100svh; isolation: isolate; background: transparent; color: var(--ink); }
-.preloader__curtain { position: absolute; z-index: -1; inset: 0 50% 0 0; background: var(--surface); }
-.preloader__curtain--right { inset: 0 0 0 50%; }
-.preloader__stage { position: relative; display: grid; justify-items: center; width: min(100% - 40px, 560px); text-align: center; }
-.preloader__logo { width: 84px; margin-bottom: 22px; }
-.preloader__logo img { width: 100%; height: auto; }
-.preloader__name { margin: 0; font-size: clamp(2.75rem, 9vw, 5rem); font-weight: 800; letter-spacing: -.055em; line-height: 1.12; }
-.preloader__name span { color: var(--red); }
-.preloader__company { margin: 8px 0 0; font-size: .6875rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
-.preloader__mask { overflow: hidden; }
-.preloader__bridge { display: flex; align-items: flex-end; gap: 5px; height: 26px; margin-top: 32px; }
-.preloader__bridge i { width: 19px; height: 3px; background: var(--red); }
-.preloader__bridge i:nth-child(2), .preloader__bridge i:nth-child(6) { height: 9px; }
-.preloader__bridge i:nth-child(3), .preloader__bridge i:nth-child(5) { height: 17px; }
-.preloader__bridge i:nth-child(4) { height: 26px; }
-.preloader__line { margin: 20px 0 0; color: var(--slate); font: italic 400 1.0625rem/1.5 var(--font-serif); }
-.preloader__top { position: absolute; inset: max(24px, env(safe-area-inset-top)) var(--gutter) auto; display: flex; justify-content: space-between; gap: 16px; font-size: .625rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); }
-.preloader__skip { position: absolute; bottom: max(28px, env(safe-area-inset-bottom)); right: var(--gutter); display: flex; align-items: center; gap: 16px; min-height: 44px; padding: 0 4px; border: 0; border-bottom: 1px solid var(--line-strong); background: transparent; color: var(--ink); font-size: .8125rem; }
+/* ---------- Opening film (MOTION.md section 4) ----------
+   Static HTML and CSS so it paints before any script. The head script picks pl-full, pl-short or pl-fade.
+   Three layers (paper over ink over red) are each cut in two along the thread's diagonal and peel apart.
+   CSS alone removes it after 2.6 s (full) or 1.4 s (short) if the script never arrives. */
+.pl { display: none; }
+.pl-on .pl { position: fixed; inset: 0; z-index: 200; display: block; overflow: hidden; contain: strict; cursor: pointer; }
+.pl__layer, .pl__half { position: absolute; inset: 0; }
+.pl__half { display: block; }
+.pl__half--a { clip-path: polygon(0 0, 100% 0, 100% calc(16% + 2px), 0 calc(84% + 2px)); }
+.pl__half--b { clip-path: polygon(0 84%, 100% 16%, 100% 100%, 0 100%); }
+.pl__layer--red .pl__half { background: var(--red); }
+.pl__layer--ink .pl__half { background: var(--ink); }
+.pl__layer--paper .pl__half { background: #fff; }
+.pl__stage { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 6px; padding: 24px; text-align: center; color: var(--ink); }
+.pl__brand { position: relative; width: clamp(112px, 30vw, 148px); aspect-ratio: 192 / 250; margin-bottom: 22px; }
+.pl__logo, .pl__b { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pl__b, .pl__shape, .pl__taut { overflow: visible; fill: none; stroke: var(--red); stroke-linecap: round; stroke-linejoin: round; }
+.pl__b path { stroke-width: 26; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+.pl__shape { position: absolute; top: 50%; left: 50%; width: clamp(120px, 34vw, 168px); height: auto; aspect-ratio: 1; transform: translate(-50%, -78%); }
+.pl__shape path { stroke-width: 7; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+.pl__taut { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; }
+.pl__taut path { stroke-width: 3px; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+.pl__count { display: flex; align-items: baseline; gap: 10px; margin: 0; font-weight: 800; font-size: clamp(1.75rem, 1.2rem + 3vw, 2.75rem); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.pl__cur { font-size: .45em; font-weight: 700; letter-spacing: .08em; color: var(--red-text); }
+.pl__cap { margin: 4px 0 0; font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--slate); }
+.pl__skip { position: absolute; z-index: 4; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); min-height: 44px; min-width: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: transparent; color: var(--slate); font: 600 .8125rem/1 var(--font-sans); letter-spacing: .06em; text-transform: uppercase; }
+.pl-short .pl__brand, .pl-short .pl__count, .pl-short .pl__cap, .pl-fade .pl__stage, .pl-fade .pl__skip, .pl-fade .pl__taut,
+.pl-fade .pl__layer--ink, .pl-fade .pl__layer--red, .pl-short .pl__skip { display: none; }
+.pl-full .pl { animation: pl-gone 0s 2.6s forwards; }
+.pl-short .pl { animation: pl-gone 0s 1.4s forwards; }
+.pl-fade .pl { pointer-events: none; animation: pl-fade .3s .12s ease forwards; }
+@keyframes pl-gone { to { visibility: hidden; pointer-events: none; } }
+@keyframes pl-fade { to { opacity: 0; visibility: hidden; } }
 .brand__wordmark { display: grid; gap: 2px; margin-left: 10px; font-size: 1.125rem; font-weight: 800; letter-spacing: -.035em; line-height: 1.1; }
 .brand__wordmark > span { font-size: .4375rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
 .brand { color: var(--ink); text-decoration: none; }
@@ -120,4 +132,3 @@ body.menu-open { overflow: hidden; }
   .menu-btn { justify-content: center; width: 44px; padding: 0; }
   .menu-btn [data-menu-label] { display: none; }
 }
-@media (prefers-reduced-motion: reduce) { .intro-pending .preloader { display: none; } }
