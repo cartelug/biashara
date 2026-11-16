@@ -170,3 +170,7 @@ headings split into masked lines that slide up (GSAP SplitText, reverted to plai
 chips pop; buttons and links rise; photos open from the bottom; table rows, ledger rows, list items and footer links slide in from the left;
 eyebrows, labels, captions, callouts and form fields rise; paragraphs and sub-headings rise. Section entrances keep the dealt cards, photo masks and scale-ins.
 Only elements below the first screen are hidden, keyboard focus shows an element at once, and reduced motion skips all of it.
+
+## 12. Owner change: scroll progress removed (16 November 2026)
+
+The wavy scroll-progress line under the header (phones) and at the right edge (desktop) has been removed at the owner's request.

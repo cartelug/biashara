@@ -228,26 +228,6 @@ function depth() {
   });
 }
 
-// ------------------------------------------------------------------ scroll progress: a short thread
-function progress() {
-  const host = $('.reading-progress');
-  if (!host) return;
-  const ns = 'http://www.w3.org/2000/svg';
-  const make = (vertical) => {
-    const svg = document.createElementNS(ns, 'svg');
-    svg.setAttribute('viewBox', vertical ? '0 0 10 100' : '0 0 100 6'); svg.setAttribute('preserveAspectRatio', 'none');
-    const d = vertical ? 'M5 0C9 12 1 25 5 37S9 62 5 75 1 88 5 100' : 'M0 3C8 0 17 6 25 3S42 0 50 3 67 6 75 3 92 0 100 3';
-    const tr = document.createElementNS(ns, 'path'); tr.setAttribute('class', 'rp__track'); tr.setAttribute('d', d); tr.setAttribute('vector-effect', 'non-scaling-stroke');
-    const ln = document.createElementNS(ns, 'path'); ln.setAttribute('class', 'rp__line'); ln.setAttribute('d', d); ln.setAttribute('pathLength', '1'); ln.setAttribute('vector-effect', 'non-scaling-stroke');
-    svg.append(tr, ln);
-    return { svg, ln };
-  };
-  host.textContent = '';
-  const v = make(!isMobile());
-  host.append(v.svg);
-  return (p) => { v.ln.style.strokeDashoffset = String(1 - p); };
-}
-
 // ------------------------------------------------------------------ interaction: magnetic buttons, liquid fill origin, tilt, cursor
 function interaction() {
   // liquid fill floods from where the pointer entered
@@ -386,7 +366,6 @@ function rope() {
 
 // ------------------------------------------------------------------ start
 let thread = null;
-let setProgress = null;
 try {
   bleeds();
   chapters();
@@ -394,7 +373,6 @@ try {
   stats();
   repayment();
   rope();
-  setProgress = progress();
   ready(() => { entrances(); revealAll({ still, mobile: isMobile() }); depth(); interaction(); ScrollTrigger.refresh(); });
 } catch (err) { console.error(err); }
 
@@ -406,7 +384,6 @@ gsap.ticker.add((time) => {
   const v = lenis ? lenis.velocity : (y - lastY);
   lastY = y;
   thread?.frame(y, v);
-  if (setProgress) { const max = document.documentElement.scrollHeight - innerHeight; setProgress(max > 0 ? Math.min(1, Math.max(0, y / max)) : 0); }
 });
 gsap.ticker.lagSmoothing(500, 33);
 

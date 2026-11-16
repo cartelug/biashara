@@ -88,21 +88,6 @@
 .h1-lines .line-mask:last-child { padding-bottom: .14em; }
 .mask-open { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
 
-/* ---------- Scroll progress: a short thread ---------- */
-.reading-progress { position: fixed; z-index: 80; pointer-events: none; }
-.reading-progress svg { display: block; width: 100%; height: 100%; overflow: visible; fill: none; }
-.reading-progress .rp__track { stroke: var(--line); stroke-width: 2; }
-.reading-progress .rp__line { stroke: var(--red); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
-.reading-progress .rp__bead { fill: var(--red); }
-@media (max-width: 1023.98px) {
-  .reading-progress { left: 0; right: 0; top: calc(var(--header-offset, var(--header-h)) - 3px); height: 6px; transition: transform var(--d-2) var(--ease-out); }
-  .header-hidden .reading-progress { transform: translateY(calc(-1 * var(--header-offset, var(--header-h)))); }
-  .reading-progress .rp__track { stroke: transparent; }
-}
-@media (min-width: 1024px) {
-  .reading-progress { right: 14px; top: 50%; width: 10px; height: 34vh; transform: translateY(-50%); }
-}
-.reading-progress[hidden], .no-js .reading-progress { display: none; }
 
 /* ---------- Buttons: liquid fill, magnetic pull (desktop), press-down ---------- */
 .btn { position: relative; overflow: hidden; isolation: isolate; transition: color var(--d-1), border-color var(--d-1), box-shadow var(--d-1), transform var(--d-1) var(--ease-out), background-color var(--d-1); }
@@ -271,7 +256,7 @@
   .tie path { animation: none; stroke-dashoffset: 0; }
 }
 @media print {
-  .pl, .reading-progress, .thread, .cursor, .bigtype, .stats-curve, .steps-thread, .nf-rope { display: none !important; }
+  .pl, .thread, .cursor, .bigtype, .stats-curve, .steps-thread, .nf-rope { display: none !important; }
   .motion-wait, .line-mask > span { opacity: 1 !important; transform: none !important; }
   .bleed { background: none !important; }
 }
@@ -281,7 +266,6 @@ html.lenis, html.lenis body { height: auto; }
 html.lenis { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
 section[data-pinned="true"]:not(.section--surface):not(.section--night) { background: var(--bg); }
-html:not(.motion-ready) .reading-progress { display: none; }
 .has-thread .section-head + .stats { margin-top: 24px; }
 .ledgercard .repay__h { color: var(--on-dark-mute); }
 .ledgercard .repay__h [data-r-end] { color: #fff; }
