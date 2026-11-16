@@ -318,7 +318,11 @@ const MAIN_NAV = ['loans', 'how-we-lend', 'terms', 'about', 'contact'];
 const navLinks = (current) => pages.filter((p) => MAIN_NAV.includes(p.id))
   .sort((a, b) => MAIN_NAV.indexOf(a.id) - MAIN_NAV.indexOf(b.id))
   .map((p) => `<li><a href="${p.path}" data-nav="${p.id}"${p.id === current ? ' aria-current="page"' : ''}>${esc(p.nav)}</a></li>`).join('');
-const menuLinks = (current) => pages.filter((p) => !MAIN_NAV.includes(p.id) && p.id !== 'apply')
+// The phone menu leads with six pages (Team among them); every other page is listed under "More".
+const MENU_MAIN = ['loans', 'how-we-lend', 'terms', 'about', 'team', 'contact'];
+const menuMain = (current) => MENU_MAIN.map((id) => pages.find((p) => p.id === id))
+  .map((p, i) => `<li><a href="${p.path}"${p.id === current ? ' aria-current="page"' : ''}><span class="menu__n" aria-hidden="true">0${i + 1}</span>${esc(p.nav)}</a></li>`).join('');
+const menuLinks = (current) => pages.filter((p) => !MENU_MAIN.includes(p.id) && p.id !== 'apply')
   .map((p) => `<li><a href="${p.path}"${p.id === current ? ' aria-current="page"' : ''}>${esc(p.nav === 'Home' ? 'Home' : p.name === 'Questions' ? 'FAQ' : p.nav)}</a></li>`).join('');
 
 const sitemap = [];
@@ -345,7 +349,7 @@ for (const page of allPages) {
   html = html.replace(/\{\{page\.(\w+)\}\}/g, (_, k) => esc(ctx.page[k] ?? ''));
   html = await expand(html, ctx);
   // the header and footer partials arrive during expand, so fill their slots afterwards (the nav appears twice)
-  html = html.replaceAll('<!--NAV-->', navLinks(page.id)).replaceAll('<!--MENU-->', menuLinks(page.id));
+  html = html.replaceAll('<!--NAV-->', navLinks(page.id)).replaceAll('<!--MENU-->', menuLinks(page.id)).replaceAll('<!--MENUMAIN-->', menuMain(page.id));
   html = html.replace(/__BUILD__/g, BUILD.js);
   html = page.id === '404' ? absoluteHtml(html) : relativeHtml(html, depth);
   if (/\{\{|<x-/.test(html)) throw new Error('Unexpanded template token in ' + page.id + ': ' + html.match(/.{40}(\{\{|<x-).{40}/)?.[0]);

@@ -17,20 +17,20 @@
   </div>
   <div class="menu" id="menu" data-menu hidden>
     <svg class="menu__thread" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M1040 -40C700 200 600 300 500 480S200 800 -40 1040"/></svg>
-    <div class="container">
-      <p class="menu__intro"><span>Explore Biashara</span><span>Kampala · Uganda</span></p>
-      <div class="menu__grid">
-        <nav aria-label="Menu"><ul class="menu__list" role="list"><!--NAV--></ul></nav>
-        <div class="menu__aside">
-          <nav aria-label="More pages">
-            <p class="menu__h">More to explore</p>
-            <ul class="menu__list menu__list--more" role="list"><!--MENU--></ul>
-          </nav>
-          <div class="menu__cta">
-            <a class="btn btn--lg" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a>
-            <a class="menu__phone" href="tel:{{contact.phone1}}"><x-icon name="phone"></x-icon>{{contact.phone1Text}}</a>
-          </div>
+    <div class="container menu__in">
+      <p class="menu__intro"><span>Menu</span><span class="open-now needs-js" data-open-now data-compact><span class="open-now__sq" aria-hidden="true"></span><span data-open-now-text>Checking office hours</span></span></p>
+      <nav aria-label="Menu"><ul class="menu__list" role="list"><!--MENUMAIN--></ul></nav>
+      <nav aria-label="More pages" class="menu__more">
+        <p class="menu__h">More</p>
+        <ul class="menu__list menu__list--more" role="list"><!--MENU--></ul>
+      </nav>
+      <div class="menu__cta">
+        <a class="btn btn--lg btn--block" href="/apply/">Apply now<x-icon name="arrow-right"></x-icon></a>
+        <div class="menu__contact">
+          <a class="menu__pill" href="tel:{{contact.phone1}}"><x-icon name="phone"></x-icon>Call</a>
+          <a class="menu__pill" href="https://wa.me/{{contact.whatsapp}}" rel="noopener" target="_blank"><x-icon name="chat"></x-icon>WhatsApp<span class="sr-only"> (opens in a new tab)</span></a>
         </div>
+        <p class="menu__addr">Conrad Plaza, Entebbe Road, Kampala · <span class="tnum">{{contact.phone1Text}}</span></p>
       </div>
     </div>
   </div>

@@ -141,7 +141,7 @@ function entrances() {
   sections.forEach((s) => {
     let kind = s.classList.contains('bleed') ? 'ink'
       : $(':scope > .container > .ph, :scope > .container > figure > .ph', s) && !$('.section-head', s) ? 'mask'
-      : $('.cards, .cs, .portraits, .group-list, .photo-pair, .gallery, .next-links, .contact-list', s) ? 'deal'
+      : $('.cards, .cs, .portraits, .people, .org, .group-list, .photo-pair, .gallery, .next-links, .contact-list', s) ? 'deal'
       : $('.calc, .licence-strip, .two-up, .licence, .anatomy', s) ? 'scale' : 'rise';
     if (kind === prev) kind = kinds.find((k) => k !== prev) || 'rise';
     prev = kind;
@@ -156,7 +156,7 @@ function entrances() {
 
     if (kind === 'scale') reveal(blocks, { opacity: 0, scale: .96, y: 20 }, .1);
     if (kind === 'deal') {
-      const cards = $$('.cards > *, .cs > *, .portraits > *, .group-list > *, .photo-pair > *, .gallery > *, .next-links > *, .contact-list > *', s);
+      const cards = $$('.cards > *, .cs > *, .portraits > *, .people > *, .org > *, .group-list > *, .photo-pair > *, .gallery > *, .next-links > *, .contact-list > *', s);
       const rest = blocks.filter((b) => !cards.some((c) => b.contains(c)));
       reveal(rest, { opacity: 0, y: 24 }, .05);
       cards.forEach((c) => { c.dataset.entering = ''; });
@@ -209,7 +209,7 @@ function depth() {
   if (still || lite) return;
   const k = isMobile() ? .35 : 1;
   $$('.ph', main).forEach((ph) => {
-    if (ph.closest('.hero, .page-head, .reel, .carousel, .portrait, .card, .product-card, .licence, .ticket')) return;
+    if (ph.closest('.hero, .page-head, .reel, .carousel, .portrait, .person, .card, .product-card, .licence, .ticket')) return;
     const img = $('img', ph);
     if (!img) return;
     gsap.set(img, { scale: 1.1 });
@@ -266,7 +266,7 @@ function interaction() {
     const t = e.target;
     const word = t.closest?.('a[href*="apply"], [data-calc-apply]') ? 'Apply'
       : t.closest?.('.reel, [role="slider"], .licence__fig, [data-zoom]') ? 'Drag'
-      : t.closest?.('.ph, .portrait') ? 'View' : '';
+      : t.closest?.('.ph, .portrait, .person') ? 'View' : '';
     cur.classList.toggle('is-label', !!word);
     if (word && label.textContent !== word) label.textContent = word;
   }, { passive: true });
