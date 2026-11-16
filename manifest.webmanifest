@@ -4,8 +4,8 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f5f2ee",
-  "theme_color": "#f5f2ee",
+  "background_color": "#fcfbf8",
+  "theme_color": "#fcfbf8",
   "description": "Short-term bridge financing in Kampala since 2014.",
   "icons": [
     {
