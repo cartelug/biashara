@@ -22,7 +22,7 @@ export function mountLicence(main) {
     if (open) {
       b.setAttribute('aria-expanded', 'true'); b.classList.add('is-on');
       const row = rowOf(b); row?.classList.add('is-on');
-      if (row && !window.matchMedia('(min-width: 900px)').matches) row.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
+      if (row && !window.matchMedia('(min-width: 1024px)').matches) row.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
     }
   };
   spots.forEach((b) => {

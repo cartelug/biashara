@@ -23,7 +23,7 @@ export const CONFIG = {
   // '/biashara' at https://<user>.github.io/biashara/ (a GitHub Pages project site). No trailing slash.
   // Every page links to its files with relative paths and works anywhere, so this only matters for the 404 page,
   // which a host can show for a missing address at any depth. The BASE_PATH environment variable overrides it.
-  BASE_PATH: '/biashara',
+  BASE_PATH: '',
 
   // Offline shell (service worker). Set to false to switch it off.
   SERVICE_WORKER: true,

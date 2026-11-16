@@ -14,7 +14,7 @@
 .hero__licence .tile { width: 40px; height: 40px; }
 .hero__licence b { display: block; font-size: 1.0625rem; font-variant-numeric: tabular-nums; }
 .hero__licence span { color: var(--slate); }
-@media (min-width: 900px) {
+@media (min-width: 1024px) {
   .hero__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: center; gap: 48px; }
   .hero__media .ph { aspect-ratio: 4 / 3; }
   .hero__licence { left: -24px; bottom: 28px; }
@@ -61,7 +61,7 @@
 
 /* ---------- Licence page ---------- */
 .licence { display: grid; gap: 32px; }
-@media (min-width: 900px) { .licence { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: start; gap: 56px; } }
+@media (min-width: 1024px) { .licence { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: start; gap: 56px; } }
 .licdoc__frame { padding: 12px; border: 1px solid var(--line); border-radius: var(--radius-m); background: #fff; box-shadow: var(--shadow-2); }
 .licdoc__img { position: relative; }
 .licdoc__open { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }

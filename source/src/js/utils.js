@@ -16,7 +16,7 @@ export const lerp = (a, b, t) => a + (b - a) * t;
 export const mq = (q) => window.matchMedia(q);
 export const reducedMotion = () => document.documentElement.classList.contains('rm') || mq('(prefers-reduced-motion: reduce)').matches;
 export const finePointer = () => mq('(hover: hover) and (pointer: fine)').matches;
-export const isDesktop = () => mq('(min-width: 1100px)').matches;
+export const isDesktop = () => mq('(min-width: 1024px)').matches;
 
 const NBSP = ' ';
 export const fmtNumber = (n) => Math.round(n).toLocaleString('en-US');

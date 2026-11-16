@@ -72,13 +72,22 @@ input, textarea { scroll-margin-top: calc(var(--header-offset, var(--header-h)) 
   .pchoice__box .tile { width: 36px; height: 36px; }
   .pchoice__mark { width: 20px; height: 20px; }
 }
-@media (min-width: 768px) and (max-width: 899.98px) {
+@media (min-width: 768px) and (max-width: 1023.98px) {
   .hero__grid { gap: 32px; }
   .hero h1 { max-width: 15ch; }
   .hero__media { max-width: 640px; width: 100%; }
 }
-@media (min-width: 1024px) and (max-width: 1199.98px) {
+@media (min-width: 1024px) and (max-width: 1279.98px) {
   .brand__wordmark { font-size: 1rem; }
   .primary-nav { margin-left: 0; }
   .primary-nav a { padding-inline: 10px; font-size: .875rem; }
 }
+
+/* Tap targets: every control at least 44 x 44 px (AUDIT.md, responsive items R7 to R10) */
+.contact-item dd > a { display: inline-block; max-width: 100%; padding-block: 11px; overflow-wrap: anywhere; }
+.copy { min-height: 44px; padding: 0 14px; }
+.chips button.chip { min-height: 44px; min-width: 44px; }
+.check a { display: inline-block; padding-block: 12px; margin-block: -12px; }
+.site-footer__list a { display: inline-block; max-width: 100%; padding-block: 11px; overflow-wrap: anywhere; }
+/* licence marks are placed by script; hidden until then so they never shift (AUDIT.md R12) */
+.hotspot:not([style]) { visibility: hidden; }
