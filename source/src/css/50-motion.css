@@ -290,3 +290,5 @@ html:not(.motion-ready) .reading-progress { display: none; }
 .ledgercard .repay__area { fill: var(--red-on-dark); opacity: .12; }
 .ledgercard .repay__dot { fill: var(--night); stroke: var(--red-on-dark); }
 .ledgercard .repay__lbl { fill: var(--on-dark-mute); }
+.odo { white-space: nowrap; }
+.odo__col { flex: none; }

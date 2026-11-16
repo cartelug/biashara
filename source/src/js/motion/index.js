@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { D, E, STAGGER } from './tokens.js';
+import { revealAll } from './reveal-all.js';
 // The page-long thread (thread.js) was removed at the owner's request; its smaller roles remain.
 
 gsap.registerPlugin(ScrollTrigger);
@@ -149,19 +150,21 @@ function entrances() {
     const head = $$('.section-head > *', s);
     const trig = { trigger: s, start: 'top 82%', once: true };
     const tl = gsap.timeline({ scrollTrigger: trig, defaults: { ease: E.out, duration: D.base } });
-    const reveal = (targets, from, at = 0) => { if (!targets.length) return; gsap.set(targets, from); tl.to(targets, { opacity: 1, x: 0, y: 0, rotate: 0, scale: 1, stagger: STAGGER, clearProps: 'transform,opacity' }, at); };
-    if (head.length) reveal(head, { opacity: 0, y: 28 });
+    const reveal = (targets, from, at = 0) => { if (!targets.length) return; targets.forEach((t) => { t.dataset.entering = ''; }); gsap.set(targets, from); tl.to(targets, { opacity: 1, x: 0, y: 0, rotate: 0, scale: 1, stagger: STAGGER, clearProps: 'transform,opacity' }, at); };
+    // headings and text inside sections are revealed piece by piece by reveal-all.js
     const blocks = $$(':scope > .container > *:not(.section-head), :scope > .container > .split > *:not(.section-head)', s).filter((b) => !b.matches('.split'));
-    if (kind === 'rise' || kind === 'ink') reveal(blocks, { opacity: 0, y: 36 }, head.length ? .12 : 0);
+
     if (kind === 'scale') reveal(blocks, { opacity: 0, scale: .96, y: 20 }, .1);
     if (kind === 'deal') {
       const cards = $$('.cards > *, .cs > *, .portraits > *, .group-list > *, .photo-pair > *, .gallery > *, .next-links > *, .contact-list > *', s);
       const rest = blocks.filter((b) => !cards.some((c) => b.contains(c)));
       reveal(rest, { opacity: 0, y: 24 }, .05);
+      cards.forEach((c) => { c.dataset.entering = ''; });
       if (cards.length) { const sx = isMobile() ? 0 : 40; cards.forEach((c, i) => gsap.set(c, { opacity: 0, x: (i % 2 ? 1 : -1) * sx, y: isMobile() ? 44 : 30, rotate: sx ? (i % 2 ? 1.5 : -1.5) : 0 })); tl.to(cards, { opacity: 1, x: 0, y: 0, rotate: 0, stagger: STAGGER, duration: D.base, clearProps: 'transform,opacity' }, .1); }
     }
     if (kind === 'mask') {
       const ph = $$('.ph', s);
+      ph.forEach((x) => { x.dataset.entering = ''; });
       gsap.set(ph, { clipPath: 'polygon(0 0, 0% 0, -30% 100%, 0 100%)' });
       tl.to(ph, { clipPath: 'polygon(0 0, 130% 0, 100% 100%, 0 100%)', duration: D.slow, ease: E.thread, clearProps: 'clipPath' }, 0);
       $$('.ph img', s).forEach((img) => tl.fromTo(img, { scale: 1.15 }, { scale: 1, duration: D.slow * 1.3, clearProps: 'transform' }, 0));
@@ -392,7 +395,7 @@ try {
   repayment();
   rope();
   setProgress = progress();
-  ready(() => { entrances(); depth(); interaction(); ScrollTrigger.refresh(); });
+  ready(() => { entrances(); revealAll({ still, mobile: isMobile() }); depth(); interaction(); ScrollTrigger.refresh(); });
 } catch (err) { console.error(err); }
 
 // one frame loop for everything (GSAP's ticker)

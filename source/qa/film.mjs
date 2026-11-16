@@ -33,7 +33,7 @@ if (process.argv.includes('--scroll')) {
   for (let y = 0; y < H; y += Math.round(h * 0.85)) {
     await page.mouse.wheel(0, 0);
     await page.evaluate((yy) => window.scrollTo(0, yy), y);
-    await page.waitForTimeout(900);
+    await page.waitForTimeout(Number(arg('settle', 900)));
     await page.screenshot({ path: `${OUT}/${name}-scroll-${String(i++).padStart(2, '0')}.png` });
   }
 }

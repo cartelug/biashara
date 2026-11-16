@@ -162,3 +162,11 @@ Full version once per browser session, under 2.2 s; short version (0.4 to 0.6 s)
 ## 10. Owner change (16 November 2026)
 
 The page-long thread that drew itself down every page as you scrolled has been removed at the owner's request (`src/js/motion/thread.js` deleted). The film, page wipe, pinned process line, product reel, statistics count-up, calculator line, scroll progress, closing band and interactions remain. The process steps show their plain connector line again.
+
+## 11. Owner change: reveal everything (16 November 2026)
+
+`src/js/motion/reveal-all.js` animates every element as it scrolls into view, with one IntersectionObserver and the 60 ms stagger:
+headings split into masked lines that slide up (GSAP SplitText, reverted to plain text afterwards); icons and step numbers spin and pop in;
+chips pop; buttons and links rise; photos open from the bottom; table rows, ledger rows, list items and footer links slide in from the left;
+eyebrows, labels, captions, callouts and form fields rise; paragraphs and sub-headings rise. Section entrances keep the dealt cards, photo masks and scale-ins.
+Only elements below the first screen are hidden, keyboard focus shows an element at once, and reduced motion skips all of it.
