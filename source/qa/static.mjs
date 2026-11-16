@@ -69,6 +69,8 @@ for (const f of js) {
   const s = await read(f);
   if (/gsap\.[a-z]+\([^)]*(h1|h2|\.h-display|line-inner)[^)]*scale/i.test(s)) fail('typography', `${rel(f)} scales text`);
 }
+// One set of breakpoints (MOTION.md / DESIGN-PROTOTYPE.md): 360, 600, 768, 1024, 1280 and their .98 partners
+for (const m of allCss.matchAll(/@media[^{]*?\((?:min|max)-width:\s*([\d.]+)px\)/g)) if (!['359.98', '360', '599.98', '600', '767.98', '768', '1023.98', '1024', '1279.98', '1280'].includes(m[1])) fail('typography', `breakpoint ${m[1]}px outside the system`);
 out.typography.push(`weights in use: ${[...weights].sort().join(', ')}`);
 
 // ------------------------------------------------------------------ facts
@@ -147,8 +149,11 @@ for (const f of html) {
 
 // ------------------------------------------------------------------ budgets
 const gz = async (f) => zlib.gzipSync(await fs.readFile(f), { level: 9 }).length;
-const jsFiles = files.filter((f) => f.endsWith('.js') && !f.endsWith('sw.js'));
+// The first script is budgeted on its own; the motion file loads after first paint and has its own budget.
+const jsFiles = files.filter((f) => f.endsWith('.js') && !f.endsWith('sw.js') && !f.endsWith('motion.js'));
 let jsTotal = 0; for (const f of jsFiles) jsTotal += await gz(f);
+const motionFile = files.find((f) => f.endsWith('assets/js/motion.js'));
+const motionTotal = motionFile ? await gz(motionFile) : 0;
 let cssTotal = 0; for (const f of css) cssTotal += await gz(f);
 const crit = (await read(path.join(DIST, 'index.html'))).match(/<style>([\s\S]*?)<\/style>/)?.[1] || '';
 cssTotal += zlib.gzipSync(Buffer.from(crit)).length;
@@ -158,12 +163,14 @@ const heroSizes = await Promise.all(heroCandidates.map(async (f) => [path.basena
 const heroMax = Math.max(...heroSizes.map(([, s]) => s));
 out.budgets = {
   jsGzipKB: +(jsTotal / 1024).toFixed(1), jsBudgetKB: 40,
+  motionGzipKB: +(motionTotal / 1024).toFixed(1), motionBudgetKB: 64,
   cssGzipKB: +(cssTotal / 1024).toFixed(1), cssBudgetKB: 28,
   fontFiles: fonts.length, fontBudget: 4,
   heroLargestAvifKB: +(heroMax / 1024).toFixed(1), heroBudgetKB: 180,
   heroFiles: Object.fromEntries(heroSizes.map(([n, s]) => [n, +(s / 1024).toFixed(1)])),
 };
 if (jsTotal / 1024 > 40) fail('links', 'JS budget exceeded');
+if (motionTotal / 1024 > 64) fail('links', 'motion JS budget exceeded');
 if (cssTotal / 1024 > 28) fail('links', 'CSS budget exceeded');
 if (fonts.length > 4) fail('links', 'font budget exceeded');
 if (heroMax / 1024 > 180) fail('links', 'hero image budget exceeded');

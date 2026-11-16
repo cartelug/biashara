@@ -12,7 +12,7 @@ const widths = ((args.find((a) => a.startsWith('--widths=')) || '').slice(9) || 
 const PAGES = ['/', '/about/', '/loans/', '/how-we-lend/', '/terms/', '/who-we-serve/', '/team/', '/licence/', '/faq/', '/contact/', '/apply/', '/profile/', '/privacy/', '/404.html']
   .filter((p) => !only.length || only.includes(p.replace(/\//g, '') || 'home'));
 await fs.mkdir(out, { recursive: true });
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {});
 const errors = [];
 for (const w of widths) {
   const ctx = await browser.newContext({ viewport: { width: w, height: w < 760 ? 844 : w < 1100 ? 1024 : w < 1600 ? 800 : 1080 }, deviceScaleFactor: 1, reducedMotion: motion ? 'no-preference' : 'reduce' });

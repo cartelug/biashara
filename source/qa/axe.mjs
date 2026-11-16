@@ -7,7 +7,7 @@ import { pages } from '../src/data/site.mjs';
 
 const BASE = process.argv[2] || 'http://localhost:4173';
 const axeSrc = await readFile(createRequire(import.meta.url).resolve('axe-core/axe.min.js'), 'utf8');
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {});
 const paths = [...pages.map((p) => p.path), '/this-page-does-not-exist/'];
 const report = [];
 for (const width of [1280, 390]) {
